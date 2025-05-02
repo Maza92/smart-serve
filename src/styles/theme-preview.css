@@ -1,6 +1,6 @@
 :root {
   /* Paleta de colores base */
-  --color-primary-key: #a9663d;
+  --color-primary-key: #c67c4e;
   --color-secondary-key: #90705e;
   --color-tertiary-key: #7b7949;
   --color-neutral-key: #81746e;
@@ -26,7 +26,7 @@
   --color-inverse-on-surface: #382e29;
 
   /* Bordes y sombras */
-  --color-outline: #9f8d84;
+  --color-outline: #f9f2ed;
   --color-outline-variant: #52443c;
   --color-shadow: #000000;
   --color-scrim: #000000;

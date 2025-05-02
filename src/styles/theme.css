@@ -1,5 +1,5 @@
 @theme {
-  --color-primary-key: #a9663d;
+  --color-primary-key: #c67c4e;
   --color-secondary-key: #90705e;
   --color-tertiary-key: #7b7949;
   --color-neutral-key: #81746e;
@@ -19,7 +19,7 @@
   --color-on-surface-variant: #d7c2b8;
   --color-inverse-surface: #f0dfd7;
   --color-inverse-on-surface: #382e29;
-  --color-outline: #9f8d84;
+  --color-outline: #f9f2ed;
   --color-outline-variant: #52443c;
   --color-shadow: #000000;
   --color-scrim: #000000;

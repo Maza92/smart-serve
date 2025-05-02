@@ -16,3 +16,19 @@
 .temp-style {
   @apply opacity-50 text-xs italic mt-1;
 }
+
+.button {
+  @apply border rounded-xl py-2 px-4 hover:opacity-90 transition duration-200 ease-in-out cursor-pointer;
+}
+
+.button-primary {
+  @apply bg-primary-key text-on-background border-primary-key;
+}
+
+.button-secondary {
+  @apply bg-secondary-key text-on-background border-secondary-key;
+}
+
+.button-outline {
+  @apply bg-outline text-primary-key border-primary-key;
+}
