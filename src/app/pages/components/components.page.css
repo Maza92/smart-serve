@@ -1,0 +1,18 @@
+@reference "../../../styles.css";
+
+.component-section {
+  @apply mb-15 p-5 border border-gray-300 rounded-lg;
+}
+.component-title {
+  @apply mt-0 border-b border-gray-300 pb-2 mb-5 text-gray-800;
+}
+.component-item {
+  @apply mb-5;
+}
+.component-label {
+  @apply block mb-2 text-sm text-gray-500;
+}
+
+.temp-style {
+  @apply opacity-50 text-xs italic mt-1;
+}

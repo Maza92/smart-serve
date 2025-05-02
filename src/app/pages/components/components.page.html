@@ -1,0 +1,647 @@
+<div class="p-16">
+  <!-- BUTTONS -->
+  <section class="component-section">
+    <h2 class="component-title">Botones</h2>
+
+    <div class="component-item">
+      <span class="component-label">Botón Primario</span>
+      <button class="button button-primary">Botón Primario</button>
+      <div class="temp-style">Clase: button button-primary</div>
+    </div>
+
+    <div class="component-item">
+      <span class="component-label">Botón Secundario</span>
+      <button class="button button-secondary">Botón Secundario</button>
+      <div class="temp-style">Clase: button button-secondary</div>
+    </div>
+
+    <div class="component-item">
+      <span class="component-label">Botón Outline</span>
+      <button class="button button-outline">Botón Outline</button>
+      <div class="temp-style">Clase: button button-outline</div>
+    </div>
+
+    <div class="component-item">
+      <span class="component-label">Botón de Texto</span>
+      <button class="button button-text">Botón de Texto</button>
+      <div class="temp-style">Clase: button button-text</div>
+    </div>
+
+    <div class="component-item">
+      <span class="component-label">Botón de Acción</span>
+      <button class="button button-action">
+        <span class="button-icon">+</span>
+        <span class="button-label">Acción</span>
+      </button>
+      <div class="temp-style">
+        Clase: button button-action con button-icon y button-label
+      </div>
+    </div>
+
+    <div class="component-item">
+      <span class="component-label">Botón Grande</span>
+      <button class="button button-primary button-lg">Botón Grande</button>
+      <div class="temp-style">Clase: button button-primary button-lg</div>
+    </div>
+
+    <div class="component-item">
+      <span class="component-label">Botón Pequeño</span>
+      <button class="button button-primary button-sm">Botón Pequeño</button>
+      <div class="temp-style">Clase: button button-primary button-sm</div>
+    </div>
+
+    <div class="component-item">
+      <span class="component-label">Botón Redondeado</span>
+      <button class="button button-primary button-rounded">
+        Botón Redondeado
+      </button>
+      <div class="temp-style">Clase: button button-primary button-rounded</div>
+    </div>
+
+    <div class="component-item">
+      <span class="component-label">Botón Deshabilitado</span>
+      <button class="button button-primary" disabled>
+        Botón Deshabilitado
+      </button>
+      <div class="temp-style">
+        Clase: button button-primary con atributo disabled
+      </div>
+    </div>
+  </section>
+
+  <!-- FORMS -->
+  <section class="component-section">
+    <h2 class="component-title">Elementos de Formulario</h2>
+
+    <div class="component-item">
+      <span class="component-label">Campo de Texto</span>
+      <div class="form-group">
+        <label class="form-label" for="text-input">Etiqueta</label>
+        <input
+          type="text"
+          id="text-input"
+          class="form-input"
+          placeholder="Placeholder..."
+        />
+      </div>
+      <div class="temp-style">Clases: form-group, form-label, form-input</div>
+    </div>
+
+    <div class="component-item">
+      <span class="component-label">Campo de Texto con Error</span>
+      <div class="form-group">
+        <label class="form-label" for="text-error">Etiqueta</label>
+        <input
+          type="text"
+          id="text-error"
+          class="form-input form-input-error"
+          value="Valor incorrecto"
+        />
+        <div class="form-error-message">Mensaje de error aquí</div>
+      </div>
+      <div class="temp-style">
+        Clases: form-group, form-label, form-input, form-input-error,
+        form-error-message
+      </div>
+    </div>
+
+    <div class="component-item">
+      <span class="component-label">Campo de Texto con Éxito</span>
+      <div class="form-group">
+        <label class="form-label" for="text-success">Etiqueta</label>
+        <input
+          type="text"
+          id="text-success"
+          class="form-input form-input-success"
+          value="Valor correcto"
+        />
+        <div class="form-success-message">¡Todo correcto!</div>
+      </div>
+      <div class="temp-style">
+        Clases: form-group, form-label, form-input, form-input-success,
+        form-success-message
+      </div>
+    </div>
+
+    <div class="component-item">
+      <span class="component-label">Área de Texto</span>
+      <div class="form-group">
+        <label class="form-label" for="textarea">Descripción</label>
+        <textarea
+          id="textarea"
+          class="form-textarea"
+          rows="3"
+          placeholder="Escribe aquí..."
+        ></textarea>
+      </div>
+      <div class="temp-style">
+        Clases: form-group, form-label, form-textarea
+      </div>
+    </div>
+
+    <div class="component-item">
+      <span class="component-label">Selector</span>
+      <div class="form-group">
+        <label class="form-label" for="select">Selecciona una opción</label>
+        <select id="select" class="form-select">
+          <option value="" selected disabled>Seleccionar...</option>
+          <option value="1">Opción 1</option>
+          <option value="2">Opción 2</option>
+          <option value="3">Opción 3</option>
+        </select>
+      </div>
+      <div class="temp-style">Clases: form-group, form-label, form-select</div>
+    </div>
+
+    <div class="component-item">
+      <span class="component-label">Checkbox</span>
+      <div class="form-check">
+        <input type="checkbox" id="checkbox1" class="form-checkbox" />
+        <label class="form-check-label" for="checkbox1"
+          >Acepto los términos y condiciones</label
+        >
+      </div>
+      <div class="temp-style">
+        Clases: form-check, form-checkbox, form-check-label
+      </div>
+    </div>
+
+    <div class="component-item">
+      <span class="component-label">Radio Buttons</span>
+      <div class="form-check">
+        <input
+          type="radio"
+          name="radio-group"
+          id="radio1"
+          class="form-radio"
+          checked
+        />
+        <label class="form-check-label" for="radio1">Opción 1</label>
+      </div>
+      <div class="form-check">
+        <input type="radio" name="radio-group" id="radio2" class="form-radio" />
+        <label class="form-check-label" for="radio2">Opción 2</label>
+      </div>
+      <div class="temp-style">
+        Clases: form-check, form-radio, form-check-label
+      </div>
+    </div>
+
+    <div class="component-item">
+      <span class="component-label">Switch</span>
+      <label class="switch">
+        <input type="checkbox" class="switch-input" />
+        <span class="switch-slider"></span>
+        <span class="switch-label">Activar notificaciones</span>
+      </label>
+      <div class="temp-style">
+        Clases: switch, switch-input, switch-slider, switch-label
+      </div>
+    </div>
+  </section>
+
+  <!-- CARDS -->
+  <section class="component-section">
+    <h2 class="component-title">Tarjetas</h2>
+
+    <div class="component-item">
+      <span class="component-label">Tarjeta Básica</span>
+      <div class="card">
+        <div class="card-body">
+          <h3 class="card-title">Título de la tarjeta</h3>
+          <p class="card-text">
+            Este es un ejemplo de contenido para una tarjeta básica. Puede
+            contener texto, imágenes y otros elementos.
+          </p>
+        </div>
+      </div>
+      <div class="temp-style">
+        Clases: card, card-body, card-title, card-text
+      </div>
+    </div>
+
+    <div class="component-item">
+      <span class="component-label">Tarjeta con Imagen</span>
+      <div class="card">
+        <div class="card-img-top">
+          <img src="/api/placeholder/300/150" alt="Imagen de tarjeta" />
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">Título de la tarjeta</h3>
+          <p class="card-text">Este es un ejemplo de tarjeta con imagen.</p>
+        </div>
+      </div>
+      <div class="temp-style">
+        Clases: card, card-img-top, card-body, card-title, card-text
+      </div>
+    </div>
+
+    <div class="component-item">
+      <span class="component-label">Tarjeta con Encabezado y Pie</span>
+      <div class="card">
+        <div class="card-header">Encabezado de tarjeta</div>
+        <div class="card-body">
+          <h3 class="card-title">Título de la tarjeta</h3>
+          <p class="card-text">
+            Este es un ejemplo de tarjeta con encabezado y pie.
+          </p>
+        </div>
+        <div class="card-footer">
+          <button class="button button-text button-sm">Cancelar</button>
+          <button class="button button-primary button-sm">Aceptar</button>
+        </div>
+      </div>
+      <div class="temp-style">
+        Clases: card, card-header, card-body, card-title, card-text, card-footer
+      </div>
+    </div>
+
+    <div class="component-item">
+      <span class="component-label">Tarjeta Horizontal</span>
+      <div class="card card-horizontal">
+        <div class="card-img-side">
+          <img src="/api/placeholder/150/150" alt="Imagen lateral" />
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">Título de la tarjeta</h3>
+          <p class="card-text">
+            Este es un ejemplo de tarjeta con imagen lateral para un diseño
+            horizontal.
+          </p>
+        </div>
+      </div>
+      <div class="temp-style">
+        Clases: card, card-horizontal, card-img-side, card-body, card-title,
+        card-text
+      </div>
+    </div>
+  </section>
+
+  <!-- ALERTS -->
+  <section class="component-section">
+    <h2 class="component-title">Alertas y Notificaciones</h2>
+
+    <div class="component-item">
+      <span class="component-label">Alerta de Información</span>
+      <div class="alert alert-info">
+        <div class="alert-icon">i</div>
+        <div class="alert-content">
+          <div class="alert-title">Información</div>
+          <div class="alert-message">
+            Este es un mensaje informativo para el usuario.
+          </div>
+        </div>
+      </div>
+      <div class="temp-style">
+        Clases: alert, alert-info, alert-icon, alert-content, alert-title,
+        alert-message
+      </div>
+    </div>
+
+    <div class="component-item">
+      <span class="component-label">Alerta de Éxito</span>
+      <div class="alert alert-success">
+        <div class="alert-icon">✓</div>
+        <div class="alert-content">
+          <div class="alert-title">¡Éxito!</div>
+          <div class="alert-message">
+            La operación se ha completado correctamente.
+          </div>
+        </div>
+      </div>
+      <div class="temp-style">
+        Clases: alert, alert-success, alert-icon, alert-content, alert-title,
+        alert-message
+      </div>
+    </div>
+
+    <div class="component-item">
+      <span class="component-label">Alerta de Advertencia</span>
+      <div class="alert alert-warning">
+        <div class="alert-icon">!</div>
+        <div class="alert-content">
+          <div class="alert-title">Advertencia</div>
+          <div class="alert-message">
+            Tenga cuidado al realizar esta acción.
+          </div>
+        </div>
+      </div>
+      <div class="temp-style">
+        Clases: alert, alert-warning, alert-icon, alert-content, alert-title,
+        alert-message
+      </div>
+    </div>
+
+    <div class="component-item">
+      <span class="component-label">Alerta de Error</span>
+      <div class="alert alert-error">
+        <div class="alert-icon">×</div>
+        <div class="alert-content">
+          <div class="alert-title">Error</div>
+          <div class="alert-message">
+            Ha ocurrido un error al procesar su solicitud.
+          </div>
+        </div>
+        <button class="alert-close">×</button>
+      </div>
+      <div class="temp-style">
+        Clases: alert, alert-error, alert-icon, alert-content, alert-title,
+        alert-message, alert-close
+      </div>
+    </div>
+
+    <div class="component-item">
+      <span class="component-label">Toast / Notificación</span>
+      <div class="toast toast-success">
+        <div class="toast-icon">✓</div>
+        <div class="toast-content">Archivo guardado correctamente</div>
+        <button class="toast-close">×</button>
+      </div>
+      <div class="temp-style">
+        Clases: toast, toast-success, toast-icon, toast-content, toast-close
+      </div>
+    </div>
+  </section>
+
+  <!-- NAVIGATION -->
+  <section class="component-section">
+    <h2 class="component-title">Navegación</h2>
+
+    <div class="component-item">
+      <span class="component-label">Barra de Navegación</span>
+      <nav class="navbar">
+        <div class="navbar-brand">
+          <a href="#" class="navbar-logo">Logo</a>
+        </div>
+        <ul class="navbar-menu">
+          <li class="navbar-item">
+            <a href="#" class="navbar-link navbar-link-active">Inicio</a>
+          </li>
+          <li class="navbar-item">
+            <a href="#" class="navbar-link">Productos</a>
+          </li>
+          <li class="navbar-item">
+            <a href="#" class="navbar-link">Servicios</a>
+          </li>
+          <li class="navbar-item">
+            <a href="#" class="navbar-link">Contacto</a>
+          </li>
+        </ul>
+        <div class="navbar-actions">
+          <button class="button button-outline button-sm">Login</button>
+        </div>
+      </nav>
+      <div class="temp-style">
+        Clases: navbar, navbar-brand, navbar-logo, navbar-menu, navbar-item,
+        navbar-link, navbar-link-active, navbar-actions
+      </div>
+    </div>
+
+    <div class="component-item">
+      <span class="component-label">Tabs / Pestañas</span>
+      <div class="tabs">
+        <div class="tabs-header">
+          <button class="tab-button tab-active">Pestaña 1</button>
+          <button class="tab-button">Pestaña 2</button>
+          <button class="tab-button">Pestaña 3</button>
+        </div>
+        <div class="tab-content">Contenido de la pestaña 1</div>
+      </div>
+      <div class="temp-style">
+        Clases: tabs, tabs-header, tab-button, tab-active, tab-content
+      </div>
+    </div>
+
+    <div class="component-item">
+      <span class="component-label">Paginación</span>
+      <div class="pagination">
+        <button class="pagination-item pagination-prev" disabled>«</button>
+        <button class="pagination-item pagination-active">1</button>
+        <button class="pagination-item">2</button>
+        <button class="pagination-item">3</button>
+        <span class="pagination-ellipsis">...</span>
+        <button class="pagination-item">10</button>
+        <button class="pagination-item pagination-next">»</button>
+      </div>
+      <div class="temp-style">
+        Clases: pagination, pagination-item, pagination-prev, pagination-next,
+        pagination-active, pagination-ellipsis
+      </div>
+    </div>
+
+    <div class="component-item">
+      <span class="component-label">Breadcrumbs</span>
+      <div class="breadcrumbs">
+        <a href="#" class="breadcrumb-item">Inicio</a>
+        <span class="breadcrumb-separator">/</span>
+        <a href="#" class="breadcrumb-item">Categoría</a>
+        <span class="breadcrumb-separator">/</span>
+        <span class="breadcrumb-item breadcrumb-active">Producto</span>
+      </div>
+      <div class="temp-style">
+        Clases: breadcrumbs, breadcrumb-item, breadcrumb-separator,
+        breadcrumb-active
+      </div>
+    </div>
+  </section>
+
+  <!-- MOBILE COMPONENTS -->
+  <section class="component-section">
+    <h2 class="component-title">Componentes Móviles</h2>
+
+    <div class="component-item">
+      <span class="component-label">Barra Inferior de Navegación</span>
+      <div class="nav-bottom">
+        <a href="#" class="nav-bottom-item nav-bottom-active">
+          <div class="nav-bottom-icon">🏠</div>
+          <div class="nav-bottom-label">Inicio</div>
+        </a>
+        <a href="#" class="nav-bottom-item">
+          <div class="nav-bottom-icon">🔍</div>
+          <div class="nav-bottom-label">Buscar</div>
+        </a>
+        <a href="#" class="nav-bottom-item">
+          <div class="nav-bottom-icon">❤️</div>
+          <div class="nav-bottom-label">Favoritos</div>
+        </a>
+        <a href="#" class="nav-bottom-item">
+          <div class="nav-bottom-icon">👤</div>
+          <div class="nav-bottom-label">Perfil</div>
+        </a>
+      </div>
+      <div class="temp-style">
+        Clases: nav-bottom, nav-bottom-item, nav-bottom-active, nav-bottom-icon,
+        nav-bottom-label
+      </div>
+    </div>
+
+    <div class="component-item">
+      <span class="component-label">Lista de Elementos (Mobile)</span>
+      <div class="list-group">
+        <a href="#" class="list-item">
+          <div class="list-item-icon">📱</div>
+          <div class="list-item-content">
+            <div class="list-item-title">Título del elemento</div>
+            <div class="list-item-subtitle">Descripción o subtítulo</div>
+          </div>
+          <div class="list-item-action">›</div>
+        </a>
+        <a href="#" class="list-item">
+          <div class="list-item-icon">📌</div>
+          <div class="list-item-content">
+            <div class="list-item-title">Otro elemento</div>
+            <div class="list-item-subtitle">Otra descripción</div>
+          </div>
+          <div class="list-item-action">›</div>
+        </a>
+      </div>
+      <div class="temp-style">
+        Clases: list-group, list-item, list-item-icon, list-item-content,
+        list-item-title, list-item-subtitle, list-item-action
+      </div>
+    </div>
+
+    <div class="component-item">
+      <span class="component-label">Swipe Card</span>
+      <div class="swipe-card">
+        <div class="swipe-card-img">
+          <img src="/api/placeholder/300/200" alt="Swipe Card" />
+        </div>
+        <div class="swipe-card-content">
+          <h3 class="swipe-card-title">Título de la tarjeta</h3>
+          <p class="swipe-card-text">
+            Contenido de la tarjeta que se puede deslizar.
+          </p>
+        </div>
+        <div class="swipe-card-actions">
+          <button class="swipe-action swipe-action-left">✕</button>
+          <button class="swipe-action swipe-action-right">✓</button>
+        </div>
+      </div>
+      <div class="temp-style">
+        Clases: swipe-card, swipe-card-img, swipe-card-content,
+        swipe-card-title, swipe-card-text, swipe-card-actions, swipe-action,
+        swipe-action-left, swipe-action-right
+      </div>
+    </div>
+  </section>
+
+  <!-- MISC COMPONENTS -->
+  <section class="component-section">
+    <h2 class="component-title">Componentes Adicionales</h2>
+
+    <div class="component-item">
+      <span class="component-label">Badge / Etiqueta</span>
+      <span class="badge badge-primary">Nuevo</span>
+      <span class="badge badge-secondary">42</span>
+      <span class="badge badge-success">Completado</span>
+      <span class="badge badge-warning">Pendiente</span>
+      <span class="badge badge-error">Error</span>
+      <div class="temp-style">
+        Clases: badge, badge-primary, badge-secondary, badge-success,
+        badge-warning, badge-error
+      </div>
+    </div>
+
+    <div class="component-item">
+      <span class="component-label">Avatar</span>
+      <div class="avatar avatar-sm">
+        <img src="/api/placeholder/32/32" alt="Avatar pequeño" />
+      </div>
+      <div class="avatar">
+        <img src="/api/placeholder/48/48" alt="Avatar mediano" />
+      </div>
+      <div class="avatar avatar-lg">
+        <img src="/api/placeholder/64/64" alt="Avatar grande" />
+      </div>
+      <div class="avatar avatar-initials">JD</div>
+      <div class="temp-style">
+        Clases: avatar, avatar-sm, avatar-lg, avatar-initials
+      </div>
+    </div>
+
+    <div class="component-item">
+      <span class="component-label">Progreso</span>
+      <div class="progress">
+        <div class="progress-bar" style="width: 75%"></div>
+      </div>
+      <div class="progress progress-small">
+        <div
+          class="progress-bar progress-bar-success"
+          style="width: 100%"
+        ></div>
+      </div>
+      <div class="temp-style">
+        Clases: progress, progress-bar, progress-small, progress-bar-success
+      </div>
+    </div>
+
+    <div class="component-item">
+      <span class="component-label">Spinner / Cargando</span>
+      <div class="spinner spinner-border"></div>
+      <div class="spinner spinner-dots"></div>
+      <div class="spinner spinner-pulse"></div>
+      <div class="temp-style">
+        Clases: spinner, spinner-border, spinner-dots, spinner-pulse
+      </div>
+    </div>
+
+    <div class="component-item">
+      <span class="component-label">Modal</span>
+      <div class="modal">
+        <div class="modal-dialog">
+          <div class="modal-header">
+            <h3 class="modal-title">Título del Modal</h3>
+            <button class="modal-close">×</button>
+          </div>
+          <div class="modal-body">
+            <p>
+              Este es el contenido del modal. Aquí puedes incluir formularios,
+              texto, imágenes u otros elementos.
+            </p>
+          </div>
+          <div class="modal-footer">
+            <button class="button button-text">Cancelar</button>
+            <button class="button button-primary">Aceptar</button>
+          </div>
+        </div>
+      </div>
+      <div class="temp-style">
+        Clases: modal, modal-dialog, modal-header, modal-title, modal-close,
+        modal-body, modal-footer
+      </div>
+    </div>
+
+    <div class="component-item">
+      <span class="component-label">Accordion / Collapse</span>
+      <div class="accordion">
+        <div class="accordion-item">
+          <div class="accordion-header">
+            <button class="accordion-button">Sección 1</button>
+          </div>
+          <div class="accordion-content">
+            <div class="accordion-body">
+              Contenido de la sección 1. Puede contener cualquier tipo de
+              elementos HTML.
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <div class="accordion-header">
+            <button class="accordion-button">Sección 2</button>
+          </div>
+          <div class="accordion-content">
+            <div class="accordion-body">
+              Contenido de la sección 2. Puede contener cualquier tipo de
+              elementos HTML.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="temp-style">
+        Clases: accordion, accordion-item, accordion-header, accordion-button,
+        accordion-content, accordion-body
+      </div>
+    </div>
+  </section>
+</div>
