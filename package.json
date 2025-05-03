@@ -21,6 +21,7 @@
     "@capacitor/cli": "^7.2.0",
     "@capacitor/core": "^7.2.0",
     "@tailwindcss/postcss": "^4.1.5",
+    "lucide-angular": "^0.507.0",
     "postcss": "^8.5.3",
     "rxjs": "~7.8.0",
     "tailwindcss": "^4.1.5",
