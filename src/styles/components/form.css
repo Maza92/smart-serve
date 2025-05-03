@@ -1,0 +1,67 @@
+.form-group {
+  @apply flex flex-col gap-1;
+}
+
+.form-label {
+  @apply text-sm box-border px-2;
+}
+
+.form-input {
+  @apply border-2 border-background rounded-xl font-light bg-background p-2 text-on-background focus:outline-none focus:placeholder:opacity-70 placeholder:text-on-surface placeholder:font-light;
+}
+
+.form-input-error {
+  @apply border-error-container bg-error text-on-error placeholder:text-on-error;
+}
+
+.form-error-message {
+  @apply text-sm text-on-error;
+}
+
+.form-input-success {
+  @apply border-tertiary-fixed-dim bg-tertiary-fixed text-on-tertiary-fixed-variant placeholder:text-on-tertiary-fixed-variant;
+}
+
+.form-success-message {
+  @apply text-sm text-on-tertiary-fixed-variant;
+}
+
+.form-group-icon {
+  @apply flex items-center justify-center gap-2 relative w-full;
+}
+
+.form-group-icon .form-input {
+  @apply box-border pl-10 z-0 w-full;
+}
+
+.form-group-icon .icon {
+  @apply absolute z-10 left-2 top-1/2 -translate-y-1/2 text-on-background;
+}
+
+.form-group:has(.form-select) {
+  @apply relative border-2 border-transparent rounded-xl p-2 pt-1 pb-4 cursor-pointer;
+}
+
+.form-group:has(.form-select) .form-label {
+  @apply font-medium text-background mb-2 text-lg;
+}
+
+.form-group:has(.form-select) .form-select {
+  @apply absolute appearance-none inset-0 w-full h-full cursor-pointer focus:outline-none text-primary-key px-4 pt-6;
+}
+
+.form-group:has(.form-select) .icon {
+  @apply absolute right-2 top-1/2 -translate-y-1/2  pointer-events-none;
+}
+
+.form-check {
+  @apply flex items-center gap-2 border-2 border-transparent p-2 rounded-xl cursor-pointer;
+}
+
+.form-check:has(.form-checkbox) .form-label {
+  @apply p-0;
+}
+
+.form-checkbox {
+  @apply appearance-none h-6 w-6 border-2 border-on-surface-variant rounded-lg cursor-pointer focus:ring-0 checked:bg-primary-key;
+}

@@ -16,19 +16,3 @@
 .temp-style {
   @apply opacity-50 text-xs italic mt-1;
 }
-
-.icon {
-  @apply text-lg inline-flex p-1;
-}
-
-.icon-primary {
-  @apply p-4 bg-primary-key text-on-background rounded-2xl;
-}
-
-.icon-secondary {
-  @apply p-4 bg-on-surface text-primary-key rounded-2xl;
-}
-
-.icon-group {
-  @apply items-center gap-2;
-}

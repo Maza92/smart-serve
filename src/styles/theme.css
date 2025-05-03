@@ -1,10 +1,20 @@
 @theme {
+  --font-family-primary: "Lexend", sans-serif;
+  --font-family-secondary: "Poppins", sans-serif;
+
+  --font-weight-thin: 100;
+  --font-weight-light: 300;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
   --color-primary-key: #c67c4e;
   --color-secondary-key: #90705e;
   --color-tertiary-key: #7b7949;
   --color-neutral-key: #81746e;
   --color-neutral-variant-key: #85746b;
-  --color-background: #1a120d;
+  --color-background: #2a2a2a;
   --color-on-background: #ffffff;
   --color-surface: #1a120d;
   --color-surface-dim: #1a120d;
@@ -14,7 +24,7 @@
   --color-surface-container: #271e19;
   --color-surface-container-high: #312823;
   --color-surface-container-highest: #3d332d;
-  --color-on-surface: #f0dfd7;
+  --color-on-surface: #a2a2a2;
   --color-surface-variant: #52443c;
   --color-on-surface-variant: #d7c2b8;
   --color-inverse-surface: #f0dfd7;
