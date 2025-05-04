@@ -256,9 +256,12 @@
 
     <div class="component-item">
       <span class="component-label">Tarjeta Básica</span>
-      <div class="card">
-        <div class="card-body">
+      <div class="card bg-outline">
+        <div class="card-head">
           <h3 class="card-title">Título de la tarjeta</h3>
+        </div>
+        <div class="card-body">
+          <div class="card-pin bg-red-500">NEW</div>
           <p class="card-text">
             Este es un ejemplo de contenido para una tarjeta básica. Puede
             contener texto, imágenes y otros elementos.
@@ -272,9 +275,12 @@
 
     <div class="component-item">
       <span class="component-label">Tarjeta con Imagen</span>
-      <div class="card">
+      <div class="card bg-outline">
         <div class="card-img-top">
-          <img src="/api/placeholder/300/150" alt="Imagen de tarjeta" />
+          <img
+            src="https://imgs.search.brave.com/oxE4qAaw15JWlsXSZD_VRjnUfIcP55COewvrmy6iWrQ/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pMC53/cC5jb20vcGljanVt/Ym8uY29tL3dwLWNv/bnRlbnQvdXBsb2Fk/cy9wdXJlLW5hdHVy/ZS1sYW5kc2NhcGUt/c2luZ2xlLXRyZWUt/aW4tZ3JlZW4tZmll/bGQtZnJlZS1waG90/by5qcGc_dz02MDAm/cXVhbGl0eT04MA"
+            alt="Imagen de tarjeta"
+          />
         </div>
         <div class="card-body">
           <h3 class="card-title">Título de la tarjeta</h3>
@@ -288,7 +294,7 @@
 
     <div class="component-item">
       <span class="component-label">Tarjeta con Encabezado y Pie</span>
-      <div class="card">
+      <div class="card bg-outline">
         <div class="card-header">Encabezado de tarjeta</div>
         <div class="card-body">
           <h3 class="card-title">Título de la tarjeta</h3>
@@ -297,7 +303,7 @@
           </p>
         </div>
         <div class="card-footer">
-          <button class="button button-text button-sm">Cancelar</button>
+          <button class="button button-outline button-sm">Cancelar</button>
           <button class="button button-primary button-sm">Aceptar</button>
         </div>
       </div>
