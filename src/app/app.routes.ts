@@ -7,7 +7,26 @@ export const routes: Routes = [
     component: ComponentsComponent,
   },
   {
+    path: 'starter',
+    loadComponent: () =>
+      import('./pages/starter/starter.page').then((m) => m.StarterComponent),
+  },
+  {
     path: 'home',
+    loadComponent: () =>
+      import(
+        './layout/navigation-bar-layout/navigation-bar-layout.component'
+      ).then((m) => m.NavigationBarLayoutComponent),
+    children: [
+      {
+        path: '',
+        loadComponent: () =>
+          import('./pages/home/home.component').then((m) => m.HomeComponent),
+      },
+    ],
+  },
+  {
+    path: 'home/nobar',
     loadComponent: () =>
       import('./pages/home/home.component').then((m) => m.HomeComponent),
   },
