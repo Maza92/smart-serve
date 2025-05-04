@@ -1,16 +1,57 @@
-<div
-  class="w-full h-screen bg-cover bg-center text-on-background flex flex-col items-center justify-end box-border p-10 gap-8 text-center"
-  style="background-image: url('bg.png')"
->
-  <h1 class="text-5xl font-bold">Orden, Control y Resultados</h1>
-  <p class="text-lg text-neutral-key">
-    Gestiona ventas, productos y reportes con facilidad y estilo.
-  </p>
-
-  <button
-    routerLink="/auth/login"
-    class="button button-primary button-lg w-full"
+<section class="p-0 h-full w-full bg-outline flex flex-col">
+  <header class="flex flex-col gap-4 p-6">
+    <div class="flex flex-col gap-3 text-background">
+      <h1 class="text-5xl font-medium -translate-x-[2px]">Bienvenido</h1>
+      <p class="text-xl">Hola, Mazapan</p>
+    </div>
+    <nav class="grid grid-cols-2 gap-4">
+      <article
+        *ngFor="let button of sections; let i = index"
+        [ngClass]="`bg-${button.background} text-${button.color}`"
+        class="p-6 box-border rounded-3xl flex flex-col gap-4 justify-center items-start hover:opacity-75 transition-all duration-300 cursor-pointer"
+      >
+        <lucide-icon
+          [name]="button.icon"
+          strokeWidth="3"
+          size="36"
+        ></lucide-icon>
+        <h3 class="text-xl font-medium">{{ button.text }}</h3>
+      </article>
+    </nav>
+  </header>
+  <footer
+    class="bg-white rounded-t-2xl flex-1 flex flex-col text-inverse-on-surface overflow-hidden"
   >
-    Ir al Panel
-  </button>
-</div>
+    <button
+      class="w-full bg-transparent flex justify-center items-center"
+      aria-label="Expandir notificaciones"
+    >
+      <lucide-icon name="minus" strokeWidth="3" size="36"></lucide-icon>
+    </button>
+    <section class="px-6 py-4 flex flex-col flex-1 overflow-hidden">
+      <h2 class="text-xl mb-4">Notificaciones</h2>
+      <ul class="overflow-y-auto flex-1 rounded-2xl">
+        <li
+          class="alert alert-info"
+          *ngFor="let i of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]"
+          [ngClass]="`alert-${['info', 'success', 'warning', 'error'][i % 4]}`"
+        >
+          <article class="alert-content">
+            <span>
+              <lucide-icon
+                class="alert-icon"
+                name="bell"
+                strokeWidth="3"
+                size="20"
+              ></lucide-icon>
+            </span>
+            <time class="alert-title"> 10:00 AM </time>
+            <p class="alert-message">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit.
+            </p>
+          </article>
+        </li>
+      </ul>
+    </section>
+  </footer>
+</section>
