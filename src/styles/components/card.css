@@ -1,0 +1,31 @@
+.card {
+  @apply rounded-xl h-max p-6 flex flex-col gap-2;
+}
+
+.card .card-head {
+  @apply text-background flex flex-col gap-2;
+}
+
+.card .card-body {
+  @apply flex flex-col gap-2;
+}
+
+.card .card-footer {
+  @apply flex flex-row gap-2;
+}
+
+.card .card-text {
+  @apply font-light text-sm;
+}
+
+.card .card-title {
+  @apply text-xl font-bold;
+}
+
+.card .card-pin {
+  @apply px-4 py-1 rounded-lg w-max text-on-background font-light;
+}
+
+.card-img-top {
+  @apply w-full h-40 overflow-hidden flex items-center justify-center rounded-lg;
+}
