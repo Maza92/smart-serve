@@ -1,5 +1,5 @@
 .card {
-  @apply rounded-xl h-max p-6 flex flex-col gap-2;
+  @apply rounded-xl p-6 flex flex-col justify-center gap-2;
 }
 
 .card .card-head {

@@ -1,0 +1,70 @@
+.alert,
+.toast {
+  @apply p-4 mb-4 text-sm rounded-2xl flex flex-col gap-2 items-center relative;
+}
+
+.alert-info,
+.toast-info {
+  @apply bg-primary-fixed-dim text-on-primary-fixed;
+}
+
+.alert-success,
+.toast-success {
+  @apply bg-tertiary text-on-tertiary;
+}
+
+.alert-warning,
+.toast-warning {
+  @apply bg-error text-on-error;
+}
+
+.alert-error,
+.toast-error {
+  @apply bg-error-container text-on-error-container;
+}
+
+.alert-icon,
+.toast-icon {
+  @apply text-2xl;
+}
+
+.alert-content,
+.toast-content {
+  @apply text-sm flex flex-col gap-3 items-center justify-center text-center;
+}
+
+.alert-title {
+  @apply font-semibold text-lg;
+}
+
+.alert-message {
+  @apply text-sm;
+}
+
+.alert-close {
+  @apply absolute top-1 right-1 p-2 z-50 bg-on-error text-error hover:opacity-50 rounded-full transition-opacity;
+}
+
+.toast-actions {
+  @apply flex flex-row justify-center gap-4 mt-2 w-full;
+}
+
+.toast-button {
+  @apply px-6 py-2 rounded-lg hover:opacity-75 transition-opacity;
+}
+
+.toast-info .toast-button {
+  @apply bg-on-primary-fixed-variant text-primary-fixed-dim;
+}
+
+.toast-success .toast-button {
+  @apply bg-on-tertiary-fixed-variant text-tertiary-fixed-dim;
+}
+
+.toast-warning .toast-button {
+  @apply bg-on-error text-error;
+}
+
+.toast-error .toast-button {
+  @apply bg-on-error-container text-error-container;
+}
