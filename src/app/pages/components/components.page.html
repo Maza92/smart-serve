@@ -339,8 +339,8 @@
 
     <div class="component-item">
       <span class="component-label">Alerta de Información</span>
-      <div class="alert alert-info">
-        <div class="alert-icon">i</div>
+      <div class="alert alert-info w-60">
+        <lucide-icon class="alert-icon" name="info"></lucide-icon>
         <div class="alert-content">
           <div class="alert-title">Información</div>
           <div class="alert-message">
@@ -356,8 +356,8 @@
 
     <div class="component-item">
       <span class="component-label">Alerta de Éxito</span>
-      <div class="alert alert-success">
-        <div class="alert-icon">✓</div>
+      <div class="alert alert-success w-60">
+        <lucide-icon class="alert-icon" name="check"></lucide-icon>
         <div class="alert-content">
           <div class="alert-title">¡Éxito!</div>
           <div class="alert-message">
@@ -373,8 +373,8 @@
 
     <div class="component-item">
       <span class="component-label">Alerta de Advertencia</span>
-      <div class="alert alert-warning">
-        <div class="alert-icon">!</div>
+      <div class="alert alert-warning w-60">
+        <lucide-icon class="alert-icon" name="triangle-alert"></lucide-icon>
         <div class="alert-content">
           <div class="alert-title">Advertencia</div>
           <div class="alert-message">
@@ -390,15 +390,15 @@
 
     <div class="component-item">
       <span class="component-label">Alerta de Error</span>
-      <div class="alert alert-error">
-        <div class="alert-icon">×</div>
+      <div class="alert alert-error w-60">
+        <lucide-icon class="alert-icon" name="cloud-alert"></lucide-icon>
         <div class="alert-content">
           <div class="alert-title">Error</div>
           <div class="alert-message">
             Ha ocurrido un error al procesar su solicitud.
           </div>
         </div>
-        <button class="alert-close">×</button>
+        <lucide-icon class="alert-close" name="x" size="16"></lucide-icon>
       </div>
       <div class="temp-style">
         Clases: alert, alert-error, alert-icon, alert-content, alert-title,
@@ -408,10 +408,17 @@
 
     <div class="component-item">
       <span class="component-label">Toast / Notificación</span>
-      <div class="toast toast-success">
-        <div class="toast-icon">✓</div>
+      <div class="toast toast-success w-60">
+        <lucide-icon class="toast-icon" name="check" size="16"></lucide-icon>
         <div class="toast-content">Archivo guardado correctamente</div>
-        <button class="toast-close">×</button>
+        <div class="toast-actions">
+          <lucide-icon class="toast-button" name="x" size="16"></lucide-icon>
+          <lucide-icon
+            class="toast-button"
+            name="clock"
+            size="16"
+          ></lucide-icon>
+        </div>
       </div>
       <div class="temp-style">
         Clases: toast, toast-success, toast-icon, toast-content, toast-close
