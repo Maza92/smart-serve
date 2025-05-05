@@ -34,7 +34,7 @@ export const NAV_ITEMS: NavItem[] = [
   {
     name: 'Clientes',
     icon: 'users',
-    path: '/clientes',
+    path: '/starter',
     exclusions: [],
   },
   {

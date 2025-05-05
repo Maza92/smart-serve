@@ -44,11 +44,25 @@
       <lucide-icon name="minus" strokeWidth="3" size="36"></lucide-icon>
     </button>
     <section class="px-6 py-4 flex flex-col flex-1 overflow-hidden">
-      <h2 class="text-xl mb-4">Notificaciones</h2>
-      <ul class="overflow-y-auto flex-1 rounded-2xl">
+      <div class="flex justify-between mb-4">
+        <h2 class="text-xl">Notificaciones</h2>
+        <div class="bg-outline p-2 rounded-full relative">
+          <lucide-icon name="bell" strokeWidth="3" size="14"></lucide-icon>
+          <span
+            class="absolute -top-2 -right-2 bg-primary text-background text-xs rounded-full min-w-[20px] h-[20px] flex items-center justify-center"
+          >
+            {{ notificationTest.length }}
+          </span>
+        </div>
+      </div>
+      <ul
+        class="overflow-y-auto flex-1 rounded-2xl snap-y snap-mandatory scroll-smooth"
+        role="list"
+        aria-live="polite"
+      >
         <li
-          class="alert alert-info"
-          *ngFor="let i of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]"
+          class="snap-start alert alert-info h-full"
+          *ngFor="let i of notificationTest"
           [ngClass]="`alert-${['info', 'success', 'warning', 'error'][i % 4]}`"
         >
           <article class="alert-content">

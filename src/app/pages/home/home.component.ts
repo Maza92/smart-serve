@@ -12,6 +12,8 @@ import { NavigationService } from '../../core/service/navigation.service';
 })
 export class HomeComponent implements OnInit {
   private path: string | null = null;
+
+  public notificationTest = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   constructor(private navigationService: NavigationService) {}
 
   ngOnInit(): void {
