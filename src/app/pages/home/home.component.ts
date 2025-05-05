@@ -25,31 +25,4 @@ export class HomeComponent implements OnInit {
 
     this.navigationService.updateNavVisibility(this.path);
   }
-
-  sections: any = [
-    {
-      icon: 'square-check',
-      text: 'Inventario',
-      background: 'primary',
-      color: 'background',
-    },
-    {
-      icon: 'dollar-sign',
-      text: 'Caja',
-      background: 'background',
-      color: 'primary',
-    },
-    {
-      icon: 'chart-no-axes-column-increasing',
-      text: 'Reportes',
-      background: 'background',
-      color: 'primary',
-    },
-    {
-      icon: 'settings',
-      text: 'Ajustes',
-      background: 'primary',
-      color: 'background',
-    },
-  ];
 }

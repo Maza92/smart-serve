@@ -4,18 +4,33 @@
       <h1 class="text-5xl font-medium -translate-x-[2px]">Bienvenido</h1>
       <p class="text-xl">Hola, Mazapan</p>
     </div>
-    <nav class="grid grid-cols-2 gap-4">
-      <article
-        *ngFor="let button of sections; let i = index"
-        class="p-6 box-border rounded-3xl flex flex-col gap-4 justify-center items-start hover:opacity-75 transition-all duration-300 cursor-pointer"
-        [class]="'bg-' + button.background + ' text-' + button.color"
-      >
+    <nav
+      class="grid grid-cols-2 gap-4 [&>article]:p-6 [&>article]:box-border [&>article]:rounded-3xl [&>article]:flex [&>article]:flex-col [&>article]:gap-4 [&>article]:justify-center [&>article]:items-start [&>article]:hover:opacity-75 [&>article]:transition-all [&>article]:duration-300 [&>article]:cursor-pointer [&>article>h3]:text-xl [&>article>h3]:font-medium"
+    >
+      <article class="bg-primary text-background">
         <lucide-icon
-          [name]="button.icon"
+          name="square-check"
           strokeWidth="3"
           size="36"
         ></lucide-icon>
-        <h3 class="text-xl font-medium">{{ button.text }}</h3>
+        <h3 class="text-xl font-medium">Inventario</h3>
+      </article>
+      <article class="bg-background text-primary">
+        <lucide-icon name="dollar-sign" strokeWidth="3" size="36"></lucide-icon>
+        <h3 class="text-xl font-medium">Caja</h3>
+      </article>
+
+      <article class="bg-background text-primary">
+        <lucide-icon
+          name="chart-no-axes-column-increasing"
+          strokeWidth="3"
+          size="36"
+        ></lucide-icon>
+        <h3 class="text-xl font-medium">Reportes</h3>
+      </article>
+      <article class="bg-primary text-background">
+        <lucide-icon name="settings" strokeWidth="3" size="36"></lucide-icon>
+        <h3 class="text-xl font-medium">Ajustes</h3>
       </article>
     </nav>
   </header>
