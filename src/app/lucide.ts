@@ -1,6 +1,7 @@
 import {
   AlertTriangle,
   ArrowLeftFromLine,
+  BarChart2,
   Bell,
   ChartNoAxesColumnIncreasing,
   Check,
@@ -19,6 +20,8 @@ import {
   Settings,
   SquareCheck,
   TriangleAlert,
+  Truck,
+  Users,
   X,
 } from 'lucide-angular';
 
@@ -43,4 +46,7 @@ export const lucideIcons = {
   Bell,
   Package,
   Contact,
+  BarChart2,
+  Users,
+  Truck,
 };
