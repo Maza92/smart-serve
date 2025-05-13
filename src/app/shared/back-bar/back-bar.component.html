@@ -1,0 +1,16 @@
+<div class="flex w-full items-center p-2" [class]="textColor">
+  <button (click)="goBack()" class="flex-none icon">
+    <lucide-icon
+      name="chevron-left"
+      size="32"
+      [strokeWidth]="1.5"
+    ></lucide-icon>
+  </button>
+  <h1 class="flex-1 text-center font-medium text-lg">
+    {{ title }}
+  </h1>
+  <div class="flex-none" *ngIf="hasAction()">
+    <ng-container *ngTemplateOutlet="actionTemplate"></ng-container>
+  </div>
+  <div class="flex-none invisible w-8" *ngIf="!hasAction()"></div>
+</div>

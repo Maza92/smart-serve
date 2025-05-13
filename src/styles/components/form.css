@@ -25,9 +25,12 @@
 .form-success-message {
   @apply text-sm text-on-tertiary-fixed-variant;
 }
-
 .form-group-icon {
   @apply flex items-center justify-center gap-2 relative w-full;
+}
+
+.form-group-icon:has(.form-input-error) .icon {
+  @apply text-on-error;
 }
 
 .form-group-icon .form-input {
@@ -35,7 +38,7 @@
 }
 
 .form-group-icon .icon {
-  @apply absolute z-10 left-2 top-1/2 -translate-y-1/2 text-on-background;
+  @apply absolute z-10 left-2 top-1/2 -translate-y-1/2;
 }
 
 .form-group:has(.form-select) {

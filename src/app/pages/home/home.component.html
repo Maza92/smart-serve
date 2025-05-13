@@ -2,7 +2,7 @@
   <header class="flex flex-col gap-4 p-6">
     <div class="flex flex-col gap-3 text-background">
       <h1 class="text-5xl font-medium -translate-x-[2px]">Bienvenido</h1>
-      <p class="text-xl">Hola, Mazapan</p>
+      <p class="text-xl">Hola, {{ username }}</p>
     </div>
     <nav
       class="grid grid-cols-2 gap-4 [&>article]:p-6 [&>article]:box-border [&>article]:rounded-3xl [&>article]:flex [&>article]:flex-col [&>article]:gap-4 [&>article]:justify-center [&>article]:items-start [&>article]:hover:opacity-75 [&>article]:transition-all [&>article]:duration-300 [&>article]:cursor-pointer [&>article>h3]:text-xl [&>article>h3]:font-medium"
@@ -28,7 +28,7 @@
         ></lucide-icon>
         <h3 class="text-xl font-medium">Reportes</h3>
       </article>
-      <article class="bg-primary text-background">
+      <article class="bg-primary text-background" routerLink="/settings">
         <lucide-icon name="settings" strokeWidth="3" size="36"></lucide-icon>
         <h3 class="text-xl font-medium">Ajustes</h3>
       </article>
@@ -37,12 +37,6 @@
   <footer
     class="bg-white rounded-t-2xl flex-1 flex flex-col text-inverse-on-surface overflow-hidden"
   >
-    <button
-      class="w-full bg-transparent flex justify-center items-center"
-      aria-label="Expandir notificaciones"
-    >
-      <lucide-icon name="minus" strokeWidth="3" size="36"></lucide-icon>
-    </button>
     <section class="px-6 py-4 flex flex-col flex-1 overflow-hidden">
       <div class="flex justify-between mb-4">
         <h2 class="text-xl">Notificaciones</h2>

@@ -14,23 +14,74 @@
       </div>
     </div>
 
-    <form class="mt-18 py-12 flex flex-col h-full justify-end gap-6">
-      <div class="form-group-icon">
-        <lucide-icon class="icon" name="mail"></lucide-icon>
-        <input
-          type="text"
-          class="form-input w-full h-16"
-          placeholder="Correo electrónico"
-        />
+    <form
+      [formGroup]="loginForm"
+      class="mt-18 py-12 flex flex-col h-full justify-end gap-6"
+    >
+      <div>
+        <div class="form-group-icon">
+          <lucide-icon
+            class="icon text-on-background"
+            name="mail"
+          ></lucide-icon>
+          <input
+            formControlName="email"
+            type="text"
+            class="form-input w-full h-16"
+            placeholder="Correo electrónico"
+            [ngClass]="{
+              'form-input-error':
+                email?.invalid && (email?.touched || email?.dirty)
+            }"
+          />
+        </div>
+
+        <div
+          *ngIf="email?.invalid && (email?.touched || email?.dirty)"
+          class="form-error-message"
+        >
+          <p *ngIf="email?.errors?.['required']">
+            El correo electrónico es requerido
+          </p>
+          <p *ngIf="email?.errors?.['email']">
+            El correo electrónico no es válido
+          </p>
+        </div>
       </div>
 
-      <div class="form-group-icon">
-        <lucide-icon class="icon" name="lock"></lucide-icon>
-        <input
-          type="password"
-          class="form-input w-full h-16"
-          placeholder="Contraseña"
-        />
+      <div>
+        <div class="form-group-icon">
+          <lucide-icon
+            class="icon text-on-background"
+            name="lock"
+          ></lucide-icon>
+          <input
+            formControlName="password"
+            type="password"
+            class="form-input w-full h-16"
+            placeholder="Contraseña"
+            [ngClass]="{
+              'form-input-error':
+                password?.invalid && (password?.touched || password?.dirty)
+            }"
+          />
+        </div>
+        <div
+          *ngIf="password?.invalid && (password?.touched || password?.dirty)"
+          class="form-error-message"
+        >
+          <p *ngIf="password?.errors?.['required']">
+            La contraseña es requerida
+          </p>
+          <p *ngIf="password?.errors?.['minlength']">
+            La contraseña debe tener al menos 8 caracteres
+          </p>
+        </div>
+      </div>
+
+      <!-- Mensaje de error de la API -->
+      <div *ngIf="errorMessage" class="form-error-message text-center mb-2">
+        <p>{{ errorMessage }}</p>
       </div>
 
       <div
@@ -46,10 +97,16 @@
       </div>
 
       <button
-        [routerLink]="['/home']"
+        (click)="onSubmit()"
         class="button button-primary w-full h-16"
+        [disabled]="isLoading"
       >
-        Iniciar sesión
+        <span *ngIf="!isLoading">Iniciar sesión</span>
+        <span *ngIf="isLoading" class="flex justify-center">
+          <div
+            class="animate-spin rounded-full h-6 w-6 border-4 border-primary-key border-t-transparent"
+          ></div>
+        </span>
       </button>
     </form>
   </div>

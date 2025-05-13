@@ -1,0 +1,145 @@
+<div class="w-full h-dvh bg-outline">
+  <app-back-bar [title]="title" textColor="text-background"></app-back-bar>
+  <section>
+    <div
+      class="flex gap-2 p-6 items-center justify-center [&>button]:bg-inverse-surface [&>button]:rounded-lg [&>button]:flex [&>button]:flex-col [&>button]:items-center [&>button]:justify-center [&>button]:min-h-36 [&>button]:w-100 [&>button]:text-primary-container"
+    >
+      <button>
+        <lucide-icon name="users" strokeWidth="2" size="48"></lucide-icon>
+        <span>Usuarios</span>
+      </button>
+      <button>
+        <lucide-icon
+          name="shield-check"
+          strokeWidth="2"
+          size="48"
+        ></lucide-icon>
+        <span>Roles y permisos</span>
+      </button>
+    </div>
+    <div class="bg-orange-50 flex flex-col gap-6 w-full p-6">
+      <h2 class="font-medium text-xl">Configuración General</h2>
+
+      <div class="flex flex-col gap-4">
+        <button class="button button-action bg-on-background border w-full">
+          <lucide-icon
+            name="settings"
+            strokeWidth="2"
+            size="44"
+            class="text-primary-key"
+          ></lucide-icon>
+          <div class="flex justify-between w-full gap-1">
+            <div class="text-start">
+              <h3 class="font-medium">Mesas</h3>
+              <p class="font-light text-sm">
+                Organiza la distribución de tu local
+              </p>
+            </div>
+            <div class="flex justify-center items-center">
+              <lucide-icon
+                name="chevron-right"
+                strokeWidth="2"
+                size="24"
+              ></lucide-icon>
+            </div>
+          </div>
+        </button>
+
+        <button class="button button-action bg-on-background border w-full">
+          <lucide-icon
+            name="shield"
+            strokeWidth="2"
+            size="44"
+            class="text-primary-key"
+          ></lucide-icon>
+          <div class="flex justify-between w-full gap-1">
+            <div class="text-start">
+              <h3 class="font-medium">Seguridad</h3>
+              <p class="font-light text-sm">
+                Gestiona la seguridad de tu negocio
+              </p>
+            </div>
+            <div class="flex justify-center items-center">
+              <lucide-icon
+                name="chevron-right"
+                strokeWidth="2"
+                size="24"
+              ></lucide-icon>
+            </div>
+          </div>
+        </button>
+
+        <button class="button button-action bg-on-background border w-full">
+          <lucide-icon
+            name="package"
+            strokeWidth="2"
+            size="44"
+            class="text-primary-key"
+          ></lucide-icon>
+          <div class="flex justify-between w-full gap-1">
+            <div class="text-start">
+              <h3 class="font-medium">Inventario</h3>
+              <p class="font-light text-sm">Administra tu stock y productos</p>
+            </div>
+            <div class="flex justify-center items-center">
+              <lucide-icon
+                name="chevron-right"
+                strokeWidth="2"
+                size="24"
+              ></lucide-icon>
+            </div>
+          </div>
+        </button>
+
+        <button class="button button-action bg-on-background border w-full">
+          <lucide-icon
+            name="clipboard-list"
+            strokeWidth="2"
+            size="44"
+            class="text-primary-key"
+          ></lucide-icon>
+          <div class="flex justify-between w-full gap-1">
+            <div class="text-start">
+              <h3 class="font-medium">Pedidos</h3>
+              <p class="font-light text-sm">
+                Gestiona los pedidos de tu negocio
+              </p>
+            </div>
+            <div class="flex justify-center items-center">
+              <lucide-icon
+                name="chevron-right"
+                strokeWidth="2"
+                size="24"
+              ></lucide-icon>
+            </div>
+          </div>
+        </button>
+
+        <button
+          class="button button-action bg-on-background border w-full"
+          (click)="logout()"
+        >
+          <lucide-icon
+            name="log-out"
+            strokeWidth="2"
+            size="44"
+            class="text-primary-key"
+          ></lucide-icon>
+          <div class="flex justify-between w-full gap-1">
+            <div class="text-start">
+              <h3 class="font-medium">Cerrar Sesión</h3>
+              <p class="font-light text-sm">Salir de la aplicación</p>
+            </div>
+            <div class="flex justify-center items-center">
+              <lucide-icon
+                name="chevron-right"
+                strokeWidth="2"
+                size="24"
+              ></lucide-icon>
+            </div>
+          </div>
+        </button>
+      </div>
+    </div>
+  </section>
+</div>
