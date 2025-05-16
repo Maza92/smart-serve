@@ -28,6 +28,11 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./pages/home/home.component').then((m) => m.HomeComponent),
       },
+      {
+        path: 'pos',
+        loadComponent: () =>
+          import('./pages/pos/pos.component').then((m) => m.PosComponent),
+      },
     ],
   },
   {

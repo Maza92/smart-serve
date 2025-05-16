@@ -13,7 +13,10 @@ import { AuthInterceptor } from './core/interceptor/auth.interceptor';
 import { ModalService } from 'ngx-modal-ease';
 import { ToastService } from './lib/toast/toast.service';
 import { AlertService } from './lib/alert/alert.service';
+import { registerLocaleData } from '@angular/common';
+import localeEs from '@angular/common/locales/es';
 
+registerLocaleData(localeEs, 'es-ES');
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),

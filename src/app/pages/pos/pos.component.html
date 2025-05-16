@@ -1,0 +1,58 @@
+<section
+  class="w-full min-h-dvh bg-outline flex flex-col justify-between py-4 gap-4"
+>
+  <nav class="w-full px-4">
+    <ul
+      class="grid grid-cols-2 gap-2 [&>li]:w-full [&>li]:bg-on-surface [&>li]:min-h-[8rem] [&>li]:flex [&>li]:flex-col [&>li]:items-center [&>li]:justify-center [&>li]:rounded-2xl [&>li]:gap-2 [&>li]:cursor-pointer [&>li>a]:text-xl [&>li>a]:font-medium [&>li>i-lucide]:text-primary-container [&>li]:border [&>li]:border-gray-100"
+    >
+      <li>
+        <i-lucide name="chef-hat" strokeWidth="1.5"></i-lucide>
+        <a routerLink="/home/pos">Cocina</a>
+      </li>
+      <li>
+        <i-lucide name="salad" strokeWidth="1.5"></i-lucide>
+        <a routerLink="/home/pos">Mesas</a>
+      </li>
+      <li class="bg-primary border-primary-key">
+        <i-lucide name="banknote-arrow-up" strokeWidth="1.5"></i-lucide>
+        <a routerLink="/home/pos">Caja</a>
+      </li>
+      <li>
+        <i-lucide name="shopping-cart" strokeWidth="1.5"></i-lucide>
+        <a routerLink="/home/pos">Ventas</a>
+      </li>
+    </ul>
+  </nav>
+
+  <main
+    class="mx-4 flex-1 border px-6 py-8 rounded-2xl border-gray-300 flex flex-col items-center justify-center gap-8"
+  >
+    <div class="w-full flex flex-col justify-center items-center">
+      <h3 class="font-regular text-sm">{{ currentDate }}</h3>
+      <h1 class="font-bold text-2xl">{{ currentTime }}</h1>
+    </div>
+    <div class="flex justify-between w-full">
+      <div class="flex text-sm justify-center items-center gap-1">
+        Server:
+        <span class="flex justify-center items-center gap-1 text-green-400"
+          ><i-lucide name="circle-check-big" size="15"></i-lucide>
+          Conectado</span
+        >
+      </div>
+      <div class="flex text-sm justify-center items-center gap-1">
+        Red:
+        <span class="flex justify-center items-center gap-1 text-green-400"
+          ><i-lucide name="wifi" size="15"></i-lucide> Alta</span
+        >
+      </div>
+    </div>
+  </main>
+
+  <footer class="w-full px-4 mb-20">
+    <div
+      class="rounded-xl bg-inverse-surface h-16 flex justify-center items-center gap-1 text-primary-key"
+    >
+      Role:<strong>Admin</strong>
+    </div>
+  </footer>
+</section>
