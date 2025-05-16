@@ -12,3 +12,5 @@ body {
 @import "./styles/components/form.css";
 @import "./styles/components/card.css";
 @import "./styles/components/float.css";
+@import "./styles/components/modal.css";
+@import "./styles/components/notification.css";

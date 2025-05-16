@@ -1,0 +1,58 @@
+<div class="toast-container" [ngClass]="getPositionClass()">
+  @for (toast of toasts; track toast.id) {
+  <div
+    class="toast toast-{{ toast.config.type }}"
+    (mouseenter)="pauseToast(toast)"
+    (mouseleave)="resumeToast(toast)"
+  >
+    @if (toast.config.type === 'info') {
+    <lucide-icon class="toast-icon" name="info"></lucide-icon>
+    } @else if (toast.config.type === 'success') {
+    <lucide-icon class="toast-icon" name="check"></lucide-icon>
+    } @else if (toast.config.type === 'warning') {
+    <lucide-icon class="toast-icon" name="triangle-alert"></lucide-icon>
+    } @else if (toast.config.type === 'error') {
+    <lucide-icon class="toast-icon" name="cloud-alert"></lucide-icon>
+    }
+
+    <div class="toast-content">
+      @if (toast.config.title) {
+      <div class="toast-title">{{ toast.config.title }}</div>
+      }
+      <div class="toast-message">{{ toast.config.message }}</div>
+    </div>
+
+    @if (toast.config.showProgressBar ) {
+    <div class="toast-progress">
+      <div
+        class="toast-progress-bar"
+        [style.animation-duration.ms]="toast.config.duration"
+      ></div>
+    </div>
+    } @if (toast.config.actions && toast.config.actions.length > 0) {
+    <div class="toast-actions">
+      @for (action of toast.config.actions; track action) {
+      <button
+        class="toast-button"
+        (click)="handleAction(action.action, toast.id)"
+      >
+        @if (action.icon) {
+        <lucide-icon [name]="action.icon" size="16"></lucide-icon>
+        } @if (action.text) {
+        <span>{{ action.text }}</span>
+        }
+      </button>
+      }
+    </div>
+    } @if (toast.config.showCloseButton) {
+    <lucide-icon
+      class="toast-close"
+      name="x"
+      size="16"
+      (click)="removeToast(toast.id)"
+    >
+    </lucide-icon>
+    }
+  </div>
+  }
+</div>

@@ -8,11 +8,12 @@ import { LoginResponse } from '@core/model/auth/login-response';
 import { LoginRequest } from '@core/model/auth/login-request';
 import { RefreshTokenResponse } from '@core/model/auth/refresh-toke-response';
 import { RefreshTokenRequest } from '@core/model/auth/refresh-token-request';
+import { BaseService } from './base.service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class AuthService {
+export class AuthService extends BaseService {
   private readonly AUTH_TOKEN_KEY = 'auth_token';
   private readonly REFRESH_TOKEN_KEY = 'refresh_token';
   private readonly TOKEN_EXPIRATION_KEY = 'token_expiration';
@@ -21,7 +22,9 @@ export class AuthService {
   constructor(
     private http: HttpClient,
     private localStorageService: LocalStorageService
-  ) {}
+  ) {
+    super();
+  }
 
   login(request: LoginRequest): Observable<LoginResponse> {
     const url = buildUrl(
@@ -93,23 +96,6 @@ export class AuthService {
       }),
       catchError(this.handleError)
     );
-  }
-
-  private handleError(error: HttpErrorResponse) {
-    let apiError: ApiError;
-
-    if (error.status === 0) {
-      apiError = {
-        status: 0,
-        message: 'Connection refused',
-        timestamp: new Date().toISOString(),
-        errors: [],
-      };
-    } else {
-      apiError = error.error as ApiError;
-    }
-
-    return throwError(() => apiError);
   }
 
   clearAuthData(): void {

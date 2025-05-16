@@ -1,0 +1,128 @@
+<section class="w-full h-dvh bg-outline flex flex-col">
+  <app-back-bar [title]="'Usuarios'" textColor="text-background"></app-back-bar>
+  <div class="w-full bg-outline top-0 z-10 p-4">
+    <div class="form-group-icon mb-3">
+      <i-lucide name="search" class="icon text-gray-400" size="25"></i-lucide>
+      <input
+        type="text"
+        [(ngModel)]="searchInput"
+        (ngModelChange)="onSearchChange($event)"
+        placeholder="Buscar por nombre o email"
+        class="form-input pr-12 py-2 w-full"
+      />
+
+      <button
+        (click)="openFilterModal()"
+        class="absolute right-5 top-1/2 transform -translate-y-1/2"
+      >
+        <i-lucide
+          name="filter"
+          class="w-4 h-4"
+          [ngClass]="{
+            'text-primary': activeFilters.length > 0,
+            'text-gray-400': activeFilters.length === 0
+          }"
+        ></i-lucide>
+      </button>
+    </div>
+
+    <div class="flex gap-2 mb-2">
+      <button
+        class="button button-sm"
+        [ngClass]="{
+          'button-primary': filters.status === null,
+          'button-outline': filters.status !== null
+        }"
+        (click)="filterByStatus(null)"
+      >
+        Todos
+      </button>
+      <button
+        class="button button-sm"
+        [ngClass]="{
+          'button-primary': filters.status === 'active',
+          'button-outline': filters.status !== 'active'
+        }"
+        (click)="filterByStatus('active')"
+      >
+        Activos
+      </button>
+      <button
+        class="button button-sm"
+        [ngClass]="{
+          'button-primary': filters.status === 'inactive',
+          'button-outline': filters.status !== 'inactive'
+        }"
+        (click)="filterByStatus('inactive')"
+      >
+        Inactivos
+      </button>
+    </div>
+
+    <div class="flex flex-wrap gap-2 mt-2" *ngIf="activeFilters.length > 0">
+      <app-filter-chip
+        *ngFor="let filter of activeFilters"
+        [filter]="filter"
+        (remove)="removeFilter($event)"
+      >
+      </app-filter-chip>
+    </div>
+  </div>
+
+  <div class="flex flex-col gap-4 flex-grow p-4 overflow-auto">
+    <div *ngIf="error" class="bg-red-100 text-red-700 p-3 rounded-lg mb-4">
+      {{ error }}
+    </div>
+
+    <div class="grid grid-cols-2 gap-4">
+      <div
+        class="overflow-hidden transition-shadow bg-white rounded-lg shadow-sm hover:shadow-md"
+        *ngFor="let user of data"
+        [routerLink]="['/settings/users', user.id]"
+      >
+        <div class="relative w-full pt-[60%]">
+          <img
+            [src]="user.profileImagePath || '/assets/placeholder-user.svg'"
+            [alt]="'Foto de ' + user.firstName"
+            class="absolute inset-0 object-cover w-full h-full"
+          />
+        </div>
+        <div class="p-3">
+          <h2 class="font-medium text-gray-900 truncate">
+            {{ user.firstName }} {{ user.lastName }}
+          </h2>
+          <p class="text-sm text-gray-600 truncate">{{ user.roleName }}</p>
+          <p
+            class="mt-1 text-xs"
+            [ngClass]="{
+              'text-tertiary-container': user.active,
+              'text-error-container': !user.active
+            }"
+          >
+            {{ user.active ? "Activo" : "Inactivo" }}
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="loading" class="flex justify-center my-4">
+      <div
+        class="w-8 h-8 border-4 border-t-transparent border-primary-key rounded-full animate-spin"
+      ></div>
+    </div>
+
+    <div *ngIf="hasMore && !loading" class="flex justify-center my-4">
+      <button (click)="loadMore()" class="button button-outline">
+        Cargar más
+      </button>
+    </div>
+
+    <div
+      *ngIf="data.length === 0 && !loading"
+      class="flex flex-col items-center justify-center p-8"
+    >
+      <i-lucide name="users" class="w-12 h-12 text-gray-300 mb-4"></i-lucide>
+      <p class="text-gray-500">No se encontraron usuarios</p>
+    </div>
+  </div>
+</section>

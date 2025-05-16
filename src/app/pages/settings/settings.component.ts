@@ -2,12 +2,12 @@ import { Component } from '@angular/core';
 import { BackBarComponent } from '../../shared/back-bar/back-bar.component';
 import { LucideAngularModule } from 'lucide-angular';
 import { AuthService } from '@app/core/service/auth.service';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-settings',
   standalone: true,
-  imports: [BackBarComponent, LucideAngularModule],
+  imports: [BackBarComponent, LucideAngularModule, RouterLink],
   templateUrl: './settings.component.html',
   styles: ``,
 })

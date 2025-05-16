@@ -1,0 +1,103 @@
+<div class="bg-white rounded-xl w-full">
+  <div
+    class="flex justify-between items-center mb-2 p-4 border-b border-gray-300"
+  >
+    <h2 class="text-lg font-medium">Filtros</h2>
+    <button (click)="closeModal()" class="text-gray-500">
+      <i-lucide name="x" class="w-6 h-6"></i-lucide>
+    </button>
+  </div>
+
+  <div class="p-4">
+    <div class="mb-6">
+      <h3 class="text-sm font-medium mb-2">Estado</h3>
+      <div class="flex gap-2 justify-center">
+        <button
+          [ngClass]="{
+            'button-primary': tempFilters.status === 'active',
+            'button-outline': tempFilters.status !== 'active'
+          }"
+          class="button button-sm w-full"
+          (click)="
+            tempFilters.status =
+              tempFilters.status === 'active' ? null : 'active'
+          "
+        >
+          Activos
+        </button>
+        <button
+          [ngClass]="{
+            'button-primary': tempFilters.status === 'inactive',
+            'button-outline': tempFilters.status !== 'inactive'
+          }"
+          class="button button-sm w-full"
+          (click)="
+            tempFilters.status =
+              tempFilters.status === 'inactive' ? null : 'inactive'
+          "
+        >
+          Inactivos
+        </button>
+      </div>
+    </div>
+
+    <div class="form-group bg-outline border-transparent mb-6">
+      <label class="form-label" for="select">Rol</label>
+      <select [(ngModel)]="tempFilters.role" class="form-select">
+        <option [ngValue]="null">Todos los roles</option>
+        <option *ngFor="let role of roles" [value]="role">
+          {{ roleLabels[role] }}
+        </option>
+      </select>
+      <lucide-icon class="icon" size="30" name="chevron-down"></lucide-icon>
+    </div>
+
+    <div class="mb-6">
+      <h3 class="text-sm font-medium text-gray-400 mb-2">Ordenar por</h3>
+      <div class="flex gap-4">
+        <div class="form-group bg-outline border-transparent flex-1">
+          <label class="form-label" for="select">Criterio</label>
+          <select [(ngModel)]="tempFilters.sortBy" class="form-select">
+            <option value="username">Usuario</option>
+            <option value="firstName">Nombre</option>
+            <option value="email">Correo</option>
+            <option value="roleName">Rol</option>
+          </select>
+          <lucide-icon class="icon" size="30" name="chevron-down"></lucide-icon>
+        </div>
+
+        <div class="flex border border-primary-key bg-primary-key rounded-xl">
+          <button
+            [ngClass]="{
+              'bg-primary-key text-white': tempFilters.sortDirection === 'asc',
+              'bg-white': tempFilters.sortDirection !== 'asc'
+            }"
+            class="p-2 flex items-center justify-center rounded-l-xl"
+            (click)="tempFilters.sortDirection = 'asc'"
+          >
+            <i-lucide name="arrow-up" class="w-5 h-5"></i-lucide>
+          </button>
+          <button
+            [ngClass]="{
+              'bg-primary-key text-white': tempFilters.sortDirection === 'desc',
+              'bg-white': tempFilters.sortDirection !== 'desc'
+            }"
+            class="p-2 flex items-center justify-center rounded-r-xl"
+            (click)="tempFilters.sortDirection = 'desc'"
+          >
+            <i-lucide name="arrow-down" class="w-5 h-5"></i-lucide>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex gap-3 mt-6">
+      <button (click)="clearFilters()" class="button button-outline flex-1">
+        Limpiar
+      </button>
+      <button (click)="closeModal(true)" class="button button-primary flex-1">
+        Aplicar
+      </button>
+    </div>
+  </div>
+</div>

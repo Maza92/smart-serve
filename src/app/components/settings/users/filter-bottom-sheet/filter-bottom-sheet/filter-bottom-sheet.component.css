@@ -1,0 +1,8 @@
+@reference '../../../../../../styles.css';
+
+.radius {
+  @apply bg-transparent text-background font-regular text-sm rounded-xl;
+}
+.radius-primary {
+  @apply bg-primary-key text-on-background font-bold;
+}

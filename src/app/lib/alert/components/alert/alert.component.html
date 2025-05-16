@@ -1,0 +1,41 @@
+<div class="alert-backdrop" *ngIf="activeAlert" (click)="closeAlert()">
+  <div class="alert alert-{{ activeAlert.config.type }}">
+    @if (activeAlert.config.type === 'info') {
+    <lucide-icon class="alert-icon" name="info"></lucide-icon>
+    } @else if (activeAlert.config.type === 'success') {
+    <lucide-icon class="alert-icon" name="check"></lucide-icon>
+    } @else if (activeAlert.config.type === 'warning') {
+    <lucide-icon class="alert-icon" name="triangle-alert"></lucide-icon>
+    } @else if (activeAlert.config.type === 'error') {
+    <lucide-icon class="alert-icon" name="cloud-alert"></lucide-icon>
+    }
+
+    <div class="alert-content">
+      @if (activeAlert.config.title) {
+      <div class="alert-title">{{ activeAlert.config.title }}</div>
+      }
+      <div class="alert-message">{{ activeAlert.config.message }}</div>
+
+      @if (activeAlert.config.buttons && activeAlert.config.buttons.length > 0)
+      {
+      <div class="alert-actions">
+        @for (button of activeAlert.config.buttons; track button) {
+        <button
+          class="alert-button"
+          [ngClass]="'alert-button-' + (button.type || 'primary')"
+          (click)="handleButtonClick(button.action)"
+        >
+          {{ button.text }}
+        </button>
+        }
+      </div>
+      }
+    </div>
+
+    @if (activeAlert.config.showCloseButton) {
+    <div class="alert-close" (click)="closeAlert()">
+      <i-lucide name="x" class="w-4 h-4"> </i-lucide>
+    </div>
+    }
+  </div>
+</div>

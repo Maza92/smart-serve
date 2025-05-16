@@ -15,6 +15,15 @@ export const API_CONSTANTS = {
     FORGOT_PASSWORD: '/forgot-password',
     RESET_PASSWORD: '/reset-password',
   },
+
+  USER: {
+    CONTROLLER: '/users',
+    GET_USER: '/:id',
+    GET_USERS: '',
+    CREATE_USER: '',
+    UPDATE_USER: '/:id',
+    DELETE_USER: '/:id',
+  },
 };
 
 export function getBaseUrl(serviceType: ServiceType): string {

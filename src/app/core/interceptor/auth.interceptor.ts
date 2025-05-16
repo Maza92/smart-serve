@@ -24,6 +24,8 @@ export const AuthInterceptor: HttpInterceptorFn = (
     request = addTokenToRequest(request, authToken);
   }
 
+  request = addLanguageHeader(request);
+
   return next(request).pipe(
     catchError((error) => {
       if (error instanceof HttpErrorResponse && error.status === 401) {
@@ -78,4 +80,16 @@ function handle401Error(
       })
     );
   }
+}
+
+function addLanguageHeader(
+  request: HttpRequest<unknown>
+): HttpRequest<unknown> {
+  const language = localStorage.getItem('preferredLanguage') || 'es';
+
+  return request.clone({
+    setHeaders: {
+      'Accept-Language': language,
+    },
+  });
 }

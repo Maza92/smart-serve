@@ -7,7 +7,7 @@
 }
 
 .form-input {
-  @apply border-2 border-background rounded-xl font-light bg-background p-2 text-on-background focus:outline-none focus:placeholder:opacity-70 placeholder:text-on-surface placeholder:font-light;
+  @apply border-2 border-background rounded-xl font-light bg-background  text-on-background focus:outline-none focus:placeholder:opacity-70 placeholder:text-on-surface placeholder:font-light;
 }
 
 .form-input-error {
@@ -42,7 +42,7 @@
 }
 
 .form-group:has(.form-select) {
-  @apply relative border-2 border-transparent rounded-xl p-2 pt-1 pb-4 cursor-pointer;
+  @apply relative border-2  rounded-xl p-2 pt-1 pb-4 cursor-pointer;
 }
 
 .form-group:has(.form-select) .form-label {

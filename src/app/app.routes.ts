@@ -32,11 +32,30 @@ export const routes: Routes = [
   },
   {
     path: 'settings',
-    loadComponent: () =>
-      import('./pages/settings/settings.component').then(
-        (m) => m.SettingsComponent
-      ),
     canActivate: [AuthGuard],
+    children: [
+      {
+        path: '',
+        loadComponent: () =>
+          import('./pages/settings/settings.component').then(
+            (m) => m.SettingsComponent
+          ),
+      },
+      {
+        path: 'users',
+        loadComponent: () =>
+          import('./components/settings/users/users.component').then(
+            (m) => m.UsersComponent
+          ),
+      },
+      {
+        path: 'users/:id',
+        loadComponent: () =>
+          import(
+            './components/settings/users/user-edit/user-edit.component'
+          ).then((m) => m.UserEditComponent),
+      },
+    ],
   },
   {
     path: 'auth/login',
