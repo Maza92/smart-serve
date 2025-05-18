@@ -8,12 +8,14 @@ export enum ServiceType {
 export const API_CONSTANTS = {
   AUTH: {
     CONTROLLER: '/auth',
-    LOGIN: '/login',
-    REGISTER: '/register',
-    LOGOUT: '/logout',
-    REFRESH_TOKEN: '/refresh-token',
-    FORGOT_PASSWORD: '/forgot-password',
+    VERIFY_RESET_TOKEN: '/verify-reset-token',
     RESET_PASSWORD: '/reset-password',
+    REGISTER: '/register',
+    REFRESH_TOKEN: '/refresh-token',
+    RECOVER_PASSWORD: '/recover-password',
+    LOGOUT: '/logout',
+    LOGIN: '/login',
+    FORGOT_PASSWORD: '/forgot-password',
   },
 
   USER: {

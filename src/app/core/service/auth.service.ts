@@ -1,14 +1,23 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, map, throwError } from 'rxjs';
-import { API_CONSTANTS, ServiceType, buildUrl } from '../constant/api.constant';
-import { LocalStorageService } from './local-storage.service';
-import { ApiError } from '@core/model/api';
+import {
+  API_CONSTANTS,
+  ServiceType,
+  buildUrl,
+} from '@core/constant/api.constant';
+import { LocalStorageService } from '@core/service/local-storage.service';
 import { LoginResponse } from '@core/model/auth/login-response';
 import { LoginRequest } from '@core/model/auth/login-request';
 import { RefreshTokenResponse } from '@core/model/auth/refresh-toke-response';
 import { RefreshTokenRequest } from '@core/model/auth/refresh-token-request';
-import { BaseService } from './base.service';
+import { BaseService } from '@core/service/base.service';
+import { RegisterRequest } from '@core/model/auth/register-request';
+import { ForgotPasswordRequest } from '@core/model/auth/forgot-password-request';
+import { ResetCodeRequest } from '@core/model/auth/reset-code-request';
+import { ResetTokenResponse } from '@core/model/auth/reset-token-response';
+import { RecoverPasswordRequest } from '@core/model/auth/recover-password-request';
+import { ResetPasswordRequest } from '@core/model/auth/reset-password-request';
 
 @Injectable({
   providedIn: 'root',
@@ -96,6 +105,66 @@ export class AuthService extends BaseService {
       }),
       catchError(this.handleError)
     );
+  }
+
+  register(request: RegisterRequest): Observable<void> {
+    const url = buildUrl(
+      ServiceType.AUTH,
+      API_CONSTANTS.AUTH.CONTROLLER,
+      API_CONSTANTS.AUTH.REGISTER
+    );
+
+    return this.http
+      .post<void>(url, request)
+      .pipe(catchError(this.handleError));
+  }
+
+  forgotPassword(request: ForgotPasswordRequest): Observable<void> {
+    const url = buildUrl(
+      ServiceType.AUTH,
+      API_CONSTANTS.AUTH.CONTROLLER,
+      API_CONSTANTS.AUTH.FORGOT_PASSWORD
+    );
+
+    return this.http
+      .post<void>(url, request)
+      .pipe(catchError(this.handleError));
+  }
+
+  verifyResetCode(request: ResetCodeRequest): Observable<ResetTokenResponse> {
+    const url = buildUrl(
+      ServiceType.AUTH,
+      API_CONSTANTS.AUTH.CONTROLLER,
+      API_CONSTANTS.AUTH.VERIFY_RESET_TOKEN
+    );
+
+    return this.http
+      .post<ResetTokenResponse>(url, request)
+      .pipe(catchError(this.handleError));
+  }
+
+  recoverPassword(request: RecoverPasswordRequest): Observable<void> {
+    const url = buildUrl(
+      ServiceType.AUTH,
+      API_CONSTANTS.AUTH.CONTROLLER,
+      API_CONSTANTS.AUTH.RECOVER_PASSWORD
+    );
+
+    return this.http
+      .post<void>(url, request)
+      .pipe(catchError(this.handleError));
+  }
+
+  resetPassword(request: ResetPasswordRequest): Observable<void> {
+    const url = buildUrl(
+      ServiceType.AUTH,
+      API_CONSTANTS.AUTH.CONTROLLER,
+      API_CONSTANTS.AUTH.RESET_PASSWORD
+    );
+
+    return this.http
+      .post<void>(url, request)
+      .pipe(catchError(this.handleError));
   }
 
   clearAuthData(): void {
