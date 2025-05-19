@@ -1,0 +1,93 @@
+<div class="w-full p-6">
+  <div class="card h-42 bg-primary-key mb-6">
+    <div class="card-head">
+      <div class="card-pin bg-red-400 text-sm">Verificación de código</div>
+    </div>
+    <div class="card-body">
+      <div class="card-title text-on-background">
+        Ingresa el código de verificación enviado a tu correo electrónico
+      </div>
+    </div>
+  </div>
+
+  <form [formGroup]="codeForm" class="flex flex-col gap-6">
+    <div>
+      <div class="flex flex-col items-center">
+        <div class="flex justify-center items-center gap-2 mb-4">
+          <ng-container
+            *ngFor="let _ of [].constructor(codeLength); let i = index"
+          >
+            <input
+              [formControlName]="'digit' + i"
+              type="text"
+              inputmode="numeric"
+              autocomplete="one-time-code"
+              maxlength="1"
+              class="w-12 h-14 text-center text-xl font-bold rounded-md border-2 border-gray-500 shadow-sm transition-all duration-200 focus:border-primary-key focus:ring-2 focus:ring-primary-key/30 focus:outline-none"
+              [ngClass]="{
+                'border-red-500 focus:border-red-500 focus:ring-red-500/30':
+                  codeForm.get('digit' + i)?.invalid &&
+                  (codeForm.get('digit' + i)?.touched ||
+                    codeForm.get('digit' + i)?.dirty),
+                'bg-gray-50': codeForm.get('digit' + i)?.value
+              }"
+              (input)="onDigitInput($event, i)"
+              (keydown)="onKeyDown($event, i)"
+              (paste)="handlePaste($event, i)"
+              id="code-input-{{ i }}"
+            />
+          </ng-container>
+        </div>
+
+        <div
+          *ngIf="code?.invalid && (code?.touched || code?.dirty)"
+          class="form-error-message text-center"
+        >
+          <p *ngIf="code?.errors?.['required']">
+            El código de verificación es requerido
+          </p>
+          <p *ngIf="code?.errors?.['minlength'] || code?.errors?.['maxlength']">
+            El código debe tener 6 dígitos
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-center text-neutral-key">
+      <p>
+        El código expirará en: {{ minutes }}:{{
+          seconds < 10 ? "0" + seconds : seconds
+        }}
+      </p>
+    </div>
+
+    <button
+      (click)="onSubmit()"
+      class="button button-primary w-full h-16"
+      [disabled]="codeForm.invalid || isLoading || isExpired"
+    >
+      <span *ngIf="!isLoading">Verificar código</span>
+      <span *ngIf="isLoading" class="flex justify-center">
+        <div
+          class="animate-spin rounded-full h-6 w-6 border-4 border-primary-key border-t-transparent"
+        ></div>
+      </span>
+    </button>
+
+    <div
+      class="text-neutral-key font-medium flex flex-col justify-center items-center gap-2"
+    >
+      <a
+        (click)="resendCode()"
+        class="underline cursor-pointer"
+        [class.text-gray-400]="resendDisabled"
+        >Reenviar código{{
+          resendCountdown > 0 ? " (" + resendCountdown + ")" : ""
+        }}</a
+      >
+      <a routerLink="/auth/email-verification" class="underline"
+        >Cambiar correo electrónico</a
+      >
+    </div>
+  </form>
+</div>

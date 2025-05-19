@@ -16,7 +16,7 @@ export const NAV_ITEMS: NavItem[] = [
   {
     name: 'Ajustes',
     icon: 'settings',
-    path: '/ajustes',
+    path: '/settings',
     exclusions: [],
   },
   {

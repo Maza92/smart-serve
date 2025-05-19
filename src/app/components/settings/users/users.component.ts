@@ -22,6 +22,7 @@ import { FilterBottomSheetComponent } from './filter-bottom-sheet/filter-bottom-
 import { FormsModule } from '@angular/forms';
 import { FilterChipComponent } from './filter-bottom-sheet/filter-chip/filter-chip.component';
 import { RouterLink } from '@angular/router';
+import { ToastService } from '@app/lib/toast/toast.service';
 
 @Component({
   selector: 'app-users',
@@ -43,7 +44,6 @@ export class UsersComponent implements OnInit, OnDestroy {
   size = 10;
   hasMore = true;
   loading = false;
-  error: string | null = null;
 
   filters: FilterOptions = {
     search: '',
@@ -59,7 +59,8 @@ export class UsersComponent implements OnInit, OnDestroy {
 
   constructor(
     private userService: UserService,
-    private modalService: ModalService
+    private modalService: ModalService,
+    private toastService: ToastService
   ) {}
 
   ngOnInit(): void {
@@ -222,11 +223,14 @@ export class UsersComponent implements OnInit, OnDestroy {
           }
 
           this.hasMore = newData.length === this.size;
-          this.error = null;
         },
         error: (error) => {
-          this.error = error.message || 'Error al cargar usuarios';
-          console.error('Error al cargar usuarios:', error);
+          this.toastService.error('Error', error.message, {
+            position: 'top-center',
+            showCloseButton: false,
+            showProgressBar: false,
+            duration: 3000,
+          });
         },
       });
   }

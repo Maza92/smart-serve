@@ -65,6 +65,32 @@ export class NavigationService {
   }
 
   /**
+   * Permite añadir una misma exclusión a múltiples items de navegación
+   */
+  addExclusions(itemsName: string[], exclusionPath: string): void {
+    const updatedItems = this.navItems.map((item) => {
+      if (!itemsName.includes(item.name)) {
+        return item;
+      }
+
+      if (!item.exclusions) {
+        item.exclusions = [];
+      }
+
+      if (!item.exclusions.some((e) => e.path === exclusionPath)) {
+        return {
+          ...item,
+          exclusions: [...item.exclusions, { path: exclusionPath }],
+        };
+      }
+      return item;
+    });
+
+    this.navItems = updatedItems;
+    this.updateNavVisibility(window.location.pathname);
+  }
+
+  /**
    * Elimina una exclusión de un item específico
    */
   removeExclusion(itemName: string, exclusionPath: string): void {

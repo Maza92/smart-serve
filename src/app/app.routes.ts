@@ -63,13 +63,56 @@ export const routes: Routes = [
     ],
   },
   {
+    path: 'register',
+    loadComponent: () =>
+      import('./pages/register/register.component').then(
+        (m) => m.RegisterComponent
+      ),
+    canActivate: [LoginGuard],
+  },
+  {
     path: 'auth/login',
     loadComponent: () =>
       import('./pages/login/login.component').then((m) => m.LoginComponent),
     canActivate: [LoginGuard],
   },
   {
-    path: '**',
-    redirectTo: 'starter',
+    path: 'auth/email-verification',
+    loadComponent: () =>
+      import(
+        './components/auth/email-verification/email-verification.component'
+      ).then((m) => m.EmailVerificationComponent),
+    canActivate: [LoginGuard],
   },
+  {
+    path: 'auth/code-verification',
+    loadComponent: () =>
+      import(
+        './components/auth/code-verification/code-verification.component'
+      ).then((m) => m.CodeVerificationComponent),
+    canActivate: [LoginGuard],
+  },
+  {
+    path: 'auth/reset-password',
+    loadComponent: () =>
+      import('./components/auth/reset-password/reset-password.component').then(
+        (m) => m.ResetPasswordComponent
+      ),
+    canActivate: [LoginGuard],
+  },
+  {
+    path: 'terms',
+    loadComponent: () =>
+      import('./components/legal/terms/terms.component').then(
+        (m) => m.TermsComponent
+      ),
+  },
+  {
+    path: 'privacy',
+    loadComponent: () =>
+      import('./components/legal/privacy/privacy.component').then(
+        (m) => m.PrivacyComponent
+      ),
+  },
+  { path: '**', redirectTo: 'starter' },
 ];

@@ -70,10 +70,6 @@
   </div>
 
   <div class="flex flex-col gap-4 flex-grow p-4 overflow-auto">
-    <div *ngIf="error" class="bg-red-100 text-red-700 p-3 rounded-lg mb-4">
-      {{ error }}
-    </div>
-
     <div class="grid grid-cols-2 gap-4">
       <div
         class="overflow-hidden transition-shadow bg-white rounded-lg shadow-sm hover:shadow-md"
@@ -111,7 +107,10 @@
       ></div>
     </div>
 
-    <div *ngIf="hasMore && !loading" class="flex justify-center my-4">
+    <div
+      *ngIf="hasMore && !loading && data.length > 0"
+      class="flex justify-center my-4"
+    >
       <button (click)="loadMore()" class="button button-outline">
         Cargar más
       </button>

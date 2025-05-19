@@ -1,0 +1,76 @@
+<div class="w-full h-dvh bg-outline">
+  <div class="sticky w-full">
+    <app-back-bar
+      title="Recuperación de contraseña"
+      textColor="text-black"
+    ></app-back-bar>
+  </div>
+  <div class="p-6">
+    <div class="card h-42 bg-primary-key mb-6">
+      <div class="card-head">
+        <div class="card-pin bg-red-400 text-sm">
+          Recuperación de contraseña
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="card-title text-on-background">
+          Ingresa tu correo electrónico para recibir un código de verificación
+        </div>
+      </div>
+    </div>
+
+    <form [formGroup]="emailForm" class="flex flex-col gap-6">
+      <div>
+        <div class="form-group-icon">
+          <lucide-icon
+            class="icon text-on-background"
+            name="mail"
+          ></lucide-icon>
+          <input
+            formControlName="email"
+            type="text"
+            class="form-input w-full h-16"
+            placeholder="Correo electrónico"
+            [ngClass]="{
+              'form-input-error':
+                email?.invalid && (email?.touched || email?.dirty)
+            }"
+          />
+        </div>
+
+        <div
+          *ngIf="email?.invalid && (email?.touched || email?.dirty)"
+          class="form-error-message"
+        >
+          <p *ngIf="email?.errors?.['required']">
+            El correo electrónico es requerido
+          </p>
+          <p *ngIf="email?.errors?.['email']">
+            El correo electrónico no es válido
+          </p>
+        </div>
+      </div>
+
+      <button
+        (click)="onSubmit()"
+        class="button button-primary w-full h-16"
+        [disabled]="emailForm.invalid || isLoading"
+      >
+        <span *ngIf="!isLoading">Enviar código</span>
+        <span *ngIf="isLoading" class="flex justify-center">
+          <div
+            class="animate-spin rounded-full h-6 w-6 border-4 border-primary-container border-t-transparent"
+          ></div>
+        </span>
+      </button>
+
+      <div
+        class="text-neutral-key font-medium flex flex-col justify-center items-center"
+      >
+        <a routerLink="/auth/login" class="underline"
+          >Volver al inicio de sesión</a
+        >
+      </div>
+    </form>
+  </div>
+</div>

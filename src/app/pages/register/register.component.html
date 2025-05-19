@@ -1,0 +1,247 @@
+<section class="w-full h-dvh bg-outline">
+  <div class="sticky top-0 z-20 bg-outline">
+    <app-back-bar
+      title="Crear una cuenta"
+      textColor="text-black"
+    ></app-back-bar>
+  </div>
+  <div class="w-full p-6">
+    <form [formGroup]="registerForm" class="flex flex-col gap-4">
+      <div>
+        <div class="form-group-icon mb-2">
+          <lucide-icon
+            class="icon text-on-background"
+            name="user"
+          ></lucide-icon>
+          <input
+            formControlName="username"
+            type="text"
+            class="form-input w-full h-16"
+            placeholder="Nombre"
+            [ngClass]="{
+              'form-input-error': username?.invalid && username?.touched
+            }"
+          />
+        </div>
+
+        <div
+          *ngIf="username?.invalid && (username?.touched || username?.dirty)"
+          class="form-error-message"
+        >
+          <p *ngIf="username?.errors?.['required']">El nombre es requerido</p>
+        </div>
+      </div>
+
+      <div>
+        <div class="form-group-icon mb-2">
+          <lucide-icon
+            class="icon text-on-background"
+            name="user"
+          ></lucide-icon>
+          <input
+            formControlName="firstName"
+            type="text"
+            class="form-input w-full h-16"
+            placeholder="Nombre"
+            [ngClass]="{
+              'form-input-error': firstName?.invalid && firstName?.touched
+            }"
+          />
+        </div>
+
+        <div
+          *ngIf="firstName?.invalid && (firstName?.touched || firstName?.dirty)"
+          class="form-error-message"
+        >
+          <p *ngIf="firstName?.errors?.['required']">El nombre es requerido</p>
+        </div>
+      </div>
+
+      <div>
+        <div class="form-group-icon mb-2">
+          <lucide-icon
+            class="icon text-on-background"
+            name="user"
+          ></lucide-icon>
+          <input
+            formControlName="lastName"
+            type="text"
+            class="form-input w-full h-16"
+            placeholder="Apellido"
+            [ngClass]="{
+              'form-input-error': lastName?.invalid && lastName?.touched
+            }"
+          />
+        </div>
+
+        <div
+          *ngIf="lastName?.invalid && (lastName?.touched || lastName?.dirty)"
+          class="form-error-message"
+        >
+          <p *ngIf="lastName?.errors?.['required']">El apellido es requerido</p>
+        </div>
+      </div>
+
+      <div>
+        <div class="form-group-icon mb-2">
+          <lucide-icon
+            class="icon text-on-background"
+            name="mail"
+          ></lucide-icon>
+          <input
+            formControlName="email"
+            type="text"
+            class="form-input w-full h-16"
+            placeholder="Correo electrónico"
+            [ngClass]="{
+              'form-input-error': email?.invalid && email?.touched
+            }"
+          />
+        </div>
+
+        <div
+          *ngIf="email?.invalid && (email?.touched || email?.dirty)"
+          class="form-error-message"
+        >
+          <p *ngIf="email?.errors?.['required']">
+            El correo electrónico es requerido
+          </p>
+          <p *ngIf="email?.errors?.['email']">
+            El correo electrónico no es válido
+          </p>
+        </div>
+      </div>
+
+      <div>
+        <div class="form-group-icon mb-2">
+          <lucide-icon
+            class="icon text-on-background"
+            name="lock"
+          ></lucide-icon>
+          <input
+            formControlName="password"
+            [type]="showPassword ? 'text' : 'password'"
+            class="form-input w-full h-16"
+            placeholder="Contraseña"
+            [ngClass]="{
+              'form-input-error': password?.invalid && password?.touched
+            }"
+          />
+        </div>
+
+        <div
+          *ngIf="password?.invalid && (password?.touched || password?.dirty)"
+          class="form-error-message"
+        >
+          <p *ngIf="password?.errors?.['required']">
+            La contraseña es requerida
+          </p>
+          <p *ngIf="password?.errors?.['minlength']">
+            La contraseña debe tener al menos 8 caracteres
+          </p>
+        </div>
+      </div>
+
+      <div>
+        <div class="form-group-icon mb-2">
+          <lucide-icon
+            class="icon text-on-background"
+            name="lock"
+          ></lucide-icon>
+          <input
+            formControlName="confirmPassword"
+            [type]="showPassword ? 'text' : 'password'"
+            class="form-input w-full h-16"
+            placeholder="Confirmar contraseña"
+            [ngClass]="{
+              'form-input-error':
+                confirmPassword?.invalid && confirmPassword?.touched
+            }"
+          />
+        </div>
+
+        <div
+          *ngIf="
+            confirmPassword?.invalid &&
+            (confirmPassword?.touched || confirmPassword?.dirty)
+          "
+          class="form-error-message"
+        >
+          <p *ngIf="confirmPassword?.errors?.['required']">
+            La confirmación de la contraseña es requerida
+          </p>
+          <p *ngIf="confirmPassword?.errors?.['minlength']">
+            La confirmación de la contraseña debe tener al menos 8 caracteres
+          </p>
+          <p *ngIf="confirmPassword?.errors?.['mustMatch']">
+            Las contraseñas no coinciden
+          </p>
+        </div>
+      </div>
+
+      <div
+        class="flex items-center justify-between gap-2 mt-2 bg-on-surface rounded-2xl p-6"
+      >
+        <p class="text-sm text-black">Mostrar contraseña</p>
+        <label class="relative inline-flex items-center cursor-pointer">
+          <input
+            type="checkbox"
+            class="sr-only peer"
+            (change)="togglePasswordVisibility()"
+          />
+          <div
+            class="w-11 h-6 bg-gray-400 rounded-full peer peer-checked:bg-primary-key peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all"
+          ></div>
+        </label>
+      </div>
+      <div
+        class="flex items-center justify-between gap-2 mt-2 bg-on-surface rounded-2xl p-6"
+      >
+        <div class="flex-1">
+          <p class="text-sm text-black mb-4">
+            Al crear una cuenta, aceptas nuestros términos
+          </p>
+          <div class="flex flex-col gap-2">
+            <button
+              type="button"
+              class="button button-outline button-sm flex items-center gap-2 w-max"
+              routerLink="/terms"
+            >
+              <lucide-icon name="file-text" class="w-5 h-5"></lucide-icon>
+              <span>Términos y condiciones</span>
+            </button>
+            <button
+              type="button"
+              class="button button-outline button-sm flex items-center gap-2 w-max"
+              routerLink="/privacy"
+            >
+              <lucide-icon name="shield" class="w-5 h-5"></lucide-icon>
+              <span>Política de privacidad</span>
+            </button>
+          </div>
+        </div>
+        <label class="relative inline-flex items-center cursor-pointer">
+          <input
+            type="checkbox"
+            class="sr-only peer"
+            formControlName="termsAccepted"
+          />
+          <div
+            class="w-11 h-6 bg-gray-400 rounded-full peer peer-checked:bg-primary-key peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all"
+            [ngClass]="{
+              'bg-error': termsAccepted?.invalid && termsAccepted?.touched
+            }"
+          ></div>
+        </label>
+      </div>
+
+      <button
+        class="button button-primary button-lg w-full h-16"
+        [disabled]="registerForm.invalid"
+        (click)="onSubmit()"
+      >
+        Crear cuenta
+      </button>
+    </form>
+  </div>
+</section>

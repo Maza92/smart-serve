@@ -57,7 +57,7 @@
           ></lucide-icon>
           <input
             formControlName="password"
-            type="password"
+            [type]="showPassword ? 'text' : 'password'"
             class="form-input w-full h-16"
             placeholder="Contraseña"
             [ngClass]="{
@@ -78,22 +78,36 @@
           </p>
         </div>
       </div>
-
-      <!-- Mensaje de error de la API -->
-      <div *ngIf="errorMessage" class="form-error-message text-center mb-2">
-        <p>{{ errorMessage }}</p>
+      <div
+        class="flex items-center justify-between gap-2 mt-2 bg-on-surface rounded-2xl p-6"
+      >
+        <p class="text-sm text-black">Mostrar contraseña</p>
+        <label class="relative inline-flex items-center cursor-pointer">
+          <input
+            type="checkbox"
+            class="sr-only peer"
+            (change)="togglePasswordVisibility()"
+          />
+          <div
+            class="w-11 h-6 bg-gray-400 rounded-full peer peer-checked:bg-primary-key peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all"
+          ></div>
+        </label>
       </div>
 
       <div
-        class="text-on-surface font-medium flex flex-col justify-center items-center"
+        class="text-neutral-key font-medium flex flex-col justify-center items-center"
       >
         <span
           >¿Aún no tienes cuenta?
-          <a class="text-primary-key underline cursor-pointer"
+          <a
+            routerLink="/register"
+            class="text-primary-key underline cursor-pointer"
             >Regístrate</a
           ></span
         >
-        <a class="underline">¿Olvidaste tu contraseña?</a>
+        <a routerLink="/auth/email-verification" class="underline"
+          >¿Olvidaste tu contraseña?</a
+        >
       </div>
 
       <button

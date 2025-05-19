@@ -34,15 +34,26 @@
     <div class="flex justify-between w-full">
       <div class="flex text-sm justify-center items-center gap-1">
         Server:
-        <span class="flex justify-center items-center gap-1 text-green-400"
+        <span
+          class="flex justify-center items-center gap-1"
+          [ngClass]="{
+            'text-red-400': !serverStatus,
+            'text-green-400': serverStatus
+          }"
           ><i-lucide name="circle-check-big" size="15"></i-lucide>
-          Conectado</span
+          {{ serverStatus ? "Conectado" : "Desconectado" }}</span
         >
       </div>
       <div class="flex text-sm justify-center items-center gap-1">
         Red:
-        <span class="flex justify-center items-center gap-1 text-green-400"
-          ><i-lucide name="wifi" size="15"></i-lucide> Alta</span
+        <span
+          class="flex justify-center items-center gap-1"
+          [ngClass]="{
+            'text-red-400': !networkOnline,
+            'text-green-400': networkOnline
+          }"
+          ><i-lucide name="wifi" size="15"></i-lucide>
+          {{ networkOnline ? "Online" : "Offline" }}</span
         >
       </div>
     </div>

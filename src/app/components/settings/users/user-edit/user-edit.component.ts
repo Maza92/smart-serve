@@ -10,6 +10,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { User } from '@app/core/model/data/user';
 import { RoleEnum, RoleLabels } from '@app/core/model/filter-options';
 import { UserService } from '@app/core/service/user.service';
+import { AuthService } from '@app/core/service/auth.service';
 import { AlertService } from '@app/lib/alert/alert.service';
 import { ToastService } from '@app/lib/toast/toast.service';
 import { BackBarComponent } from '@app/shared/back-bar/back-bar.component';
@@ -29,6 +30,7 @@ import { LucideAngularModule } from 'lucide-angular';
 })
 export class UserEditComponent implements OnInit {
   userUpdateForm!: FormGroup;
+  passwordForm!: FormGroup;
   error: string | null = null;
   id: number | null = null;
   activeTab = 1;
@@ -38,6 +40,7 @@ export class UserEditComponent implements OnInit {
   constructor(
     private builder: FormBuilder,
     private userService: UserService,
+    private authService: AuthService,
     private route: ActivatedRoute,
     private toastService: ToastService
   ) {
@@ -57,6 +60,11 @@ export class UserEditComponent implements OnInit {
       profileImagePath: [''],
       active: [false],
       roleName: ['', Validators.required],
+    });
+
+    this.passwordForm = this.builder.group({
+      oldPassword: ['', [Validators.required]],
+      newPassword: ['', [Validators.required, Validators.minLength(6)]],
     });
   }
 
@@ -84,6 +92,34 @@ export class UserEditComponent implements OnInit {
         this.userUpdateForm.reset();
       },
     });
+
+    this.passwordForm = this.builder.group({
+      oldPassword: ['', [Validators.required]],
+      newPassword: ['', [Validators.required, Validators.minLength(6)]],
+    });
+  }
+
+  onResetPassword(): void {
+    if (this.passwordForm.invalid) {
+      this.passwordForm.markAllAsTouched();
+      return;
+    }
+
+    const { oldPassword, newPassword } = this.passwordForm.value;
+
+    this.authService
+      .resetPassword({ currentPassword: oldPassword, newPassword })
+      .subscribe({
+        next: () => {
+          this.toastService.success('Contraseña actualizada exitosamente');
+          this.passwordForm.reset();
+        },
+        error: (error) => {
+          this.toastService.error(
+            error.message || 'Error al actualizar la contraseña'
+          );
+        },
+      });
   }
 
   onSubmit(): void {
@@ -122,6 +158,11 @@ export class UserEditComponent implements OnInit {
           });
         },
       });
+
+    this.passwordForm = this.builder.group({
+      oldPassword: ['', [Validators.required]],
+      newPassword: ['', [Validators.required, Validators.minLength(6)]],
+    });
   }
 
   patchValue(user: User): void {
@@ -134,6 +175,11 @@ export class UserEditComponent implements OnInit {
       profileImagePath: user.profileImagePath,
       active: user.active,
       roleName: user.roleName,
+    });
+
+    this.passwordForm = this.builder.group({
+      oldPassword: ['', [Validators.required]],
+      newPassword: ['', [Validators.required, Validators.minLength(6)]],
     });
   }
 

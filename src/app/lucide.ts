@@ -18,6 +18,7 @@ import {
   CloudAlert,
   Contact,
   DollarSign,
+  FileText,
   Filter,
   Home,
   Info,
@@ -87,4 +88,5 @@ export const lucideIcons = {
   ShoppingCart,
   CircleCheckBig,
   Wifi,
+  FileText,
 };

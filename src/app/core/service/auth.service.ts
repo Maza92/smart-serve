@@ -56,7 +56,7 @@ export class AuthService extends BaseService {
         this.localStorageService.set(this.USER_NAME_KEY, response.username);
         return response;
       }),
-      catchError(this.handleError)
+      catchError((error) => this.handleError(error))
     );
   }
 
@@ -135,7 +135,7 @@ export class AuthService extends BaseService {
     const url = buildUrl(
       ServiceType.AUTH,
       API_CONSTANTS.AUTH.CONTROLLER,
-      API_CONSTANTS.AUTH.VERIFY_RESET_TOKEN
+      API_CONSTANTS.AUTH.VERIFY_RESET_CODE
     );
 
     return this.http

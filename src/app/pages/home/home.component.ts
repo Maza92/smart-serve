@@ -26,11 +26,10 @@ export class HomeComponent implements OnInit {
     this.path = this.navigationService.getCurrentComponentPath();
     this.username = this.authService.getUserName();
 
-    this.navigationService.addExclusion('Home', this.path);
-    this.navigationService.addExclusion('Inventario', this.path);
-    this.navigationService.addExclusion('Ajustes', this.path);
-    this.navigationService.addExclusion('Caja', this.path);
-    this.navigationService.addExclusion('Reportes', this.path);
+    this.navigationService.addExclusions(
+      ['Home', 'Inventario', 'Ajustes', 'Caja', 'Reportes'],
+      this.path
+    );
 
     this.navigationService.updateNavVisibility(this.path);
   }

@@ -8,7 +8,7 @@ export enum ServiceType {
 export const API_CONSTANTS = {
   AUTH: {
     CONTROLLER: '/auth',
-    VERIFY_RESET_TOKEN: '/verify-reset-token',
+    VERIFY_RESET_CODE: '/verify-reset-code',
     RESET_PASSWORD: '/reset-password',
     REGISTER: '/register',
     REFRESH_TOKEN: '/refresh-token',
@@ -25,6 +25,11 @@ export const API_CONSTANTS = {
     CREATE_USER: '',
     UPDATE_USER: '/:id',
     DELETE_USER: '/:id',
+  },
+
+  PING: {
+    CONTROLLER: '/ping',
+    PING: '',
   },
 };
 
