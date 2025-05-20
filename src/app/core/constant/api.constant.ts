@@ -32,6 +32,14 @@ export const API_CONSTANTS = {
     CONTROLLER: '/ping',
     PING: '',
   },
+
+  CASH: {
+    CONTROLLER: '/cach',
+    GET_CASH_REGISTERS: '',
+    CREATE_CASH_REGISTER: '/create',
+    OPEN_CASH_REGISTER: '/open/:id',
+    CLOSE_CASH_REGISTER: '/close/:id',
+  },
 };
 
 export function getBaseUrl(serviceType: ServiceType): string {

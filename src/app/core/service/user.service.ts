@@ -38,7 +38,7 @@ export class UserService extends BaseService {
     }
 
     return this.http
-      .get<any>(url, {
+      .get<ApiResponse<Paged<User>>>(url, {
         params,
       })
       .pipe(catchError(this.handleError));
