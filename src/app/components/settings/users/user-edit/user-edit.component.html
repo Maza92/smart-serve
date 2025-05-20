@@ -188,43 +188,12 @@
           'opacity-0 z-0': activeTab !== 2
         }"
       >
-        <form
-          [formGroup]="passwordForm"
-          class="flex flex-col gap-4 w-full [&>div>input]:px-4"
-        >
-          <div class="form-group">
-            <label class="form-label" for="oldPassword"
-              >Contraseña actual</label
-            >
-            <input
-              type="password"
-              id="oldPassword"
-              formControlName="oldPassword"
-              class="form-input h-16 w-full"
-              placeholder="Ingrese su contraseña actual"
-            />
-          </div>
+        <app-admin-password-reset
+          *ngIf="isAdminMode"
+          [userId]="id!"
+        ></app-admin-password-reset>
 
-          <div class="form-group">
-            <label class="form-label" for="newPassword">Nueva contraseña</label>
-            <input
-              type="password"
-              id="newPassword"
-              formControlName="newPassword"
-              class="form-input h-16 w-full"
-              placeholder="Ingrese su nueva contraseña"
-            />
-          </div>
-        </form>
-        <div class="flex flex-col justify-center items-center gap-4 my-8">
-          <button
-            class="button button-primary button-lg w-full"
-            (click)="onResetPassword()"
-            [disabled]="passwordForm.invalid"
-          >
-            Cambiar contraseña
-          </button>
-        </div>
+        <app-user-password-reset *ngIf="!isAdminMode"></app-user-password-reset>
       </div>
     </div>
   </div>

@@ -18,6 +18,7 @@ import { ResetCodeRequest } from '@core/model/auth/reset-code-request';
 import { ResetTokenResponse } from '@core/model/auth/reset-token-response';
 import { RecoverPasswordRequest } from '@core/model/auth/recover-password-request';
 import { ResetPasswordRequest } from '@core/model/auth/reset-password-request';
+import { ResetPasswordByAdminRequest } from '@core/model/auth/reset-password-by-admin-request';
 
 @Injectable({
   providedIn: 'root',
@@ -27,6 +28,7 @@ export class AuthService extends BaseService {
   private readonly REFRESH_TOKEN_KEY = 'refresh_token';
   private readonly TOKEN_EXPIRATION_KEY = 'token_expiration';
   private readonly USER_NAME_KEY = 'user_name';
+  private readonly USER_ID_KEY = 'user_id';
 
   constructor(
     private http: HttpClient,
@@ -54,6 +56,7 @@ export class AuthService extends BaseService {
           response.expiration
         );
         this.localStorageService.set(this.USER_NAME_KEY, response.username);
+        this.localStorageService.set(this.USER_ID_KEY, response.userId);
         return response;
       }),
       catchError((error) => this.handleError(error))
@@ -160,6 +163,24 @@ export class AuthService extends BaseService {
       ServiceType.AUTH,
       API_CONSTANTS.AUTH.CONTROLLER,
       API_CONSTANTS.AUTH.RESET_PASSWORD
+    );
+
+    return this.http
+      .post<void>(url, request)
+      .pipe(catchError(this.handleError));
+  }
+
+  resetPasswordByAdmin(
+    request: ResetPasswordByAdminRequest,
+    userId: number
+  ): Observable<void> {
+    const url = buildUrl(
+      ServiceType.AUTH,
+      API_CONSTANTS.AUTH.CONTROLLER,
+      API_CONSTANTS.AUTH.RESET_PASSWORD_BY_ADMIN,
+      {
+        id: userId.toString(),
+      }
     );
 
     return this.http

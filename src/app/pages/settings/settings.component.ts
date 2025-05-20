@@ -27,4 +27,8 @@ export class SettingsComponent {
       },
     });
   }
+
+  goTo(path: string) {
+    this.router.navigate([path]);
+  }
 }

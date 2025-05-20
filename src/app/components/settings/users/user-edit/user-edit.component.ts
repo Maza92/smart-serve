@@ -15,6 +15,9 @@ import { AlertService } from '@app/lib/alert/alert.service';
 import { ToastService } from '@app/lib/toast/toast.service';
 import { BackBarComponent } from '@app/shared/back-bar/back-bar.component';
 import { LucideAngularModule } from 'lucide-angular';
+import { AdminPasswordResetComponent } from './admin-password-reset/admin-password-reset.component';
+import { UserPasswordResetComponent } from './user-password-reset/user-password-reset.component';
+import { LocalStorageService } from '@app/core/service/local-storage.service';
 
 @Component({
   selector: 'app-user-edit',
@@ -24,25 +27,29 @@ import { LucideAngularModule } from 'lucide-angular';
     CommonModule,
     BackBarComponent,
     LucideAngularModule,
+    AdminPasswordResetComponent,
+    UserPasswordResetComponent,
   ],
   templateUrl: './user-edit.component.html',
   styleUrl: './user-edit.component.css',
 })
 export class UserEditComponent implements OnInit {
   userUpdateForm!: FormGroup;
-  passwordForm!: FormGroup;
-  error: string | null = null;
   id: number | null = null;
   activeTab = 1;
   roleEnumKeys = Object.values(RoleEnum);
   roleLabels = RoleLabels;
+  showPassword = false;
+  isAdminMode = true;
 
   constructor(
     private builder: FormBuilder,
     private userService: UserService,
     private authService: AuthService,
     private route: ActivatedRoute,
-    private toastService: ToastService
+    private router: Router,
+    private toastService: ToastService,
+    private localStorageService: LocalStorageService
   ) {
     this.userUpdateForm = this.builder.group({
       username: [
@@ -61,22 +68,27 @@ export class UserEditComponent implements OnInit {
       active: [false],
       roleName: ['', Validators.required],
     });
-
-    this.passwordForm = this.builder.group({
-      oldPassword: ['', [Validators.required]],
-      newPassword: ['', [Validators.required, Validators.minLength(6)]],
-    });
   }
 
   ngOnInit(): void {
     this.id = this.route.snapshot.params['id'];
 
     if (!this.id) {
-      this.error = 'User ID is required';
+      this.id = this.localStorageService.get('user_id');
+    }
+
+    if (!this.id) {
+      this.toastService.error('User ID is required', 'Error');
       return;
     }
 
+    const currentUrl = this.router.url;
+    this.isAdminMode = currentUrl.includes('/settings/users/');
+
     this.loadUserData(this.id);
+  }
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
   }
 
   loadUserData(id: number): void {
@@ -87,39 +99,10 @@ export class UserEditComponent implements OnInit {
         this.patchValue(user);
       },
       error: (error) => {
-        this.error = error.message;
-        console.error('Error loading user data:', error);
+        this.toastService.error('Error loading user data:', error.message);
         this.userUpdateForm.reset();
       },
     });
-
-    this.passwordForm = this.builder.group({
-      oldPassword: ['', [Validators.required]],
-      newPassword: ['', [Validators.required, Validators.minLength(6)]],
-    });
-  }
-
-  onResetPassword(): void {
-    if (this.passwordForm.invalid) {
-      this.passwordForm.markAllAsTouched();
-      return;
-    }
-
-    const { oldPassword, newPassword } = this.passwordForm.value;
-
-    this.authService
-      .resetPassword({ currentPassword: oldPassword, newPassword })
-      .subscribe({
-        next: () => {
-          this.toastService.success('Contraseña actualizada exitosamente');
-          this.passwordForm.reset();
-        },
-        error: (error) => {
-          this.toastService.error(
-            error.message || 'Error al actualizar la contraseña'
-          );
-        },
-      });
   }
 
   onSubmit(): void {
@@ -129,7 +112,7 @@ export class UserEditComponent implements OnInit {
     }
 
     if (!this.id) {
-      this.error = 'User ID is required';
+      this.toastService.error('User ID is required', 'Error');
       return;
     }
 
@@ -149,20 +132,9 @@ export class UserEditComponent implements OnInit {
           });
         },
         error: (error) => {
-          this.error = error.message;
-          this.toastService.error(error.message, 'Error', {
-            position: 'top-center',
-            duration: 1000,
-            showCloseButton: false,
-            showProgressBar: true,
-          });
+          this.toastService.error(error.message, 'Error');
         },
       });
-
-    this.passwordForm = this.builder.group({
-      oldPassword: ['', [Validators.required]],
-      newPassword: ['', [Validators.required, Validators.minLength(6)]],
-    });
   }
 
   patchValue(user: User): void {
@@ -175,11 +147,6 @@ export class UserEditComponent implements OnInit {
       profileImagePath: user.profileImagePath,
       active: user.active,
       roleName: user.roleName,
-    });
-
-    this.passwordForm = this.builder.group({
-      oldPassword: ['', [Validators.required]],
-      newPassword: ['', [Validators.required, Validators.minLength(6)]],
     });
   }
 

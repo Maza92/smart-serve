@@ -13,6 +13,7 @@ import {
   ChevronLeft,
   ChevronRight,
   CircleCheckBig,
+  CircleUserRound,
   ClipboardList,
   Clock,
   CloudAlert,
@@ -89,4 +90,5 @@ export const lucideIcons = {
   CircleCheckBig,
   Wifi,
   FileText,
+  CircleUserRound,
 };

@@ -10,6 +10,7 @@ export const API_CONSTANTS = {
     CONTROLLER: '/auth',
     VERIFY_RESET_CODE: '/verify-reset-code',
     RESET_PASSWORD: '/reset-password',
+    RESET_PASSWORD_BY_ADMIN: '/reset-password-by-admin/:id',
     REGISTER: '/register',
     REFRESH_TOKEN: '/refresh-token',
     RECOVER_PASSWORD: '/recover-password',

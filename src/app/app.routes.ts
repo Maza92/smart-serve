@@ -60,6 +60,13 @@ export const routes: Routes = [
             './components/settings/users/user-edit/user-edit.component'
           ).then((m) => m.UserEditComponent),
       },
+      {
+        path: 'user',
+        loadComponent: () =>
+          import(
+            './components/settings/users/user-edit/user-edit.component'
+          ).then((m) => m.UserEditComponent),
+      },
     ],
   },
   {
