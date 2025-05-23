@@ -34,7 +34,10 @@ export const API_CONSTANTS = {
   },
 
   CASH: {
-    CONTROLLER: '/cach',
+    CONTROLLER: '/cash',
+    STATUS: '/status',
+    CURRENT: '/current',
+    AVAILABLE: '/available',
     GET_CASH_REGISTERS: '',
     CREATE_CASH_REGISTER: '/create',
     OPEN_CASH_REGISTER: '/open/:id',

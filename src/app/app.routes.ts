@@ -30,8 +30,20 @@ export const routes: Routes = [
       },
       {
         path: 'pos',
-        loadComponent: () =>
-          import('./pages/pos/pos.component').then((m) => m.PosComponent),
+        children: [
+          {
+            path: '',
+            loadComponent: () =>
+              import('./pages/pos/pos.component').then((m) => m.PosComponent),
+          },
+          {
+            path: 'cash-register',
+            loadComponent: () =>
+              import('./components/cash-register/cash-register.component').then(
+                (m) => m.CashRegisterComponent
+              ),
+          },
+        ],
       },
     ],
   },

@@ -1,6 +1,7 @@
-<div class="flex w-full items-center p-2 bg-outline" [class]="textColor">
+<div class="flex w-full items-center p-2 bg-transparent" [class]="textColor">
   <button (click)="goBack()" class="flex-none icon">
     <lucide-icon
+      [class]="textColor"
       name="chevron-left"
       size="32"
       [strokeWidth]="1.5"

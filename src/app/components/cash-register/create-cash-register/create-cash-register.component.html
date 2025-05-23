@@ -1,0 +1,55 @@
+<section class="w-full h-full bg-outline rounded-2xl">
+  <header class="w-full h-12 grid grid-cols-3 items-center px-2">
+    <div></div>
+    <h3 class="font-medium text-lg justify-self-center w-max">
+      Crear una nueva caja
+    </h3>
+    <button
+      class="w-8 h-8 rounded-full active:scale-90 transition-all duration-150 justify-self-end bg-primary-key text-on-background flex justify-center items-center active:bg-secondary-key"
+      (click)="closeModal()"
+    >
+      <lucide-icon name="x" size="16"></lucide-icon>
+    </button>
+  </header>
+  <main class="p-4 w-full">
+    <form class="w-full flex flex-col gap-2" [formGroup]="cashRegisterform">
+      <div class="form-group">
+        <label for="name" class="block text-sm font-medium text-gray-700">
+          Notas
+        </label>
+        <textarea
+          id="name"
+          formControlName="notes"
+          placeholder="Ingrese las notas"
+          class="form-input w-full p-4"
+          [ngClass]="{
+            'form-input-error':
+              notes?.invalid && (notes?.touched || notes?.dirty)
+          }"
+        ></textarea>
+      </div>
+      <div
+        *ngIf="notes?.invalid && (notes?.touched || notes?.dirty)"
+        class="form-error-message"
+      >
+        <p *ngIf="notes?.errors?.['required']">Este campo es requerido</p>
+        <p *ngIf="notes?.errors?.['maxlength']">
+          El campo debe tener un máximo de
+          {{ notes?.errors?.['maxlength'].requiredLength }} caracteres
+        </p>
+        <p *ngIf="notes?.errors?.['minlength']">
+          El campo debe tener un mínimo de
+          {{ notes?.errors?.['minlength'].requiredLength }} caracteres
+        </p>
+      </div>
+      <div class="w-full">
+        <button
+          class="button button-primary w-full"
+          (click)="createCashRegister()"
+        >
+          Crear caja
+        </button>
+      </div>
+    </form>
+  </main>
+</section>

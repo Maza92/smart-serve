@@ -1,0 +1,116 @@
+<section class="w-full h-full bg-background flex flex-col">
+  <div class="flex-shrink-0">
+    <app-back-bar
+      title="Caja registradora"
+      textColor="text-on-background"
+    ></app-back-bar>
+  </div>
+
+  <nav
+    class="w-full min-w-0 p-4 gap-4 grid grid-cols-2 grid-rows-2 [&>button]:h-36 overflow-hidden"
+  >
+    <button
+      (click)="CreateCashRegisterModal()"
+      [ngClass]="{
+        'bg-surface-container active:bg-surface-bright':
+          status === 'NONE' || status === 'CLOSED',
+        'bg-surface-container-lowest': status !== 'NONE' && status !== 'CLOSED'
+      }"
+      class="flex flex-col items-center justify-center gap-2 p-4 rounded-2xl transition-colors duration-150 relative overflow-hidden"
+    >
+      <i-lucide name="plus" class="text-primary-key"></i-lucide>
+      <span class="text-on-surface font-medium">Crear nueva caja</span>
+    </button>
+
+    <button
+      (click)="openCashRegister()"
+      [ngClass]="{
+        'bg-surface-container active:bg-surface-bright': status === 'CREATED',
+        'bg-surface-container-lowest': status !== 'CREATED'
+      }"
+      class="flex flex-col items-center justify-center gap-2 p-4 rounded-2xl transition-colors duration-150 relative overflow-hidden"
+    >
+      <i-lucide name="lock-keyhole-open" class="text-primary-key"></i-lucide>
+      <span class="text-on-surface font-medium">Abrir caja</span>
+    </button>
+
+    <button
+      (click)="closeCashRegister()"
+      [ngClass]="{
+        'bg-surface-container active:bg-surface-bright': status === 'OPENED',
+        'bg-surface-container-lowest': status !== 'OPENED'
+      }"
+      class="col-span-2 flex flex-col items-center justify-center gap-2 p-4 rounded-2xl bg-surface-container active:bg-surface-bright transition-colors duration-150 relative overflow-hidden"
+    >
+      <i-lucide name="lock-keyhole" class="text-primary-key"></i-lucide>
+      <span class="text-on-surface font-medium">Cerrar caja</span>
+    </button>
+  </nav>
+
+  <div class="min-h-0 flex-1 bg-white rounded-t-3xl flex flex-col">
+    <div
+      class="flex w-full justify-center items-center py-4 border-b border-gray-100"
+    >
+      <h3 class="text-xl font-medium text-gray-800">Historial de caja</h3>
+    </div>
+
+    <div class="flex-1 min-h-0 overflow-y-auto p-4 space-y-3">
+      <div
+        *ngFor="let item of cashRegisters"
+        class="border border-gray-200 rounded-xl p-4 flex justify-between items-end bg-white active:bg-gray-50 transition-colors duration-150 relative overflow-hidden"
+      >
+        <div
+          class="absolute inset-0 bg-surface-tint opacity-0 active:opacity-5 rounded-xl transition-opacity duration-150"
+        ></div>
+        <div>
+          <div class="flex gap-2 items-center mb-1">
+            <span class="font-medium text-lg text-gray-800">5/14/2025</span>
+            <div
+              class="bg-primary-key text-white rounded-full text-xs px-3 py-1 flex justify-center items-center"
+            >
+              Cerrado
+            </div>
+          </div>
+          <p class="text-sm font-light text-gray-500 mb-1">Turno mañana</p>
+          <p class="text-gray-600 text-sm">
+            Apertura: <span class="text-gray-800 font-medium">$300.00</span>
+          </p>
+        </div>
+        <p class="text-gray-600 text-sm">
+          Cierre: <span class="text-gray-800 font-medium">$300.00</span>
+        </p>
+      </div>
+
+      <div
+        *ngIf="cashRegisters.length === 0"
+        class="flex flex-col items-center justify-center py-10 opacity-70"
+      >
+        <i-lucide name="inbox" class="text-gray-400 w-16 h-16 mb-4"></i-lucide>
+        <p class="text-gray-500 text-center">
+          No hay registros de caja disponibles
+        </p>
+      </div>
+
+      <button
+        *ngIf="hasMore && !loading && cashRegisters.length > 0"
+        (click)="loadMore()"
+        class="button button-outline button-lg w-full"
+      >
+        Cargar más
+      </button>
+
+      <div *ngIf="loading" class="flex justify-center py-4">
+        <div
+          class="animate-spin rounded-full h-6 w-6 border-4 border-primary-key border-t-transparent"
+        ></div>
+      </div>
+
+      <div
+        *ngIf="!hasMore && cashRegisters.length > 0"
+        class="text-center text-gray-500 text-sm py-2"
+      >
+        No hay más registros para mostrar
+      </div>
+    </div>
+  </div>
+</section>

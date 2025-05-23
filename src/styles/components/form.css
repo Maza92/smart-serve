@@ -7,11 +7,11 @@
 }
 
 .form-input {
-  @apply border-2 border-background rounded-xl font-light bg-background  text-on-background focus:outline-none focus:placeholder:opacity-70 placeholder:text-on-surface placeholder:font-light;
+  @apply border-2 border-background rounded-xl font-light bg-background  text-on-background focus:outline-none focus:placeholder:opacity-70 placeholder:text-on-surface placeholder:font-light focus:ring-2 focus:ring-offset-2 focus:ring-surface-variant;
 }
 
 .form-input-error {
-  @apply border-error-container bg-error text-on-error placeholder:text-on-error;
+  @apply border-error-container bg-error text-on-error placeholder:text-on-error focus:ring-error-container;
 }
 
 .form-error-message {
@@ -19,7 +19,7 @@
 }
 
 .form-input-success {
-  @apply border-tertiary-fixed-dim bg-tertiary-fixed text-on-tertiary-fixed-variant placeholder:text-on-tertiary-fixed-variant;
+  @apply border-tertiary-fixed-dim bg-tertiary-fixed text-on-tertiary-fixed-variant placeholder:text-on-tertiary-fixed-variant focus:ring-on-tertiary-fixed;
 }
 
 .form-success-message {

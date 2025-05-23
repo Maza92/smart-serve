@@ -88,4 +88,40 @@ export class CashRegisterService extends BaseService {
       .put<ApiResponse<void>>(url, request)
       .pipe(catchError(this.handleError));
   }
+
+  getStatus(): Observable<ApiResponse<string>> {
+    const url = buildUrl(
+      ServiceType.API,
+      API_CONSTANTS.CASH.CONTROLLER,
+      API_CONSTANTS.CASH.STATUS
+    );
+
+    return this.http
+      .get<ApiResponse<string>>(url)
+      .pipe(catchError(this.handleError));
+  }
+
+  getCurrentOpenedCashRegister(): Observable<ApiResponse<CashRegister>> {
+    const url = buildUrl(
+      ServiceType.API,
+      API_CONSTANTS.CASH.CONTROLLER,
+      API_CONSTANTS.CASH.CURRENT
+    );
+
+    return this.http
+      .get<ApiResponse<CashRegister>>(url)
+      .pipe(catchError(this.handleError));
+  }
+
+  getAvailablesCashRegistersToOpen(): Observable<ApiResponse<CashRegister[]>> {
+    const url = buildUrl(
+      ServiceType.API,
+      API_CONSTANTS.CASH.CONTROLLER,
+      API_CONSTANTS.CASH.AVAILABLE
+    );
+
+    return this.http
+      .get<ApiResponse<CashRegister[]>>(url)
+      .pipe(catchError(this.handleError));
+  }
 }

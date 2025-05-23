@@ -7,4 +7,5 @@ export interface CashRegister {
   finalAmount: string;
   notes: string;
   status: string;
+  createdAt: string;
 }

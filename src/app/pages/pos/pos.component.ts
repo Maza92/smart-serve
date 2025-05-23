@@ -4,11 +4,12 @@ import { CommonModule } from '@angular/common';
 import { formatDate } from '@angular/common';
 import { PingService } from '@app/core/service/ping.service';
 import { NavigationService } from '@app/core/service/navigation.service';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-pos',
   standalone: true,
-  imports: [LucideAngularModule, CommonModule],
+  imports: [LucideAngularModule, CommonModule, RouterLink],
   templateUrl: './pos.component.html',
   styleUrl: './pos.component.css',
 })
@@ -16,6 +17,7 @@ export class PosComponent implements OnInit, OnDestroy {
   currentDate: string = '';
   currentTime: string = '';
   private intervalId: any;
+  private intervalPingId: any;
   serverStatus: boolean = true;
   networkOnline = navigator.onLine;
   path: string | null = null;
@@ -34,7 +36,7 @@ export class PosComponent implements OnInit, OnDestroy {
       this.updateDateTime();
     }, 1000);
 
-    setInterval(() => this.checkServerStatus(), 10000);
+    this.intervalPingId = setInterval(() => this.checkServerStatus(), 10000);
     window.addEventListener('online', () => {
       this.networkOnline = true;
     });
@@ -52,6 +54,10 @@ export class PosComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     if (this.intervalId) {
       clearInterval(this.intervalId);
+    }
+
+    if (this.intervalPingId) {
+      clearInterval(this.intervalPingId);
     }
   }
 
