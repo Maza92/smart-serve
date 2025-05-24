@@ -1,0 +1,129 @@
+<section class="w-full h-full bg-outline rounded-2xl">
+  <header class="w-full h-12 grid grid-cols-3 items-center px-2">
+    <div></div>
+    <h3 class="font-medium text-lg justify-self-center w-max">
+      Crear una nueva mesa
+    </h3>
+    <button
+      class="w-8 h-8 rounded-full active:scale-90 transition-all duration-150 justify-self-end bg-primary-key text-on-background flex justify-center items-center active:bg-secondary-key"
+      (click)="closeModal()"
+    >
+      <lucide-icon name="x" size="16"></lucide-icon>
+    </button>
+  </header>
+  <main class="p-4 w-full">
+    <form class="w-full flex flex-col gap-4" [formGroup]="tableForm">
+      <div class="form-group">
+        <label for="number" class="block text-sm font-medium text-gray-700">
+          Número de mesa
+        </label>
+        <input
+          type="number"
+          id="number"
+          formControlName="number"
+          placeholder="Ingrese el número de mesa"
+          class="form-input w-full p-4"
+          [ngClass]="{
+            'form-input-error':
+              number?.invalid && (number?.touched || number?.dirty)
+          }"
+        />
+        <div
+          *ngIf="number?.invalid && (number?.touched || number?.dirty)"
+          class="form-error-message"
+        >
+          <p *ngIf="number?.errors?.['required']">Este campo es requerido</p>
+          <p *ngIf="number?.errors?.['min']">
+            El número debe ser mayor a {{ number?.errors?.['min'].min }}
+          </p>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="capacity" class="block text-sm font-medium text-gray-700">
+          Capacidad
+        </label>
+        <input
+          type="number"
+          id="capacity"
+          formControlName="capacity"
+          placeholder="Ingrese la capacidad de la mesa"
+          class="form-input w-full p-4"
+          [ngClass]="{
+            'form-input-error':
+              capacity?.invalid && (capacity?.touched || capacity?.dirty)
+          }"
+        />
+        <div
+          *ngIf="capacity?.invalid && (capacity?.touched || capacity?.dirty)"
+          class="form-error-message"
+        >
+          <p *ngIf="capacity?.errors?.['required']">Este campo es requerido</p>
+          <p *ngIf="capacity?.errors?.['min']">
+            La capacidad debe ser mayor a {{ capacity?.errors?.['min'].min }}
+          </p>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="status" class="block text-sm font-medium text-gray-700">
+          Estado
+        </label>
+        <select
+          id="status"
+          formControlName="status"
+          class="form-input w-full p-4"
+          [ngClass]="{
+            'form-input-error':
+              status?.invalid && (status?.touched || status?.dirty)
+          }"
+        >
+          <option *ngFor="let option of statusOptions" [value]="option">
+            {{
+              option === "AVAILABLE"
+                ? "Disponible"
+                : option === "OCCUPIED"
+                ? "Ocupada"
+                : "Reservada"
+            }}
+          </option>
+        </select>
+        <div
+          *ngIf="status?.invalid && (status?.touched || status?.dirty)"
+          class="form-error-message"
+        >
+          <p *ngIf="status?.errors?.['required']">Este campo es requerido</p>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="section" class="block text-sm font-medium text-gray-700">
+          Sección
+        </label>
+        <input
+          type="text"
+          id="section"
+          formControlName="section"
+          placeholder="Ingrese la sección de la mesa"
+          class="form-input w-full p-4"
+          [ngClass]="{
+            'form-input-error':
+              section?.invalid && (section?.touched || section?.dirty)
+          }"
+        />
+        <div
+          *ngIf="section?.invalid && (section?.touched || section?.dirty)"
+          class="form-error-message"
+        >
+          <p *ngIf="section?.errors?.['required']">Este campo es requerido</p>
+        </div>
+      </div>
+
+      <div class="w-full">
+        <button class="button button-primary w-full" (click)="createTable()">
+          Crear mesa
+        </button>
+      </div>
+    </form>
+  </main>
+</section>

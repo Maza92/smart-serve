@@ -43,6 +43,14 @@ export const API_CONSTANTS = {
     OPEN_CASH_REGISTER: '/open/:id',
     CLOSE_CASH_REGISTER: '/close/:id',
   },
+
+  TABLE: {
+    CONTROLLER: '/restaurant-tables',
+    GET_TABLE: '/:id',
+    GET_TABLES: '',
+    CREATE_TABLE: '',
+    UPDATE_TABLE: '/:id',
+  },
 };
 
 export function getBaseUrl(serviceType: ServiceType): string {

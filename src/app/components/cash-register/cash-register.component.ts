@@ -66,12 +66,7 @@ export class CashRegisterComponent implements OnInit {
           this.hasMore = newData.length === this.pageSize;
         },
         error: (error) => {
-          this.toastService.error('Error', error.message, {
-            position: 'top-center',
-            showCloseButton: false,
-            showProgressBar: false,
-            duration: 3000,
-          });
+          this.toastService.error('Error', error.message);
         },
       });
   }

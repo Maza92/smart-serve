@@ -1,0 +1,22 @@
+<section
+  class="w-full h-dvh flex flex-col overflow-hidden"
+  [class]="backgroundColor"
+>
+  <div class="flex-shrink-0" *ngIf="showHeader">
+    <div *ngIf="headerTemplate; else defaultHeader">
+      <ng-container [ngTemplateOutlet]="headerTemplate"></ng-container>
+    </div>
+    <ng-template #defaultHeader>
+      <app-back-bar [title]="title" [textColor]="headerTextColor">
+      </app-back-bar>
+    </ng-template>
+  </div>
+
+  <div class="flex-1 min-h-0 overflow-y-auto" [ngClass]="scrollContainerClass">
+    <ng-content select="[slot=content]"></ng-content>
+  </div>
+
+  <div class="flex-shrink-0" *ngIf="showFooter">
+    <ng-content select="[slot=footer]"></ng-content>
+  </div>
+</section>

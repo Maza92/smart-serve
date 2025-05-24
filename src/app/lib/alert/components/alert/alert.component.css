@@ -25,23 +25,12 @@
 
 .alert-button {
   padding: 0.5rem 1rem;
-  border: none;
   border-radius: 0.375rem;
   cursor: pointer;
   font-weight: 500;
+  transition: all 0.2s ease-in-out;
 }
 
-.alert-button-primary {
-  background-color: var(--primary);
-  color: var(--on-primary);
-}
-
-.alert-button-secondary {
-  background-color: var(--surface-variant);
-  color: var(--on-surface-variant);
-}
-
-.alert-button-danger {
-  background-color: var(--error);
-  color: var(--on-error);
+.alert-button:active {
+  transform: scale(0.95);
 }

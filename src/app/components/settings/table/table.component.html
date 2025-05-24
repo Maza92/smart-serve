@@ -1,9 +1,127 @@
-<section class="w-full h-full bg-outline flex flex-col overflow-hidden">
-  <div class="flex-shrink-0">
-    <app-back-bar title="Título"></app-back-bar>
+<app-base-page title="Mi Página" [showFooter]="true">
+  <ng-template #header>
+    <app-back-bar title="Mesas"></app-back-bar>
+    <div class="p-4">
+      <h1 class="font-bold text-2xl">Administración de mesas</h1>
+      <p class="text-sm font-light text-gray-500">
+        A continuación se muestran todas las mesas registradas en el sistema.
+      </p>
+    </div>
+  </ng-template>
+
+  <div slot="content" class="m-4 space-y-4">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div
+        *ngFor="let table of tables"
+        class="card border border-gray-300 bg-outline relative"
+      >
+        <div class="absolute top-2 right-2 flex gap-2">
+          <button
+            class="p-2 rounded-full bg-error active:opacity-70"
+            (click)="deleteTable(table.id)"
+          >
+            <i-lucide name="trash-2" class="w-5 h-5 text-on-error"></i-lucide>
+          </button>
+          <button
+            class="p-2 rounded-full bg-secondary-fixed active:opacity-70"
+            (click)="editTableModal(table.id)"
+          >
+            <i-lucide
+              name="edit"
+              class="w-5 h-5 text-on-secondary-fixed"
+            ></i-lucide>
+          </button>
+        </div>
+
+        <div class="card-head">
+          <div class="flex items-center justify-start gap-2">
+            <h3 class="text-3xl font-bold">T{{ table.number }}</h3>
+            <div
+              *ngIf="table.status === 'AVAILABLE'"
+              class="bg-green-300 text-sm text-green-800 rounded-full px-3 flex gap-0 justify-center items-center"
+            >
+              <i-lucide
+                name="check"
+                class="w-4 h-4 mt-[0.5px]"
+                [strokeWidth]="3"
+              ></i-lucide>
+              <span> disponible </span>
+            </div>
+            <div
+              *ngIf="table.status === 'OCCUPIED'"
+              class="bg-error text-sm text-on-error rounded-full px-2 flex gap-0 justify-center items-center"
+            >
+              <i-lucide
+                name="dot"
+                class="w-5 h-5 [&>svg]:scale-[2.5]"
+              ></i-lucide>
+              <span class="mr-2"> ocupada </span>
+            </div>
+            <div
+              *ngIf="table.status === 'RESERVED'"
+              class="bg-yellow-200 text-sm text-yellow-800 rounded-full px-3 flex gap-1 justify-center items-center"
+            >
+              <i-lucide name="calendar" class="w-4 h-4"></i-lucide>
+              <span> reservada </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-body text-gray-500">
+          <div class="flex items-center gap-2">
+            <i-lucide name="users" class="w-5 h-5"></i-lucide>
+            <p class="card-text">{{ table.capacity }} asientos</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <i-lucide name="map-pin" class="w-5 h-5"></i-lucide>
+            <p class="card-text">Sección: {{ table.section }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      *ngIf="tables.length === 0"
+      class="flex flex-col items-center justify-center py-10 opacity-70"
+    >
+      <i-lucide name="inbox" class="text-gray-400 w-16 h-16 mb-4"></i-lucide>
+      <p class="text-gray-600 text-sm">
+        No se encontraron mesas registradas en el sistema.
+      </p>
+    </div>
+
+    <button
+      *ngIf="hasMore && !loading && tables.length > 0"
+      (click)="loadMore()"
+      class="button button-outline button-lg w-full"
+    >
+      Cargar más
+    </button>
+
+    <div *ngIf="loading" class="flex justify-center py-4">
+      <div
+        class="animate-spin rounded-full h-6 w-6 border-4 border-primary-key border-t-transparent"
+      ></div>
+    </div>
+
+    <div
+      *ngIf="!hasMore && tables.length > 0"
+      class="text-center text-gray-500 text-sm py-2"
+    >
+      No hay más mesas registradas en el sistema.
+    </div>
   </div>
 
-  <div class="flex-1 min-h-0 overflow-y-auto"></div>
-
-  <div class="flex-shrink-0"></div>
-</section>
+  <div slot="footer" class="p-4">
+    <div>
+      <button
+        class="button button-action button-primary button-lg w-full justify-center"
+        (click)="createTableModal()"
+      >
+        <span class="button-icon">
+          <i-lucide name="plus" class="w-5 h-5"></i-lucide>
+        </span>
+        <span class="button-label">Agregar nueva mesa</span>
+      </button>
+    </div>
+  </div>
+</app-base-page>

@@ -1,5 +1,8 @@
 <div class="alert-backdrop" *ngIf="activeAlert" (click)="closeAlert()">
-  <div class="alert alert-{{ activeAlert.config.type }}">
+  <div
+    class="alert alert-{{ activeAlert.config.type }}"
+    (click)="$event.stopPropagation()"
+  >
     @if (activeAlert.config.type === 'info') {
     <lucide-icon class="alert-icon" name="info"></lucide-icon>
     } @else if (activeAlert.config.type === 'success') {

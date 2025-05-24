@@ -68,3 +68,22 @@
 .toast-error .toast-button {
   @apply bg-on-error-container text-error-container;
 }
+
+.alert-info .alert-button-primary {
+  @apply bg-primary text-on-primary;
+}
+
+.alert-success .alert-button-secondary {
+  @apply bg-tertiary text-on-tertiary;
+}
+
+.alert-warning .alert-button-primary {
+  @apply bg-error text-on-error border border-on-error-container;
+}
+
+.alert-warning .alert-button-secondary {
+  @apply bg-error text-on-error border border-on-error-container;
+}
+.alert-warning .alert-button-danger {
+  @apply bg-error text-on-error border border-on-error;
+}
