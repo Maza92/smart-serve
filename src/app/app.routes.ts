@@ -43,6 +43,13 @@ export const routes: Routes = [
                 (m) => m.CashRegisterComponent
               ),
           },
+          {
+            path: 'tables',
+            loadComponent: () =>
+              import('./components/pos/tables/tables.component').then(
+                (m) => m.TablesComponent
+              ),
+          },
         ],
       },
     ],
@@ -78,6 +85,13 @@ export const routes: Routes = [
           import(
             './components/settings/users/user-edit/user-edit.component'
           ).then((m) => m.UserEditComponent),
+      },
+      {
+        path: 'table',
+        loadComponent: () =>
+          import('./components/settings/table/table.component').then(
+            (m) => m.TableComponent
+          ),
       },
     ],
   },
