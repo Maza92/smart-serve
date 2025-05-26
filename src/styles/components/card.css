@@ -3,7 +3,7 @@
 }
 
 .card .card-head {
-  @apply text-background flex flex-col gap-2;
+  @apply text-on-background flex flex-col gap-2;
 }
 
 .card .card-body {

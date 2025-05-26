@@ -3,11 +3,11 @@
 }
 
 .icon-primary {
-  @apply p-4 bg-primary-key text-on-background rounded-2xl;
+  @apply p-4 bg-primary text-on-primary rounded-2xl;
 }
 
 .icon-secondary {
-  @apply p-4 bg-secondary text-primary-key rounded-2xl;
+  @apply p-4 bg-secondary text-on-secondary rounded-2xl;
 }
 
 .icon-group {

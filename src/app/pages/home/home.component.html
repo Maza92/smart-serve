@@ -1,13 +1,16 @@
-<section class="p-0 h-full w-full bg-outline flex flex-col">
+<section class="p-0 h-full w-full bg-background flex flex-col">
   <header class="flex flex-col gap-4 p-6">
-    <div class="flex flex-col gap-3 text-background">
+    <div class="flex flex-col gap-3 text-on-background">
       <h1 class="text-5xl font-medium -translate-x-[2px]">Bienvenido</h1>
       <p class="text-xl">Hola, {{ username }}</p>
     </div>
     <nav
       class="grid grid-cols-2 gap-4 [&>article]:p-6 [&>article]:box-border [&>article]:rounded-3xl [&>article]:flex [&>article]:flex-col [&>article]:gap-4 [&>article]:justify-center [&>article]:items-start [&>article]:hover:opacity-75 [&>article]:transition-all [&>article]:duration-300 [&>article]:cursor-pointer [&>article>h3]:text-xl [&>article>h3]:font-medium"
     >
-      <article class="bg-primary text-background">
+      <article
+        class="bg-primary text-background active:bg-background active:text-primary"
+        routerLink="/home/inventory"
+      >
         <lucide-icon
           name="square-check"
           strokeWidth="3"
@@ -15,12 +18,12 @@
         ></lucide-icon>
         <h3 class="text-xl font-medium">Inventario</h3>
       </article>
-      <article class="bg-background text-primary" routerLink="/home/pos">
+      <article class="bg-surface-container text-primary" routerLink="/home/pos">
         <lucide-icon name="dollar-sign" strokeWidth="3" size="36"></lucide-icon>
         <h3 class="text-xl font-medium">Pos</h3>
       </article>
 
-      <article class="bg-background text-primary">
+      <article class="bg-surface-container text-primary">
         <lucide-icon
           name="chart-no-axes-column-increasing"
           strokeWidth="3"
@@ -35,11 +38,11 @@
     </nav>
   </header>
   <footer
-    class="bg-white rounded-t-2xl flex-1 flex flex-col text-inverse-on-surface overflow-hidden"
+    class="bg-surface-container rounded-t-2xl flex-1 flex flex-col text-inverse-on-surface overflow-hidden"
   >
     <section class="px-6 py-4 flex flex-col flex-1 overflow-hidden">
       <div class="flex justify-between mb-4">
-        <h2 class="text-xl">Notificaciones</h2>
+        <h2 class="text-xl text-on-surface">Notificaciones</h2>
         <div class="bg-outline p-2 rounded-full relative">
           <lucide-icon name="bell" strokeWidth="3" size="14"></lucide-icon>
           <span

@@ -1,18 +1,23 @@
 @reference "../../../styles.css";
 
 .component-section {
-  @apply mb-15 p-5 border border-gray-300 rounded-lg;
+  @apply mb-15 p-5 border border-gray-300 rounded-lg bg-background text-on-background;
 }
 .component-title {
-  @apply mt-0 border-b border-gray-300 pb-2 mb-5 text-gray-800;
+  @apply mt-0 border-b border-outline pb-2 mb-5 text-on-background;
 }
 .component-item {
   @apply mb-5;
 }
 .component-label {
-  @apply block mb-2 text-sm text-gray-500;
+  @apply block mb-2 text-sm text-on-surface;
 }
 
 .temp-style {
   @apply opacity-50 text-xs italic mt-1;
+}
+
+input,
+textarea {
+  @apply p-2;
 }

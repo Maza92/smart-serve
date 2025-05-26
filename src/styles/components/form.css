@@ -7,19 +7,19 @@
 }
 
 .form-input {
-  @apply border-2 border-background rounded-xl font-light bg-background  text-on-background focus:outline-none focus:placeholder:opacity-70 placeholder:text-on-surface placeholder:font-light focus:ring-2 focus:ring-offset-2 focus:ring-surface-variant;
+  @apply border-2 border-surface-container-high rounded-xl font-light bg-surface-container-high  text-on-surface focus:outline-none focus:placeholder:opacity-70 placeholder:text-on-surface-variant placeholder:font-light focus:ring-2 focus:ring-offset-2 focus:ring-offset-background focus:ring-outline;
 }
 
 .form-input-error {
-  @apply border-error-container bg-error text-on-error placeholder:text-on-error focus:ring-error-container;
+  @apply border-error-container bg-error-container text-on-error-container placeholder:text-on-error-container focus:ring-error-container;
 }
 
 .form-error-message {
-  @apply text-sm text-on-error;
+  @apply text-sm text-on-error-container;
 }
 
 .form-input-success {
-  @apply border-tertiary-fixed-dim bg-tertiary-fixed text-on-tertiary-fixed-variant placeholder:text-on-tertiary-fixed-variant focus:ring-on-tertiary-fixed;
+  @apply border-tertiary-fixed bg-tertiary-fixed text-on-tertiary-fixed-variant placeholder:text-on-tertiary-fixed-variant focus:ring-on-tertiary-fixed-variant;
 }
 
 .form-success-message {
@@ -30,7 +30,7 @@
 }
 
 .form-group-icon:has(.form-input-error) .icon {
-  @apply text-on-error;
+  @apply text-on-error-container;
 }
 
 .form-group-icon .form-input {
@@ -46,11 +46,11 @@
 }
 
 .form-group:has(.form-select) .form-label {
-  @apply font-medium text-background mb-2 text-lg;
+  @apply font-medium text-on-surface mb-2 text-lg;
 }
 
 .form-group:has(.form-select) .form-select {
-  @apply absolute appearance-none inset-0 w-full h-full cursor-pointer focus:outline-none text-primary-key px-4 pt-6;
+  @apply absolute appearance-none inset-0 w-full h-full cursor-pointer focus:outline-none text-primary px-4 pt-6;
 }
 
 .form-group:has(.form-select) .icon {

@@ -42,7 +42,7 @@
 }
 
 .alert-close {
-  @apply absolute top-1 right-1 p-2 z-50 bg-on-error text-error hover:opacity-50 rounded-full transition-opacity;
+  @apply absolute top-1 right-1 z-50 bg-on-error text-error active:opacity-50 rounded-full transition-opacity;
 }
 
 .toast-actions {
@@ -50,7 +50,7 @@
 }
 
 .toast-button {
-  @apply px-6 py-2 rounded-lg hover:opacity-75 transition-opacity;
+  @apply px-6 py-2 rounded-lg active:opacity-75 transition-opacity;
 }
 
 .toast-info .toast-button {

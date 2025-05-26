@@ -2,7 +2,7 @@
   class="w-full min-h-screen bg-cover bg-center flex flex-col justify-end"
   style="background-image: url('bg.png')"
 >
-  <div class="bg-outline min-h-[75vh] p-6 relative">
+  <div class="bg-background min-h-[75vh] p-6 relative">
     <div class="card h-42 bg-primary-key absolute -translate-y-1/2 inset-x-6">
       <div class="card-head">
         <div class="card-pin bg-red-400 text-sm">Bienvenido de vuelta</div>
@@ -79,9 +79,9 @@
         </div>
       </div>
       <div
-        class="flex items-center justify-between gap-2 mt-2 bg-on-surface rounded-2xl p-6"
+        class="flex items-center justify-between gap-2 mt-2 bg-surface-container-low rounded-2xl p-6"
       >
-        <p class="text-sm text-black">Mostrar contraseña</p>
+        <p class="text-sm text-on-surface">Mostrar contraseña</p>
         <label class="relative inline-flex items-center cursor-pointer">
           <input
             type="checkbox"
@@ -89,7 +89,7 @@
             (change)="togglePasswordVisibility()"
           />
           <div
-            class="w-11 h-6 bg-gray-400 rounded-full peer peer-checked:bg-primary-key peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all"
+            class="w-11 h-6 bg-surface rounded-full peer peer-checked:bg-primary peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-on-primary-fixed-variant after:rounded-full after:h-5 after:w-5 after:transition-all"
           ></div>
         </label>
       </div>

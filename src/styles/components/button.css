@@ -1,21 +1,21 @@
 .button {
-  @apply border border-transparent rounded-xl py-2 px-4 hover:opacity-80 transition duration-200 ease-in-out cursor-pointer;
+  @apply border border-transparent rounded-xl py-2 px-4 active:opacity-80 transition duration-200 ease-in-out cursor-pointer;
 }
 
 .button-primary {
-  @apply bg-primary-key text-on-background border-primary-key;
+  @apply bg-primary text-on-primary border-primary;
 }
 
 .button-secondary {
-  @apply bg-secondary-key text-on-background border-secondary-key;
+  @apply bg-secondary text-on-secondary border-secondary;
 }
 
 .button-outline {
-  @apply bg-outline text-primary-key border-primary-key hover:bg-primary-key hover:text-on-background;
+  @apply text-primary border-primary active:bg-primary active:text-on-primary;
 }
 
 .button-text {
-  @apply bg-transparent text-primary-key border-transparent hover:bg-primary-key hover:text-on-background;
+  @apply text-primary border-transparent active:bg-primary active:text-on-primary;
 }
 
 .button-action {

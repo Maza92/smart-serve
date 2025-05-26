@@ -1,11 +1,11 @@
-<section class="w-full h-dvh bg-outline">
-  <div class="sticky top-0 z-20 bg-outline">
+<section class="w-full h-dvh bg-background">
+  <div class="sticky top-0 z-20 bg-background">
     <app-back-bar
       title="Crear una cuenta"
-      textColor="text-black"
+      textColor="text-on-background"
     ></app-back-bar>
   </div>
-  <div class="w-full p-6">
+  <div class="w-full p-6 bg-background">
     <form [formGroup]="registerForm" class="flex flex-col gap-4">
       <div>
         <div class="form-group-icon mb-2">
@@ -180,9 +180,9 @@
       </div>
 
       <div
-        class="flex items-center justify-between gap-2 mt-2 bg-on-surface rounded-2xl p-6"
+        class="flex items-center justify-between gap-2 mt-2 bg-surface-container-high rounded-2xl p-6"
       >
-        <p class="text-sm text-black">Mostrar contraseña</p>
+        <p class="text-sm text-on-surface">Mostrar contraseña</p>
         <label class="relative inline-flex items-center cursor-pointer">
           <input
             type="checkbox"
@@ -190,15 +190,15 @@
             (change)="togglePasswordVisibility()"
           />
           <div
-            class="w-11 h-6 bg-gray-400 rounded-full peer peer-checked:bg-primary-key peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all"
+            class="w-11 h-6 bg-surface rounded-full peer peer-checked:bg-primary peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-on-primary-fixed-variant after:rounded-full after:h-5 after:w-5 after:transition-all"
           ></div>
         </label>
       </div>
       <div
-        class="flex items-center justify-between gap-2 mt-2 bg-on-surface rounded-2xl p-6"
+        class="flex items-center justify-between gap-2 mt-2 bg-surface-container-high rounded-2xl p-6"
       >
         <div class="flex-1">
-          <p class="text-sm text-black mb-4">
+          <p class="text-sm text-on-surface mb-4">
             Al crear una cuenta, aceptas nuestros términos
           </p>
           <div class="flex flex-col gap-2">
@@ -227,7 +227,7 @@
             formControlName="termsAccepted"
           />
           <div
-            class="w-11 h-6 bg-gray-400 rounded-full peer peer-checked:bg-primary-key peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all"
+            class="w-11 h-6 bg-surface rounded-full peer peer-checked:bg-primary peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-on-primary-fixed-variant after:rounded-full after:h-5 after:w-5 after:transition-all"
             [ngClass]="{
               'bg-error': termsAccepted?.invalid && termsAccepted?.touched
             }"
