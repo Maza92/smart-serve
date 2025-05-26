@@ -29,6 +29,13 @@ export const routes: Routes = [
           import('./pages/home/home.component').then((m) => m.HomeComponent),
       },
       {
+        path: 'inventory',
+        loadComponent: () =>
+          import('./pages/inventory/inventory.component').then(
+            (m) => m.InventoryComponent
+          ),
+      },
+      {
         path: 'pos',
         children: [
           {
@@ -44,10 +51,10 @@ export const routes: Routes = [
               ),
           },
           {
-            path: 'tables',
+            path: 'sales',
             loadComponent: () =>
-              import('./components/pos/tables/tables.component').then(
-                (m) => m.TablesComponent
+              import('./components/pos/sales/sales.component').then(
+                (m) => m.SalesComponent
               ),
           },
         ],

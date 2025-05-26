@@ -1,0 +1,168 @@
+<app-base-page [showFooter]="false">
+  <ng-template #header>
+    <div class="p-4">
+      <p class="text-lg text-neutral-key font-light">
+        Monitorea y administra tu inventario!
+      </p>
+      <div class="flex justify-between items-center my-2">
+        <h1 class="font-bold text-2xl text-background">
+          Dashboard de inventario
+        </h1>
+        <i-lucide
+          name="arrow-up-right"
+          class="h-8 w-8 text-primary-key"
+        ></i-lucide>
+      </div>
+
+      <div class="flex gap-2 h-12">
+        <button class="button button-primary button-action w-full">
+          <i-lucide name="plus" class="button-icon" [size]="26"></i-lucide>
+          <p class="text-sm w-max">Add</p>
+        </button>
+        <button class="button button-outline button-action">
+          <i-lucide
+            name="upload"
+            class="button-icon text-primary-key"
+            [size]="26"
+          ></i-lucide>
+          <p class="text-sm">Cargar</p>
+        </button>
+        <button class="button button-outline button-action">
+          <i-lucide
+            name="download"
+            class="button-icon text-primary-key"
+            [size]="26"
+          ></i-lucide>
+          <p class="text-sm">Descargar</p>
+        </button>
+      </div>
+    </div>
+  </ng-template>
+
+  <div slot="content" class="space-y-4">
+    <div class="w-full p-2">
+      <div
+        class="flex overflow-x-auto snap-x snap-mandatory gap-4 px-4 scrollbar-hide rounded-3xl"
+      >
+        <div
+          class="bg-purple-200 rounded-3xl p-8 min-w-full snap-center flex-shrink-0"
+        >
+          <div class="flex justify-between items-end text-secondary-key">
+            <p>Total items</p>
+            <lucide-icon
+              name="shopping-cart"
+              strokeWidth="2"
+              size="16"
+            ></lucide-icon>
+          </div>
+          <h3 class="text-2xl font-bold">1.247</h3>
+          <p class="text-secondary-key">+12% from last month</p>
+        </div>
+        <div
+          class="bg-blue-100 rounded-3xl p-8 min-w-[280px] snap-center flex-shrink-0"
+        >
+          <div class="flex justify-between items-end text-secondary-key">
+            <p>Low stock items</p>
+            <lucide-icon
+              name="alert-triangle"
+              strokeWidth="2"
+              size="16"
+            ></lucide-icon>
+          </div>
+          <h3 class="text-2xl font-bold">23</h3>
+          <p class="text-secondary-key">-5% from last month</p>
+        </div>
+        <div
+          class="bg-orange-100 rounded-3xl p-8 min-w-[280px] snap-center flex-shrink-0"
+        >
+          <div class="flex justify-between items-end text-secondary-key">
+            <p>Total value</p>
+            <lucide-icon
+              name="dollar-sign"
+              strokeWidth="2"
+              size="16"
+            ></lucide-icon>
+          </div>
+          <h3 class="text-2xl font-bold">$24,575</h3>
+          <p class="text-secondary-key">+23% from last month</p>
+        </div>
+        <div
+          class="bg-lime-100 rounded-3xl p-8 min-w-full snap-center flex-shrink-0"
+        >
+          <div class="flex justify-between items-end text-secondary-key">
+            <p>Categories</p>
+            <lucide-icon
+              name="grid-3x3"
+              strokeWidth="2"
+              size="16"
+            ></lucide-icon>
+          </div>
+          <h3 class="text-2xl font-bold">12</h3>
+          <p class="text-secondary-key">+2 new categories</p>
+        </div>
+      </div>
+    </div>
+    <div class="bg-red-50 m-4">
+      <div>
+        <p class="text-secondary-key text-lg font-light">
+          Category Stock Levels
+        </p>
+        <h2 class="text-4xl font-bold flex gap-2"><span>+</span>12%</h2>
+      </div>
+      <div class="w-full grid grid-cols-3 grid-rows-2 gap-4">
+        <div>
+          <h3 class="text-secondary-key text-sm font-light">Dairy</h3>
+          <p class="text-background text-xl font-regular">50%</p>
+          <div class="w-full h-4 bg-gray-200 rounded-full overflow-hidden">
+            <div class="h-full bg-blue-500 w-[50%]"></div>
+          </div>
+        </div>
+        <div>
+          <h3 class="text-secondary-key text-sm font-light">Produce</h3>
+          <p class="text-background text-xl font-regular">75%</p>
+          <div class="w-full h-4 bg-gray-200 rounded-full overflow-hidden">
+            <div class="h-full bg-blue-500 w-[75%]"></div>
+          </div>
+        </div>
+        <div>
+          <h3 class="text-secondary-key text-sm font-light">Meat</h3>
+          <p class="text-background text-xl font-regular">25%</p>
+          <div class="w-full h-4 bg-gray-200 rounded-full overflow-hidden">
+            <div class="h-full bg-blue-500 w-[25%]"></div>
+          </div>
+        </div>
+        <div>
+          <h3 class="text-secondary-key text-sm font-light">Beverages</h3>
+          <p class="text-background text-xl font-regular">100%</p>
+          <div class="w-full h-4 bg-gray-200 rounded-full overflow-hidden">
+            <div class="h-full bg-blue-500 w-[100%]"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="m-4 grid grid-cols-1 gap-4">
+      <div class="flex justify-between">
+        <h3>Recent Activities</h3>
+        <p>See all</p>
+      </div>
+      <div class="grid grid-cols-1 gap-4">
+        <div
+          class="bg-gray-400 rounded-3xl p-4 flex gap-4"
+          *ngFor="let items of [1, 2, 3, 4, 5, 6, 7, 8]"
+        >
+          <img
+            src="https://lh3.googleusercontent.com/a/ACg8ocLDZL6X_gGAux_5ZH8X-n_F4LIsRyKL0rjdk7CfCzFJuugPCcd8=s288-c-no"
+            alt=""
+            class="w-10 h-10 rounded-full object-cover"
+          />
+          <div class="flex flex-col justify-center">
+            <p class="text-background text-sm font-light">
+              John Doe purchased 2 items from the store.
+            </p>
+            <p class="text-secondary-key text-sm font-light">10 minutes ago</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</app-base-page>

@@ -1,1 +1,9 @@
-<p>tables works!</p>
+<app-base-page title="Mi Página" [showFooter]="true">
+  <ng-template #header>
+    <app-back-bar title="Mesas"></app-back-bar>
+  </ng-template>
+
+  <div slot="content" class="m-4 space-y-4"></div>
+
+  <div slot="footer" class="p-4"></div>
+</app-base-page>

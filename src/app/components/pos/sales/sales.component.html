@@ -1,0 +1,59 @@
+<app-base-page>
+  <ng-template #header>
+    <div class="shadow">
+      <app-back-bar title="Menú"></app-back-bar>
+      <div class="flex flex-col p-4">
+        <input
+          type="text"
+          class="form-input w-full px-2 py-3"
+          placeholder="Buscar..."
+        />
+      </div>
+      <div class="flex px-4 gap-2 [&>button]:bg-red-400 pb-4">
+        <button>Todos</button>
+        <button>Bebidas</button>
+        <button>Comidas</button>
+        <button>Postres</button>
+      </div>
+    </div>
+  </ng-template>
+
+  <div slot="content" class="m-4 space-y-4">
+    <div
+      class="border flex p-4 rounded-2xl gap-4 h-32 relative"
+      *ngFor="let table of tables"
+      (click)="selectTable(table.id)"
+      [class]="
+        table.selected
+          ? 'bg-amber-50 border-transparent ring-2 ring-primary-key ring-offset-0'
+          : 'bg-outline border-gray-300'
+      "
+    >
+      <img
+        class="w-26 h-auto object-cover rounded-xl shadow"
+        src="https://media.istockphoto.com/id/2191090089/photo/grilled-fish-served-in-a-fine-restaurant-with-green-beans-mash-cherry-tomatoes-olives-and.jpg?s=1024x1024&w=is&k=20&c=QFnyxhysSOOWJBEZ2G_MYktmtSxFw6gMwSCLOqTlk60="
+        alt=""
+      />
+      <div class="flex flex-col gap-1">
+        <h1 class="text-2xl font-bold">Nombre del plato</h1>
+        <p class="text-sm text-gray-500">Descripción del plato</p>
+        <p class="text-sm text-gray-500">Precio: $100</p>
+      </div>
+      <div class="absolute bottom-2 right-2" *ngIf="table.selected">
+        <div
+          class="bg-transparent w-6 h-6 border-8 border-primary-key rounded-full"
+        ></div>
+      </div>
+    </div>
+  </div>
+
+  <div slot="footer" class="p-4 flex gap-4">
+    <p class="w-min">6 platos seleccionados</p>
+    <button class="button button-action button-primary button-lg w-full">
+      <span class="button-icon">
+        <i-lucide name="plus" class="w-5 h-5"></i-lucide>
+      </span>
+      <span class="button-label">Ver orden</span>
+    </button>
+  </div>
+</app-base-page>
