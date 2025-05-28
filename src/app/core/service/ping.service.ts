@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { BaseService } from './base.service';
 import { HttpClient } from '@angular/common/http';
-import { API_CONSTANTS, buildUrl, ServiceType } from '../constant';
+import { API_CONSTANTS, buildUrl } from '../constant';
 import { catchError, Observable } from 'rxjs';
+import { ServiceType } from '../enums/api-enums';
 
 @Injectable({
   providedIn: 'root',

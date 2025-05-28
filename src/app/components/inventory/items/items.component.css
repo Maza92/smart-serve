@@ -1,0 +1,19 @@
+.item-card.swiped {
+  transform: translateX(-120px);
+}
+
+.item-actions {
+  transform: translateX(100%);
+  right: -120px;
+  z-index: 0;
+}
+
+.item-card.swiped + .item-actions,
+.item-card-container:has(.item-card.swiped) .item-actions {
+  transform: translateX(0);
+  right: 0;
+}
+
+.item-card.swiped {
+  transform: translateX(-120px);
+}

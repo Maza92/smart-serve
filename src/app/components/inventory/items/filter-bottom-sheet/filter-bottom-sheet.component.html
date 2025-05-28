@@ -1,0 +1,177 @@
+<div class="bg-white rounded-xl w-full">
+  <div
+    class="flex justify-between items-center mb-2 p-4 border-b border-gray-300"
+  >
+    <h2 class="text-lg font-medium">Filtros</h2>
+    <button (click)="closeModal()" class="text-gray-500">
+      <i-lucide name="x" class="w-6 h-6"></i-lucide>
+    </button>
+  </div>
+
+  <div class="p-4">
+    <div class="mb-6">
+      <h3 class="text-sm font-medium mb-2">Estado</h3>
+      <div class="flex gap-2 justify-center">
+        <button
+          [ngClass]="{
+            'button-primary': tempFilters.status === 'active',
+            'button-outline': tempFilters.status !== 'active'
+          }"
+          class="button button-sm w-full"
+          (click)="
+            tempFilters.status =
+              tempFilters.status === 'active' ? null : 'active'
+          "
+        >
+          Activos
+        </button>
+        <button
+          [ngClass]="{
+            'button-primary': tempFilters.status === 'inactive',
+            'button-outline': tempFilters.status !== 'inactive'
+          }"
+          class="button button-sm w-full"
+          (click)="
+            tempFilters.status =
+              tempFilters.status === 'inactive' ? null : 'inactive'
+          "
+        >
+          Inactivos
+        </button>
+      </div>
+    </div>
+
+    <div class="mb-6">
+      <h3 class="text-sm font-medium mb-2">Ubicación</h3>
+      <div class="flex flex-wrap gap-2 justify-center">
+        <button
+          *ngFor="let location of locations"
+          [ngClass]="{
+            'button-primary': tempFilters.location === location,
+            'button-outline': tempFilters.location !== location
+          }"
+          class="button button-sm mb-2"
+          (click)="
+            tempFilters.location =
+              tempFilters.location === location ? '' : location
+          "
+        >
+          {{ location }}
+        </button>
+      </div>
+    </div>
+
+    <div class="mb-6">
+      <h3 class="text-sm font-medium mb-2">Ordenar por</h3>
+      <div class="grid grid-cols-2 gap-2">
+        <button
+          [ngClass]="{
+            'button-primary':
+              tempFilters.sortBy === 'name' &&
+              tempFilters.sortDirection === 'asc',
+            'button-outline':
+              tempFilters.sortBy !== 'name' ||
+              tempFilters.sortDirection !== 'asc'
+          }"
+          class="button button-sm w-full"
+          (click)="
+            tempFilters.sortBy = 'name'; tempFilters.sortDirection = 'asc'
+          "
+        >
+          Nombre (A-Z)
+        </button>
+        <button
+          [ngClass]="{
+            'button-primary':
+              tempFilters.sortBy === 'name' &&
+              tempFilters.sortDirection === 'desc',
+            'button-outline':
+              tempFilters.sortBy !== 'name' ||
+              tempFilters.sortDirection !== 'desc'
+          }"
+          class="button button-sm w-full"
+          (click)="
+            tempFilters.sortBy = 'name'; tempFilters.sortDirection = 'desc'
+          "
+        >
+          Nombre (Z-A)
+        </button>
+        <button
+          [ngClass]="{
+            'button-primary':
+              tempFilters.sortBy === 'stockQuantity' &&
+              tempFilters.sortDirection === 'asc',
+            'button-outline':
+              tempFilters.sortBy !== 'stockQuantity' ||
+              tempFilters.sortDirection !== 'asc'
+          }"
+          class="button button-sm w-full"
+          (click)="
+            tempFilters.sortBy = 'stockQuantity';
+            tempFilters.sortDirection = 'asc'
+          "
+        >
+          Stock (Menor a Mayor)
+        </button>
+        <button
+          [ngClass]="{
+            'button-primary':
+              tempFilters.sortBy === 'stockQuantity' &&
+              tempFilters.sortDirection === 'desc',
+            'button-outline':
+              tempFilters.sortBy !== 'stockQuantity' ||
+              tempFilters.sortDirection !== 'desc'
+          }"
+          class="button button-sm w-full"
+          (click)="
+            tempFilters.sortBy = 'stockQuantity';
+            tempFilters.sortDirection = 'desc'
+          "
+        >
+          Stock (Mayor a Menor)
+        </button>
+        <button
+          [ngClass]="{
+            'button-primary':
+              tempFilters.sortBy === 'unitCost' &&
+              tempFilters.sortDirection === 'asc',
+            'button-outline':
+              tempFilters.sortBy !== 'unitCost' ||
+              tempFilters.sortDirection !== 'asc'
+          }"
+          class="button button-sm w-full"
+          (click)="
+            tempFilters.sortBy = 'unitCost'; tempFilters.sortDirection = 'asc'
+          "
+        >
+          Precio (Menor a Mayor)
+        </button>
+        <button
+          [ngClass]="{
+            'button-primary':
+              tempFilters.sortBy === 'unitCost' &&
+              tempFilters.sortDirection === 'desc',
+            'button-outline':
+              tempFilters.sortBy !== 'unitCost' ||
+              tempFilters.sortDirection !== 'desc'
+          }"
+          class="button button-sm w-full"
+          (click)="
+            tempFilters.sortBy = 'unitCost'; tempFilters.sortDirection = 'desc'
+          "
+        >
+          Precio (Mayor a Menor)
+        </button>
+      </div>
+    </div>
+
+    <div class="flex gap-2 mt-8">
+      <button (click)="clearFilters()" class="button button-outline w-full">
+        Limpiar
+      </button>
+      <button (click)="closeModal(true)" class="button button-primary w-full">
+        Aplicar
+      </button>
+    </div>
+  </div>
+</div>

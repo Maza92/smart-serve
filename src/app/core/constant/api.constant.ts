@@ -1,9 +1,5 @@
 import { environment } from '@environments/environment';
-
-export enum ServiceType {
-  AUTH = 'auth',
-  API = 'api',
-}
+import { ServiceType } from '../enums/api-enums';
 
 export const API_CONSTANTS = {
   AUTH: {
@@ -50,6 +46,29 @@ export const API_CONSTANTS = {
     GET_TABLES: '',
     CREATE_TABLE: '',
     UPDATE_TABLE: '/:id',
+  },
+
+  INVENTORY: {
+    CONTROLLER: '/inventory',
+    UPDATE_STOCK: '/update-stock',
+  },
+
+  INVENTORY_ITEM: {
+    CONTROLLER: '/inventory-items',
+    GET_ITEM: '/:id',
+    GET_ITEMS: '',
+    CREATE_ITEM: '',
+    UPDATE_ITEM: '/:id',
+    DELETE_ITEM: '/:id',
+  },
+
+  SUPPLIER: {
+    CONTROLLER: '/suppliers',
+    GET_SUPPLIER: '/:id',
+    GET_SUPPLIERS: '',
+    CREATE_SUPPLIER: '',
+    UPDATE_SUPPLIER: '/:id',
+    DELETE_SUPPLIER: '/:id',
   },
 };
 

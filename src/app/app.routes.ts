@@ -36,6 +36,13 @@ export const routes: Routes = [
           ),
       },
       {
+        path: 'items',
+        loadComponent: () =>
+          import('./components/inventory/items/items.component').then(
+            (m) => m.ItemsComponent
+          ),
+      },
+      {
         path: 'pos',
         children: [
           {

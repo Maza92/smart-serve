@@ -1,9 +1,16 @@
-export interface FilterOptions {
+export interface BaseFilterOptions {
   search?: string;
   status?: 'active' | 'inactive' | null;
-  role?: string | null;
   sortBy: string;
   sortDirection: 'asc' | 'desc';
+}
+
+export interface FilterOptions extends BaseFilterOptions {
+  role?: string | null;
+}
+
+export interface InventoryItemsFilterOptions extends BaseFilterOptions {
+  location?: string;
 }
 
 export interface ChipFilter {

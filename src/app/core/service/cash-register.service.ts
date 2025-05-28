@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BaseService } from './base.service';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { API_CONSTANTS, buildUrl, ServiceType } from '../constant';
+import { API_CONSTANTS, buildUrl } from '../constant';
 import { catchError, Observable } from 'rxjs';
 import { ApiResponse } from '../model/api';
 import { Paged } from '../model/paged';
@@ -9,6 +9,7 @@ import { CashRegister } from '../model/data/cash-register';
 import { OpenCashRegisterRequest } from '../model/cash/open-cash-register-request';
 import { CloseCashRegisterRequest } from '../model/cash/close-cash-register-request';
 import { CreateCashRegisterRequest } from '../model/cash/create-cash-register-request';
+import { ServiceType } from '../enums/api-enums';
 
 @Injectable({
   providedIn: 'root',

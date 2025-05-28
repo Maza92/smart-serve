@@ -1,12 +1,13 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { API_CONSTANTS, buildUrl, ServiceType } from '../constant';
+import { API_CONSTANTS, buildUrl } from '../constant';
 import { catchError, Observable } from 'rxjs';
 import { ApiResponse } from '../model/api';
 import { Paged } from '../model/paged';
 import { User } from '../model/data/user';
 import { BaseService } from './base.service';
 import { FilterOptions } from '../model/filter-options';
+import { ServiceType } from '../enums/api-enums';
 
 @Injectable({
   providedIn: 'root',

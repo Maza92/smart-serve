@@ -8,158 +8,177 @@
         <h1 class="font-bold text-2xl text-background">
           Dashboard de inventario
         </h1>
-        <i-lucide
-          name="arrow-up-right"
-          class="h-8 w-8 text-primary-key"
-        ></i-lucide>
-      </div>
-
-      <div class="flex gap-2 h-12">
-        <button class="button button-primary button-action w-full">
-          <i-lucide name="plus" class="button-icon" [size]="26"></i-lucide>
-          <p class="text-sm w-max">Add</p>
-        </button>
-        <button class="button button-outline button-action">
-          <i-lucide
-            name="upload"
-            class="button-icon text-primary-key"
-            [size]="26"
-          ></i-lucide>
-          <p class="text-sm">Cargar</p>
-        </button>
-        <button class="button button-outline button-action">
-          <i-lucide
-            name="download"
-            class="button-icon text-primary-key"
-            [size]="26"
-          ></i-lucide>
-          <p class="text-sm">Descargar</p>
-        </button>
+        <i-lucide name="bell" class="h-8 w-8 text-primary-key"></i-lucide>
       </div>
     </div>
   </ng-template>
 
   <div slot="content" class="space-y-4">
     <div class="w-full p-2">
-      <div
-        class="flex overflow-x-auto snap-x snap-mandatory gap-4 px-4 scrollbar-hide rounded-3xl"
-      >
-        <div
-          class="bg-purple-200 rounded-3xl p-8 min-w-full snap-center flex-shrink-0"
-        >
-          <div class="flex justify-between items-end text-secondary-key">
-            <p>Total items</p>
+      <div class="grid grid-cols-2 gap-4 px-2">
+        <div class="bg-primary-container rounded-3xl p-6 flex flex-col gap-2">
+          <div class="flex justify-between items-center">
+            <p class="text-on-primary-container">Total items</p>
             <lucide-icon
               name="shopping-cart"
+              class="text-on-primary-container"
               strokeWidth="2"
               size="16"
             ></lucide-icon>
           </div>
-          <h3 class="text-2xl font-bold">1.247</h3>
-          <p class="text-secondary-key">+12% from last month</p>
+          <div class="flex items-end gap-2">
+            <h3 class="text-3xl font-bold text-on-primary-container">1.247</h3>
+            <div class="flex items-center text-tertiary text-sm">
+              <lucide-icon name="trending-up" size="14"></lucide-icon>
+              <span>12%</span>
+            </div>
+          </div>
+          <p class="text-on-primary-container text-xs">
+            +12% desde el mes pasado
+          </p>
         </div>
-        <div
-          class="bg-blue-100 rounded-3xl p-8 min-w-[280px] snap-center flex-shrink-0"
-        >
-          <div class="flex justify-between items-end text-secondary-key">
-            <p>Low stock items</p>
+
+        <div class="bg-secondary-container rounded-3xl p-6 flex flex-col gap-2">
+          <div class="flex justify-between items-center">
+            <p class="text-on-secondary-container">Stock bajo</p>
             <lucide-icon
               name="alert-triangle"
+              class="text-on-secondary-container"
               strokeWidth="2"
               size="16"
             ></lucide-icon>
           </div>
-          <h3 class="text-2xl font-bold">23</h3>
-          <p class="text-secondary-key">-5% from last month</p>
+          <div class="flex items-end gap-2">
+            <h3 class="text-3xl font-bold text-on-secondary-container">23</h3>
+            <div class="flex items-center text-error text-sm">
+              <lucide-icon name="trending-down" size="14"></lucide-icon>
+              <span>5%</span>
+            </div>
+          </div>
+          <p class="text-on-secondary-container text-xs">
+            -5% desde el mes pasado
+          </p>
         </div>
-        <div
-          class="bg-orange-100 rounded-3xl p-8 min-w-[280px] snap-center flex-shrink-0"
-        >
-          <div class="flex justify-between items-end text-secondary-key">
-            <p>Total value</p>
+
+        <div class="bg-tertiary-container rounded-3xl p-6 flex flex-col gap-2">
+          <div class="flex justify-between items-center">
+            <p class="text-on-tertiary-container">Valor total</p>
             <lucide-icon
               name="dollar-sign"
+              class="text-on-tertiary-container"
               strokeWidth="2"
               size="16"
             ></lucide-icon>
           </div>
-          <h3 class="text-2xl font-bold">$24,575</h3>
-          <p class="text-secondary-key">+23% from last month</p>
+          <div class="flex items-end gap-2">
+            <h3 class="text-3xl font-bold text-on-tertiary-container">
+              $24,575
+            </h3>
+            <div class="flex items-center text-tertiary text-sm">
+              <lucide-icon name="trending-up" size="14"></lucide-icon>
+              <span>23%</span>
+            </div>
+          </div>
+          <p class="text-on-tertiary-container text-xs">
+            +23% desde el mes pasado
+          </p>
         </div>
+
         <div
-          class="bg-lime-100 rounded-3xl p-8 min-w-full snap-center flex-shrink-0"
+          class="bg-surface-container-high rounded-3xl p-6 flex flex-col gap-2"
         >
-          <div class="flex justify-between items-end text-secondary-key">
-            <p>Categories</p>
+          <div class="flex justify-between items-center">
+            <p class="text-on-surface">Categorías</p>
             <lucide-icon
               name="grid-3x3"
+              class="text-on-surface"
               strokeWidth="2"
               size="16"
             ></lucide-icon>
           </div>
-          <h3 class="text-2xl font-bold">12</h3>
-          <p class="text-secondary-key">+2 new categories</p>
+          <div class="flex items-end gap-2">
+            <h3 class="text-3xl font-bold text-on-surface">12</h3>
+            <div class="flex items-center text-tertiary text-sm">
+              <lucide-icon name="plus" size="14"></lucide-icon>
+              <span>2</span>
+            </div>
+          </div>
+          <p class="text-on-surface text-xs">+2 nuevas categorías</p>
         </div>
       </div>
     </div>
-    <div class="bg-red-50 m-4">
-      <div>
-        <p class="text-secondary-key text-lg font-light">
-          Category Stock Levels
+
+    <div class="bg-inverse-surface m-4 p-6 rounded-3xl">
+      <div class="mb-4">
+        <p class="text-inverse-on-surface text-lg font-light">
+          Niveles de Stock por Categoría
         </p>
-        <h2 class="text-4xl font-bold flex gap-2"><span>+</span>12%</h2>
+        <h2 class="text-4xl font-bold flex gap-2 text-surface">
+          <span class="text-tertiary-container">+</span>12%
+        </h2>
       </div>
-      <div class="w-full grid grid-cols-3 grid-rows-2 gap-4">
+      <div class="w-full grid grid-cols-2 gap-6">
         <div>
-          <h3 class="text-secondary-key text-sm font-light">Dairy</h3>
-          <p class="text-background text-xl font-regular">50%</p>
-          <div class="w-full h-4 bg-gray-200 rounded-full overflow-hidden">
-            <div class="h-full bg-blue-500 w-[50%]"></div>
+          <h3 class="text-inverse-on-surface text-sm font-light">Lácteos</h3>
+          <p class="text-shadow-inverse-on-surface text-xl font-medium">50%</p>
+          <div class="w-full h-4 bg-on-surface rounded-full overflow-hidden">
+            <div class="h-full bg-primary w-[50%] rounded-full"></div>
           </div>
         </div>
         <div>
-          <h3 class="text-secondary-key text-sm font-light">Produce</h3>
-          <p class="text-background text-xl font-regular">75%</p>
-          <div class="w-full h-4 bg-gray-200 rounded-full overflow-hidden">
-            <div class="h-full bg-blue-500 w-[75%]"></div>
+          <h3 class="text-inverse-on-surface text-sm font-light">
+            Frutas y Verduras
+          </h3>
+          <p class="text-shadow-inverse-on-surface text-xl font-medium">75%</p>
+          <div class="w-full h-4 bg-on-surface rounded-full overflow-hidden">
+            <div class="h-full bg-primary w-[75%] rounded-full"></div>
           </div>
         </div>
         <div>
-          <h3 class="text-secondary-key text-sm font-light">Meat</h3>
-          <p class="text-background text-xl font-regular">25%</p>
-          <div class="w-full h-4 bg-gray-200 rounded-full overflow-hidden">
-            <div class="h-full bg-blue-500 w-[25%]"></div>
+          <h3 class="text-inverse-on-surface text-sm font-light">Carnes</h3>
+          <p class="text-shadow-inverse-on-surface text-xl font-medium">25%</p>
+          <div class="w-full h-4 bg-on-surface rounded-full overflow-hidden">
+            <div class="h-full bg-primary w-[25%] rounded-full"></div>
           </div>
         </div>
         <div>
-          <h3 class="text-secondary-key text-sm font-light">Beverages</h3>
-          <p class="text-background text-xl font-regular">100%</p>
-          <div class="w-full h-4 bg-gray-200 rounded-full overflow-hidden">
-            <div class="h-full bg-blue-500 w-[100%]"></div>
+          <h3 class="text-inverse-on-surface text-sm font-light">Bebidas</h3>
+          <p class="text-shadow-inverse-on-surface text-xl font-medium">100%</p>
+          <div class="w-full h-4 bg-on-surface rounded-full overflow-hidden">
+            <div class="h-full bg-primary w-[100%] rounded-full"></div>
           </div>
         </div>
       </div>
     </div>
-    <div class="m-4 grid grid-cols-1 gap-4">
-      <div class="flex justify-between">
-        <h3>Recent Activities</h3>
-        <p>See all</p>
+
+    <div class="p-4 bg-white rounded-t-2xl">
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="text-inverse-on-surface font-medium text-lg">
+          Actividades Recientes
+        </h3>
+        <p class="text-primary-key text-sm cursor-pointer">Ver todo</p>
       </div>
-      <div class="grid grid-cols-1 gap-4">
+      <div class="grid grid-cols-1 gap-3 overflow-y-hidden h-[400px]">
         <div
-          class="bg-gray-400 rounded-3xl p-4 flex gap-4"
-          *ngFor="let items of [1, 2, 3, 4, 5, 6, 7, 8]"
+          class="border border-gray-300 rounded-3xl p-4 flex gap-4 items-center"
+          *ngFor="let items of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]"
         >
-          <img
-            src="https://lh3.googleusercontent.com/a/ACg8ocLDZL6X_gGAux_5ZH8X-n_F4LIsRyKL0rjdk7CfCzFJuugPCcd8=s288-c-no"
-            alt=""
-            class="w-10 h-10 rounded-full object-cover"
-          />
+          <div
+            class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center"
+          >
+            <lucide-icon
+              name="user"
+              class="text-on-primary-container"
+              size="18"
+            ></lucide-icon>
+          </div>
           <div class="flex flex-col justify-center">
-            <p class="text-background text-sm font-light">
-              John Doe purchased 2 items from the store.
+            <p class="text-inverse-on-surface text-sm font-medium">
+              Juan Pérez compró 2 artículos de la tienda.
             </p>
-            <p class="text-secondary-key text-sm font-light">10 minutes ago</p>
+            <p class="text-on-secondary-fixed-variant text-xs">
+              Hace 10 minutos
+            </p>
           </div>
         </div>
       </div>

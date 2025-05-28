@@ -1,11 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, map, throwError } from 'rxjs';
-import {
-  API_CONSTANTS,
-  ServiceType,
-  buildUrl,
-} from '@core/constant/api.constant';
+import { API_CONSTANTS, buildUrl } from '@core/constant/api.constant';
 import { LocalStorageService } from '@core/service/local-storage.service';
 import { LoginResponse } from '@core/model/auth/login-response';
 import { LoginRequest } from '@core/model/auth/login-request';
@@ -19,6 +15,7 @@ import { ResetTokenResponse } from '@core/model/auth/reset-token-response';
 import { RecoverPasswordRequest } from '@core/model/auth/recover-password-request';
 import { ResetPasswordRequest } from '@core/model/auth/reset-password-request';
 import { ResetPasswordByAdminRequest } from '@core/model/auth/reset-password-by-admin-request';
+import { ServiceType } from '../enums/api-enums';
 
 @Injectable({
   providedIn: 'root',

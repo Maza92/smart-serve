@@ -1,0 +1,166 @@
+<app-base-page title="Items" [showFooter]="true">
+  <ng-template #header>
+    <app-back-bar title="Productos"></app-back-bar>
+    <div class="p-4">
+      <div class="form-group-icon">
+        <i-lucide name="search" class="icon text-gray-400" size="25"></i-lucide>
+        <input
+          type="text"
+          [(ngModel)]="searchInput"
+          (ngModelChange)="onSearchChange($event)"
+          placeholder="Buscar por nombre o proveedor"
+          class="form-input pr-12 py-2 w-full"
+        />
+
+        <button
+          (click)="openFilterModal()"
+          class="absolute right-5 top-1/2 transform -translate-y-1/2"
+        >
+          <i-lucide
+            name="filter"
+            class="w-4 h-4"
+            [ngClass]="{
+              'text-primary': activeFilters.length > 0,
+              'text-gray-400': activeFilters.length === 0
+            }"
+          ></i-lucide>
+        </button>
+      </div>
+
+      <div class="flex gap-2 mt-3">
+        <button
+          class="button button-sm"
+          [ngClass]="{
+            'button-primary': filters.status === null,
+            'button-outline': filters.status !== null
+          }"
+          (click)="filterByStatus(null)"
+        >
+          Todos
+        </button>
+        <button
+          class="button button-sm"
+          [ngClass]="{
+            'button-primary': filters.status === 'active',
+            'button-outline': filters.status !== 'active'
+          }"
+          (click)="filterByStatus('active')"
+        >
+          Activos
+        </button>
+        <button
+          class="button button-sm"
+          [ngClass]="{
+            'button-primary': filters.status === 'inactive',
+            'button-outline': filters.status !== 'inactive'
+          }"
+          (click)="filterByStatus('inactive')"
+        >
+          Inactivos
+        </button>
+      </div>
+
+      <div class="flex flex-wrap gap-2 mt-2" *ngIf="activeFilters.length > 0">
+        <app-filter-chip
+          *ngFor="let filter of activeFilters"
+          [filter]="filter"
+          (remove)="removeFilter($event)"
+        ></app-filter-chip>
+      </div>
+    </div>
+  </ng-template>
+
+  <div slot="content" class="m-4 space-y-4">
+    <div class="flex flex-col gap-3">
+      <div
+        class="item-card-wrapper relative overflow-hidden transition-transform duration-300"
+        *ngFor="let item of items; let i = index"
+      >
+        <div
+          class="relative flex w-full h-full bg-on-surface rounded-2xl overflow-hidden"
+        >
+          <div
+            class="item-card relative w-full bg-background rounded-2xl p-4 shadow-md z-10 transition-transform duration-300 touch-pan-y"
+            [attr.data-index]="i"
+            (touchstart)="onTouchStart($event, i)"
+            (touchmove)="onTouchMove($event, i)"
+            (touchend)="onTouchEnd($event, i)"
+          >
+            <div class="flex items-center">
+              <div
+                class="w-20 h-20 rounded-xl overflow-hidden mr-4 bg-gray-200 flex items-center justify-center"
+              >
+                <i-lucide
+                  name="package"
+                  class="w-10 h-10 text-gray-400"
+                ></i-lucide>
+              </div>
+              <div class="flex-1">
+                <h3 class="font-semibold text-base text-on-surface mb-1">
+                  {{ item.name }}
+                </h3>
+                <p class="text-sm text-on-surface-variant mb-0.5">
+                  {{ item.stockQuantity }} en Stock ({{ item.unit }})
+                </p>
+                <p class="text-xs text-outline">{{ item.supplierName }}</p>
+              </div>
+              <div class="font-semibold text-lg text-on-surface">
+                <p>${{ item.unitCost.toFixed(2) }}</p>
+              </div>
+            </div>
+          </div>
+          <div
+            class="item-actions absolute top-0 right-0 h-full w-[120px] flex items-center justify-center gap-2"
+          >
+            <button
+              class="flex items-center justify-center w-12 h-12 bg-primary-key rounded-2xl text-white border-none"
+              (click)="editItem(item)"
+            >
+              <i-lucide name="edit" class="w-5 h-5"></i-lucide>
+            </button>
+            <button
+              class="flex items-center justify-center w-12 h-12 bg-error-container rounded-2xl text-white border-none"
+              (click)="deleteItem(item)"
+            >
+              <i-lucide name="trash" class="w-5 h-5"></i-lucide>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="items.length === 0 && !loading" class="text-center py-8">
+        <i-lucide
+          name="package-x"
+          class="w-16 h-16 mx-auto text-gray-300 mb-4"
+        ></i-lucide>
+        <p class="text-gray-500">No se encontraron productos</p>
+      </div>
+
+      <div *ngIf="loading" class="text-center py-8">
+        <i-lucide
+          name="loader"
+          class="w-8 h-8 mx-auto text-primary-key animate-spin"
+        ></i-lucide>
+        <p class="text-gray-500 mt-2">Cargando productos...</p>
+      </div>
+
+      <button
+        *ngIf="hasMore && !loading && items.length > 0"
+        (click)="loadMore()"
+        class="button button-outline w-full mt-4"
+      >
+        Cargar más
+      </button>
+    </div>
+  </div>
+
+  <div slot="footer" class="p-4">
+    <button
+      (click)="openCreateModal()"
+      class="button button-action button-primary w-full justify-center"
+    >
+      <i-lucide name="plus" class="button-icon"></i-lucide>
+      <span class="button-label">Agregar Producto </span>
+    </button>
+  </div>
+</app-base-page>

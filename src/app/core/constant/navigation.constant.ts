@@ -10,7 +10,13 @@ export const NAV_ITEMS: NavItem[] = [
   {
     name: 'Inventario',
     icon: 'package',
-    path: '/inventario',
+    path: '/inventory',
+    exclusions: [],
+  },
+  {
+    name: 'Productos',
+    icon: 'package',
+    path: '/home/items',
     exclusions: [],
   },
   {
