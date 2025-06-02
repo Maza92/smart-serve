@@ -39,10 +39,7 @@ export class SupplierService extends BaseService {
         params = params.set('search', filters.search);
       }
       if (filters.status) {
-        params = params.set(
-          'isActive',
-          filters.status === 'active' ? 'true' : 'false'
-        );
+        params = params.set('isActive', filters.status);
       }
       if (filters.sortBy) {
         params = params.set('sortBy', filters.sortBy);

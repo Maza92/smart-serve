@@ -80,7 +80,7 @@
           class="relative flex w-full h-full bg-on-surface rounded-2xl overflow-hidden"
         >
           <div
-            class="item-card relative w-full bg-background rounded-2xl p-4 shadow-md z-10 transition-transform duration-300 touch-pan-y"
+            class="item-card relative w-full bg-outline border border-gray-300 rounded-2xl p-4 shadow-md z-10 transition-transform duration-300 touch-pan-y"
             [attr.data-index]="i"
             (touchstart)="onTouchStart($event, i)"
             (touchmove)="onTouchMove($event, i)"
@@ -96,15 +96,17 @@
                 ></i-lucide>
               </div>
               <div class="flex-1">
-                <h3 class="font-semibold text-base text-on-surface mb-1">
+                <h3
+                  class="font-semibold text-base text-inverse-on-surface mb-1"
+                >
                   {{ item.name }}
                 </h3>
-                <p class="text-sm text-on-surface-variant mb-0.5">
+                <p class="text-sm text-surface-bright mb-0.5">
                   {{ item.stockQuantity }} en Stock ({{ item.unit }})
                 </p>
-                <p class="text-xs text-outline">{{ item.supplierName }}</p>
+                <p class="text-xs text-gray-500">{{ item.supplierName }}</p>
               </div>
-              <div class="font-semibold text-lg text-on-surface">
+              <div class="font-semibold text-lg text-gray-500">
                 <p>${{ item.unitCost.toFixed(2) }}</p>
               </div>
             </div>

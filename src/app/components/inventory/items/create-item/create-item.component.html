@@ -170,18 +170,21 @@
       </div>
     </div>
 
-    <div class="mb-6">
-      <div class="flex items-center">
+    <div
+      class="flex items-center justify-between gap-2 mb-6 bg-on-surface rounded-2xl p-6"
+    >
+      <p class="text-sm text-black">Activo</p>
+      <label class="relative inline-flex items-center cursor-pointer">
         <input
           type="checkbox"
+          class="sr-only peer"
           id="isActive"
           formControlName="isActive"
-          class="form-checkbox h-4 w-4 text-primary-key"
         />
-        <label for="isActive" class="ml-2 block text-sm text-gray-700"
-          >Activo</label
-        >
-      </div>
+        <div
+          class="w-11 h-6 bg-gray-400 rounded-full peer peer-checked:bg-primary-key peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all"
+        ></div>
+      </label>
     </div>
 
     <div class="flex gap-2 mt-6">

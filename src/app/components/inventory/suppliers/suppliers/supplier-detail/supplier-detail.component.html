@@ -1,0 +1,119 @@
+<app-base-page [title]="`Proveedor ${supplierId}`" headerTextColor="text-black">
+  <div slot="content" class="m-4 space-y-4">
+    <div *ngIf="loading" class="flex justify-center items-center py-12">
+      <i-lucide
+        name="loader"
+        class="w-8 h-8 animate-spin text-primary-key"
+      ></i-lucide>
+    </div>
+
+    <div *ngIf="!loading && supplier" class="bg-white rounded-xl shadow-sm">
+      <div
+        class="p-6 border-b border-gray-200 flex justify-between items-center"
+      >
+        <div>
+          <h1 class="text-2xl font-bold">{{ supplier.name }}</h1>
+          <div class="mt-2 flex items-center">
+            <span
+              class="px-3 py-1 rounded-full text-xs font-medium"
+              [ngClass]="{
+                'bg-tertiary-container text-on-tertiary-container':
+                  supplier.isActive,
+                'bg-error-container text-on-error-container': !supplier.isActive
+              }"
+            >
+              {{ supplier.isActive ? "Activo" : "Inactivo" }}
+            </span>
+          </div>
+        </div>
+        <div class="flex space-x-2">
+          <button
+            (click)="openEditModal()"
+            class="button button-outline flex items-center"
+          >
+            <i-lucide name="edit" class="w-4 h-4 mr-2"></i-lucide>
+            Editar
+          </button>
+          <button
+            (click)="confirmDelete()"
+            class="button bg-error text-on-error active:bg-on-error active:text-error transition-all flex items-center"
+            [disabled]="deleting"
+          >
+            <i-lucide
+              *ngIf="deleting"
+              name="loader"
+              class="animate-spin mr-2 h-4 w-4"
+            ></i-lucide>
+            <i-lucide
+              *ngIf="!deleting"
+              name="trash"
+              class="w-4 h-4 mr-2"
+            ></i-lucide>
+            Eliminar
+          </button>
+        </div>
+      </div>
+
+      <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="space-y-4">
+          <div>
+            <h3 class="text-sm font-medium text-gray-500">
+              Persona de Contacto
+            </h3>
+            <p class="mt-1 text-base">{{ supplier.contactPerson }}</p>
+          </div>
+
+          <div>
+            <h3 class="text-sm font-medium text-gray-500">Email</h3>
+            <p class="mt-1 text-base">{{ supplier.email }}</p>
+          </div>
+
+          <div>
+            <h3 class="text-sm font-medium text-gray-500">Teléfono</h3>
+            <p class="mt-1 text-base">{{ supplier.phone }}</p>
+          </div>
+        </div>
+
+        <div class="space-y-4">
+          <div>
+            <h3 class="text-sm font-medium text-gray-500">Dirección</h3>
+            <p class="mt-1 text-base">{{ supplier.address }}</p>
+          </div>
+
+          <div>
+            <h3 class="text-sm font-medium text-gray-500">Fecha de Creación</h3>
+            <p class="mt-1 text-base">
+              {{ supplier.createdAt | date : "dd/MM/yyyy HH:mm" }}
+            </p>
+          </div>
+
+          <div>
+            <h3 class="text-sm font-medium text-gray-500">
+              Última Actualización
+            </h3>
+            <p class="mt-1 text-base">
+              {{ supplier.updatedAt | date : "dd/MM/yyyy HH:mm" }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="!loading && !supplier" class="text-center py-12">
+      <i-lucide
+        name="alert-circle"
+        class="w-12 h-12 mx-auto text-error"
+      ></i-lucide>
+      <h2 class="mt-4 text-xl font-medium">Proveedor no encontrado</h2>
+      <p class="mt-2 text-gray-600">
+        El proveedor que estás buscando no existe o ha sido eliminado.
+      </p>
+      <a
+        [routerLink]="['/inventory/suppliers']"
+        class="mt-4 inline-block button button-primary"
+      >
+        Volver a Proveedores
+      </a>
+    </div>
+  </div>
+</app-base-page>

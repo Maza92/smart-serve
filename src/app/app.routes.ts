@@ -30,10 +30,41 @@ export const routes: Routes = [
       },
       {
         path: 'inventory',
-        loadComponent: () =>
-          import('./pages/inventory/inventory.component').then(
-            (m) => m.InventoryComponent
-          ),
+        children: [
+          {
+            path: '',
+            loadComponent: () =>
+              import('./pages/inventory/inventory.component').then(
+                (m) => m.InventoryComponent
+              ),
+          },
+          {
+            path: 'suppliers',
+            children: [
+              {
+                path: '',
+                loadComponent: () =>
+                  import(
+                    './components/inventory/suppliers/suppliers/suppliers.component'
+                  ).then((m) => m.SuppliersComponent),
+              },
+              {
+                path: 'create',
+                loadComponent: () =>
+                  import(
+                    './components/inventory/suppliers/suppliers/create-supplier/create-supplier.component'
+                  ).then((m) => m.CreateSupplierComponent),
+              },
+              {
+                path: ':id',
+                loadComponent: () =>
+                  import(
+                    './components/inventory/suppliers/suppliers/supplier-detail/supplier-detail.component'
+                  ).then((m) => m.SupplierDetailComponent),
+              },
+            ],
+          },
+        ],
       },
       {
         path: 'items',
@@ -105,6 +136,13 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./components/settings/table/table.component').then(
             (m) => m.TableComponent
+          ),
+      },
+      {
+        path: 'dishes',
+        loadComponent: () =>
+          import('./components/settings/dishes/dishes.component').then(
+            (m) => m.DishesComponent
           ),
       },
     ],

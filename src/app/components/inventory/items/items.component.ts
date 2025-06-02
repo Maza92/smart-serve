@@ -35,6 +35,7 @@ import { FilterBottomSheetComponent } from './filter-bottom-sheet/filter-bottom-
 import { CreateItemComponent } from './create-item/create-item.component';
 import { EditItemComponent } from './edit-item/edit-item.component';
 import { AlertService } from '@app/lib/alert/alert.service';
+import { NavigationService } from '@app/core/service/navigation.service';
 
 @Component({
   selector: 'app-items',
@@ -84,17 +85,21 @@ export class ItemsComponent implements OnInit, OnDestroy {
   isEditMode = false;
   currentItemId: number | null = null;
 
+  path: string | null = null;
+
   constructor(
     private inventoryItemService: InventoryItemService,
     private supplierService: SupplierService,
     private modalService: ModalService,
     private toastService: ToastService,
     private formBuilder: FormBuilder,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private navigationService: NavigationService
   ) {}
 
   ngOnInit(): void {
     this.initForm();
+    this.path = this.navigationService.getCurrentComponentPath();
 
     this.searchSubject
       .pipe(debounceTime(300), distinctUntilChanged(), takeUntil(this.destroy$))
@@ -102,6 +107,18 @@ export class ItemsComponent implements OnInit, OnDestroy {
         this.filters.search = value;
         this.resetAndLoad();
       });
+    this.navigationService.addExclusions(
+      [
+        'Inventario',
+        'Ajustes',
+        'Caja',
+        'Reportes',
+        'Productos',
+        'Clientes',
+        'Proveedores',
+      ],
+      this.path
+    );
 
     this.loadItems();
     this.loadSuppliers();
@@ -432,16 +449,14 @@ export class ItemsComponent implements OnInit, OnDestroy {
             text: 'Eliminar',
             type: 'danger',
             action: () => {
-              this.loading = true;
               this.inventoryItemService.deleteInventoryItem(item.id).subscribe({
-                next: () => {
-                  this.toastService.success('Producto eliminado correctamente');
+                next: (response) => {
+                  this.toastService.success(response.message);
                   this.resetAndLoad();
                 },
                 error: (error) => {
-                  console.error('Error al eliminar el producto:', error);
-                  this.toastService.error('Error al eliminar el producto');
-                  this.loading = false;
+                  this.toastService.error(error.message);
+                  this.resetAndLoad();
                 },
               });
             },

@@ -46,7 +46,7 @@ export const NAV_ITEMS: NavItem[] = [
   {
     name: 'Proveedores',
     icon: 'truck',
-    path: '/proveedores',
+    path: '/home/inventory/suppliers',
     exclusions: [],
   },
   {

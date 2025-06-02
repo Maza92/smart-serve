@@ -10,6 +10,7 @@ import {
   Calendar,
   ChartNoAxesColumnIncreasing,
   Check,
+  CheckCircle,
   ChefHat,
   ChevronDown,
   ChevronLeft,
@@ -64,6 +65,7 @@ import {
   Users,
   Wifi,
   X,
+  XCircle,
 } from 'lucide-angular';
 
 export const lucideIcons = {
@@ -131,4 +133,6 @@ export const lucideIcons = {
   Trash,
   Loader,
   PackageX,
+  CheckCircle,
+  XCircle,
 };
