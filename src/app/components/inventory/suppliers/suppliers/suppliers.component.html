@@ -96,11 +96,10 @@
       </div>
     </div>
 
-    <div *ngIf="loading" class="flex justify-center items-center py-12">
-      <i-lucide
-        name="loader"
-        class="w-8 h-8 animate-spin text-primary-key"
-      ></i-lucide>
+    <div *ngIf="loading" class="flex justify-center py-4">
+      <div
+        class="animate-spin rounded-full h-6 w-6 border-4 border-primary-key border-t-transparent"
+      ></div>
     </div>
 
     <div *ngIf="hasMore && !loading" class="flex justify-center mt-6">

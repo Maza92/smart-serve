@@ -7,6 +7,7 @@ export interface InventoryItem {
   minStockLevel: number;
   supplierName: string;
   supplierId: number;
+  categoryId: number;
   location: string;
   lastUpdated: string;
   expiryDate: string;

@@ -169,6 +169,32 @@
         />
       </div>
     </div>
+    <div class="mb-4">
+      <label
+        for="categoryId"
+        class="block text-sm font-medium text-gray-700 mb-1"
+        >Categoría</label
+      >
+      <select
+        id="categoryId"
+        formControlName="categoryId"
+        class="form-input w-full p-2"
+      >
+        <option value="" disabled>Seleccionar categoría</option>
+        <option *ngFor="let category of categories" [value]="category.id">
+          {{ category.name }}
+        </option>
+      </select>
+      <div
+        *ngIf="
+          itemForm.get('categoryId')?.invalid &&
+          itemForm.get('categoryId')?.touched
+        "
+        class="text-error text-xs mt-1"
+      >
+        La categoría es requerida
+      </div>
+    </div>
 
     <div
       class="flex items-center justify-between gap-2 mb-6 bg-on-surface rounded-2xl p-6"

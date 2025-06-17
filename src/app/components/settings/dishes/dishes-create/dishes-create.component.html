@@ -1,0 +1,197 @@
+<app-base-page title="Crear Plato" headerTextColor="text-black">
+  <div slot="content" class="space-y-4">
+    <form class="p-4 flex flex-col gap-2" [formGroup]="dishForm">
+      <div class="form-group">
+        <label class="form-label" for="dish-name">Nombre del plato</label>
+        <input
+          type="text"
+          class="form-input p-2"
+          id="dish-name"
+          placeholder="Nombre del plato"
+          formControlName="name"
+        />
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="dish-description">Description</label>
+        <input
+          type="text"
+          class="form-input p-2"
+          id="dish-description"
+          placeholder="Descripción del plato"
+          formControlName="description"
+        />
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="dish-price">Precio Base</label>
+        <input
+          type="number"
+          class="form-input p-2"
+          id="dish-price"
+          placeholder="Precio del plato"
+          formControlName="basePrice"
+        />
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="dish-image">Imagen</label>
+        <input
+          type="text"
+          class="form-input p-2"
+          id="dish-image"
+          placeholder="Imagen del plato"
+          formControlName="imageUrl"
+        />
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="dish-preparation"
+          >Tiempo de preparacion</label
+        >
+        <input
+          type="number"
+          class="form-input p-2"
+          id="dish-preparation"
+          placeholder="Tiempo de preparación"
+          formControlName="preparationTime"
+        />
+      </div>
+
+      <div class="form-group bg-on-surface border-on-surface mt-2">
+        <label class="form-label" for="dish-category">Categoría</label>
+        <select
+          class="form-select p-2"
+          id="dish-category"
+          formControlName="categoryId"
+        >
+          <option value="" disabled selected>Selecciona una categoría</option>
+          <option *ngFor="let category of categories" [value]="category.id">
+            {{ category.name }}
+          </option>
+        </select>
+        <lucide-icon class="icon" size="30" name="chevron-down"></lucide-icon>
+      </div>
+
+      <div class="bg-on-surface flex flex-col gap-4 rounded-2xl p-4">
+        <div>
+          <h2 class="font-bold text-2xl">Receta</h2>
+          <p class="text-sm text-gray-500">
+            Agrega los ingredientes y la cantidad necesaria para preparar el
+            plato.
+          </p>
+        </div>
+
+        <h3 class="font-medium text-lg">
+          Ingredientes ({{ ingredients.length }})
+        </h3>
+
+        <div
+          class="flex flex-col gap-2"
+          *ngIf="ingredients.length > 0"
+          formArrayName="ingredients"
+        >
+          <div
+            class="flex flex-col gap-4 bg-primary-fixed p-4 rounded-xl border border-primary-fixed-dim"
+            *ngFor="
+              let ingredient of ingredientsFormArray.controls;
+              let i = index
+            "
+            [formGroupName]="i"
+          >
+            <div class="flex justify-between">
+              <div class="flex gap-2 items-center mb-4">
+                <lucide-icon
+                  name="leaf"
+                  class="w-5 h-5 text-green-500"
+                ></lucide-icon>
+                <h3
+                  class="text-sm font-medium border border-primary-key px-2 rounded-full text-primary-container"
+                >
+                  Item de inventario
+                </h3>
+              </div>
+
+              <p class="text-lg font-medium">
+                {{ ingredients[i].name }}
+              </p>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="ingredient-quantity"
+                >Cantidad Requerida</label
+              >
+              <input
+                type="number"
+                class="form-input p-2 w-full"
+                placeholder="Cantidad"
+                [formControlName]="'quantityRequired'"
+              />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="ingredient-notes">Notas</label>
+              <input
+                type="text"
+                class="form-input p-2 w-full"
+                placeholder="Notas"
+                [formControlName]="'notes'"
+              />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="ingredient-order"
+                >Orden de preparacion</label
+              >
+              <input
+                type="number"
+                class="form-input p-2 w-full"
+                placeholder="Orden de preparacion"
+                [formControlName]="'preparationOrder'"
+              />
+            </div>
+            <div
+              class="bg-error-container text-error py-4 rounded-xl flex items-center justify-center gap-2 active:opacity-70 transition-all"
+              (click)="removeIngredient(i)"
+            >
+              <lucide-icon name="trash" class="w-6 h-6"></lucide-icon>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="py-8 w-full flex flex-col justify-center items-center text-center animate-pulse"
+          *ngIf="ingredients.length === 0"
+        >
+          <lucide-icon
+            name="leaf"
+            class="text-green-500"
+            size="60"
+          ></lucide-icon>
+          <h4 class="text-gray-500 text-sm font-medium">
+            No hay ingredientes registrados.
+          </h4>
+          <p class="text-gray-500 text-xs">
+            Agrega los ingredientes y la cantidad necesaria para preparar el
+            plato.
+          </p>
+        </div>
+
+        <div
+          class="w-full border-dashed border-2 border-gray-600 active:border-gray-700 active:bg-gray-300 transition-all rounded-2xl flex justify-center items-center py-8"
+          (click)="selectedItem()"
+        >
+          <h3 class="text-gray-500 text-lg font-medium">Agregar ingrediente</h3>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div slot="footer" class="flex justify-end p-4">
+    <button
+      class="button button-primary button-lg w-full"
+      (click)="onSubmit()"
+      [disabled]="dishForm.invalid"
+    >
+      Guardar Plato
+    </button>
+  </div>
+</app-base-page>

@@ -140,10 +140,22 @@ export const routes: Routes = [
       },
       {
         path: 'dishes',
-        loadComponent: () =>
-          import('./components/settings/dishes/dishes.component').then(
-            (m) => m.DishesComponent
-          ),
+        children: [
+          {
+            path: '',
+            loadComponent: () =>
+              import('./components/settings/dishes/dishes.component').then(
+                (m) => m.DishesComponent
+              ),
+          },
+          {
+            path: 'create',
+            loadComponent: () =>
+              import(
+                './components/settings/dishes/dishes-create/dishes-create.component'
+              ).then((m) => m.DishesCreateComponent),
+          },
+        ],
       },
     ],
   },

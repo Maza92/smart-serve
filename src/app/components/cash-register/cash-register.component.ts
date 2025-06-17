@@ -18,7 +18,7 @@ import { finalize } from 'rxjs';
 @Component({
   selector: 'app-cash-register',
   standalone: true,
-  imports: [BackBarComponent, CommonModule, LucideAngularModule, RouterLink],
+  imports: [BackBarComponent, CommonModule, LucideAngularModule],
   templateUrl: './cash-register.component.html',
   styleUrl: './cash-register.component.css',
 })

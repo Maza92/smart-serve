@@ -8,12 +8,7 @@ import { LucideAngularModule } from 'lucide-angular';
 @Component({
   selector: 'app-inventory',
   standalone: true,
-  imports: [
-    BackBarComponent,
-    BasePageComponent,
-    LucideAngularModule,
-    CommonModule,
-  ],
+  imports: [BasePageComponent, LucideAngularModule, CommonModule],
   templateUrl: './inventory.component.html',
   styleUrl: './inventory.component.css',
 })

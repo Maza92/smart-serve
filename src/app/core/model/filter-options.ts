@@ -13,6 +13,13 @@ export interface InventoryItemsFilterOptions extends BaseFilterOptions {
   location?: string;
 }
 
+export interface DishFilterOptions extends BaseFilterOptions {
+  category?: string;
+  isFeatured?: boolean;
+  minPrice?: number;
+  maxPrice?: number;
+}
+
 export interface ChipFilter {
   type: 'status' | 'role' | 'sort';
   value: string;

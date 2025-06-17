@@ -1,5 +1,6 @@
 import {
   AlertTriangle,
+  Apple,
   ArrowDown,
   ArrowLeftFromLine,
   ArrowUp,
@@ -25,6 +26,7 @@ import {
   Dot,
   Download,
   Edit,
+  Eraser,
   FileText,
   Filter,
   FolderOpen,
@@ -34,6 +36,7 @@ import {
   Home,
   Inbox,
   Info,
+  Leaf,
   Loader,
   Lock,
   LockKeyhole,
@@ -135,4 +138,7 @@ export const lucideIcons = {
   PackageX,
   CheckCircle,
   XCircle,
+  Leaf,
+  Eraser,
+  Apple,
 };

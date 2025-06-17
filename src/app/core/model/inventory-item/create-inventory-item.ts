@@ -4,6 +4,7 @@ export interface CreateInventoryItemRequest {
   unitCost: number;
   minStockLevel: number;
   supplierId: number;
+  categoryId: number;
   location: string;
   expiryDate: string;
   isActive: boolean;

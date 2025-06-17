@@ -70,6 +70,26 @@ export const API_CONSTANTS = {
     UPDATE_SUPPLIER: '/:id',
     DELETE_SUPPLIER: '/:id',
   },
+
+  DISH: {
+    CONTROLLER: '/dishes',
+    GET_DISH: '/:id',
+    GET_DISHES: '',
+    GET_DISHES_WITH_INGREDIENTS: '/with-recipes',
+    CREATE_DISH: '',
+    UPDATE_DISH: '/:id',
+    DELETE_DISH: '/:id',
+  },
+
+  CATEGORY_ITEM: {
+    CONTROLLER: '/category',
+    GET_CATEGORY_ITEM: '/:id',
+    GET_CATEGORY_ITEMS: '',
+    GET_CATEGORY_ITEMS_BY_TYPE: '/type',
+    CREATE_CATEGORY_ITEM: '',
+    UPDATE_CATEGORY_ITEM: '/:id',
+    DELETE_CATEGORY_ITEM: '/:id',
+  },
 };
 
 export function getBaseUrl(serviceType: ServiceType): string {

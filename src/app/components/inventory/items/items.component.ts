@@ -36,6 +36,9 @@ import { CreateItemComponent } from './create-item/create-item.component';
 import { EditItemComponent } from './edit-item/edit-item.component';
 import { AlertService } from '@app/lib/alert/alert.service';
 import { NavigationService } from '@app/core/service/navigation.service';
+import { CategoryItem } from '@app/core/model/data/category-item';
+import { CategoryItemService } from '@app/core/service/category-item.service';
+import { CategoryType } from '@app/core/enums/category-enums';
 
 @Component({
   selector: 'app-items',
@@ -53,20 +56,17 @@ import { NavigationService } from '@app/core/service/navigation.service';
   styleUrl: './items.component.css',
 })
 export class ItemsComponent implements OnInit, OnDestroy {
-  // Swipe functionality
   private startX: number = 0;
   private currentX: number = 0;
   private threshold: number = 50;
   private swipedCardIndex: number | null = null;
 
-  // Data and pagination
   items: InventoryItem[] = [];
   page = 1;
   size = 10;
   hasMore = true;
   loading = false;
 
-  // Filtering
   filters: InventoryItemsFilterOptions = {
     search: '',
     status: null,
@@ -79,9 +79,9 @@ export class ItemsComponent implements OnInit, OnDestroy {
   searchSubject = new Subject<string>();
   private destroy$ = new Subject<void>();
 
-  // Forms
   itemForm!: FormGroup;
   suppliers: Supplier[] = [];
+  categories: CategoryItem[] = [];
   isEditMode = false;
   currentItemId: number | null = null;
 
@@ -94,7 +94,8 @@ export class ItemsComponent implements OnInit, OnDestroy {
     private toastService: ToastService,
     private formBuilder: FormBuilder,
     private alertService: AlertService,
-    private navigationService: NavigationService
+    private navigationService: NavigationService,
+    private categoryItemService: CategoryItemService
   ) {}
 
   ngOnInit(): void {
@@ -122,6 +123,7 @@ export class ItemsComponent implements OnInit, OnDestroy {
 
     this.loadItems();
     this.loadSuppliers();
+    this.loadCategories();
   }
 
   ngOnDestroy(): void {
@@ -129,7 +131,6 @@ export class ItemsComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  // Touch events for swipe functionality
   onTouchStart(event: TouchEvent, index: number): void {
     this.startX = event.touches[0].clientX;
     this.currentX = this.startX;
@@ -345,6 +346,28 @@ export class ItemsComponent implements OnInit, OnDestroy {
       });
   }
 
+  loadCategories(): void {
+    this.categoryItemService
+      .getCategoryItemsByTipe(
+        1,
+        100,
+        'name',
+        'asc',
+        CategoryType.INVENTORY_ITEM
+      )
+      .subscribe({
+        next: (response) => {
+          this.categories = response.data.content;
+        },
+        error: (error) => {
+          this.toastService.error(
+            'Error',
+            'No se pudieron cargar las categorías'
+          );
+        },
+      });
+  }
+
   resetAndLoad(): void {
     this.page = 1;
     this.loadItems();
@@ -363,6 +386,7 @@ export class ItemsComponent implements OnInit, OnDestroy {
       unitCost: [0, [Validators.required, Validators.min(0)]],
       minStockLevel: [0, [Validators.required, Validators.min(0)]],
       supplierId: [null, [Validators.required]],
+      categoryId: [null, [Validators.required]],
       location: ['', [Validators.required]],
       expiryDate: [''],
       isActive: [true],
@@ -391,7 +415,7 @@ export class ItemsComponent implements OnInit, OnDestroy {
           escape: true,
           click: true,
         },
-        data: { suppliers: this.suppliers },
+        data: { suppliers: this.suppliers, categories: this.categories },
       })
       .then((result) => {
         if (result) {
@@ -423,7 +447,7 @@ export class ItemsComponent implements OnInit, OnDestroy {
           click: true,
         },
 
-        data: { item, suppliers: this.suppliers },
+        data: { item, suppliers: this.suppliers, categories: this.categories },
       })
       .then((result) => {
         if (result) {
@@ -484,6 +508,7 @@ export class ItemsComponent implements OnInit, OnDestroy {
         unitCost: formValue.unitCost,
         minStockLevel: formValue.minStockLevel,
         supplierId: formValue.supplierId,
+        categoryId: formValue.categoryId,
         location: formValue.location,
         expiryDate: formValue.expiryDate,
         isActive: formValue.isActive,
@@ -507,6 +532,7 @@ export class ItemsComponent implements OnInit, OnDestroy {
         unitCost: formValue.unitCost,
         minStockLevel: formValue.minStockLevel,
         supplierId: formValue.supplierId,
+        categoryId: formValue.categoryId,
         location: formValue.location,
         expiryDate: formValue.expiryDate,
         isActive: formValue.isActive,

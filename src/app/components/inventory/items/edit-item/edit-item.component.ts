@@ -6,6 +6,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { CategoryItem } from '@app/core/model/data/category-item';
 import { InventoryItem } from '@app/core/model/data/inventory-item';
 import { Supplier } from '@app/core/model/data/supplier';
 import { UpdateInventoryItemRequest } from '@app/core/model/inventory-item/update-inventory-item';
@@ -24,6 +25,7 @@ import { ModalService } from 'ngx-modal-ease';
 export class EditItemComponent implements OnInit {
   @Input() item!: InventoryItem;
   @Input() suppliers: Supplier[] = [];
+  @Input() categories: CategoryItem[] = [];
 
   itemForm!: FormGroup;
   loading = false;
@@ -49,6 +51,7 @@ export class EditItemComponent implements OnInit {
         [Validators.required, Validators.min(0)],
       ],
       supplierId: [this.item.supplierId, [Validators.required]],
+      categoryId: [this.item.categoryId, [Validators.required]],
       location: [this.item.location, [Validators.required]],
       expiryDate: [
         this.item.expiryDate

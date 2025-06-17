@@ -70,7 +70,6 @@ export class CreateTableComponent {
     }
 
     const data: CreateRestaurantTableRequest = {
-      id: 0,
       number: this.number?.value,
       capacity: this.capacity?.value,
       status: this.status?.value,
