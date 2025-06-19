@@ -85,6 +85,7 @@
             (touchstart)="onTouchStart($event, i)"
             (touchmove)="onTouchMove($event, i)"
             (touchend)="onTouchEnd($event, i)"
+            [routerLink]="['/home/items/details', item.id]"
           >
             <div class="flex items-center">
               <div

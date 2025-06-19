@@ -4,7 +4,7 @@ export interface UpdateDishRequest {
   name?: string;
   description?: string;
   basePrice?: number;
-  category?: string;
+  categoryId?: string;
   imageUrl?: string;
   preparationTime?: number;
   isActive?: boolean;

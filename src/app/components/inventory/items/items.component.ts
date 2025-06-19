@@ -39,6 +39,7 @@ import { NavigationService } from '@app/core/service/navigation.service';
 import { CategoryItem } from '@app/core/model/data/category-item';
 import { CategoryItemService } from '@app/core/service/category-item.service';
 import { CategoryType } from '@app/core/enums/category-enums';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-items',
@@ -51,6 +52,7 @@ import { CategoryType } from '@app/core/enums/category-enums';
     FormsModule,
     ReactiveFormsModule,
     FilterChipComponent,
+    RouterLink,
   ],
   templateUrl: './items.component.html',
   styleUrl: './items.component.css',

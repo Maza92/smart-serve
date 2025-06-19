@@ -1,9 +1,22 @@
 <div class="h-dvh">
   <app-base-page title="Dishes" headerTextColor="text-black">
+    <ng-template #header>
+      <app-back-bar title="Platos"></app-back-bar>
+      <div class="p-4">
+        <h1 class="font-bold text-2xl">Administración de platos</h1>
+        <p class="text-sm font-light text-gray-500">
+          Administra los platos que se ofrecen en el restaurante.
+        </p>
+      </div>
+    </ng-template>
+
     <div slot="content" class="space-y-4 p-4">
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         <div *ngFor="let item of dishes">
-          <div class="border border-gray-300 rounded-2xl p-4">
+          <div
+            class="border border-gray-300 rounded-2xl p-4"
+            routerLink="/settings/dishes/edit/{{ item.id }}"
+          >
             <div class="flex justify-between">
               <h2 class="font-bold text-lg">{{ item.name }}</h2>
               <div

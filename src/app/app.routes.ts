@@ -68,10 +68,27 @@ export const routes: Routes = [
       },
       {
         path: 'items',
-        loadComponent: () =>
-          import('./components/inventory/items/items.component').then(
-            (m) => m.ItemsComponent
-          ),
+        children: [
+          {
+            path: '',
+            loadComponent: () =>
+              import('./components/inventory/items/items.component').then(
+                (m) => m.ItemsComponent
+              ),
+          },
+          {
+            path: 'details/:id',
+            children: [
+              {
+                path: '',
+                loadComponent: () =>
+                  import(
+                    './components/inventory/items/item-details/item-details.component'
+                  ).then((m) => m.ItemDetailsComponent),
+              },
+            ],
+          },
+        ],
       },
       {
         path: 'pos',
@@ -154,6 +171,13 @@ export const routes: Routes = [
               import(
                 './components/settings/dishes/dishes-create/dishes-create.component'
               ).then((m) => m.DishesCreateComponent),
+          },
+          {
+            path: 'edit/:id',
+            loadComponent: () =>
+              import(
+                './components/settings/dishes/edit-dish/edit-dish.component'
+              ).then((m) => m.EditDishComponent),
           },
         ],
       },

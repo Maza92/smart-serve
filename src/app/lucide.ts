@@ -8,6 +8,7 @@ import {
   BanknoteArrowUp,
   BarChart2,
   Bell,
+  Box,
   Calendar,
   ChartNoAxesColumnIncreasing,
   Check,
@@ -141,4 +142,5 @@ export const lucideIcons = {
   Leaf,
   Eraser,
   Apple,
+  Box,
 };

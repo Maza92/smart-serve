@@ -5,7 +5,11 @@ import { DishFilterOptions } from '../model/filter-options';
 import { catchError, Observable } from 'rxjs';
 import { ApiResponse } from '../model/api';
 import { Paged } from '../model/paged';
-import { Dish, DishWithIngredients } from '../model/data/dish';
+import {
+  Dish,
+  DishWithIngredients,
+  DishWithIngredientsToUpdate,
+} from '../model/data/dish';
 import { API_CONSTANTS, buildUrl } from '../constant';
 import { ServiceType } from '../enums/api-enums';
 import { CreateDishRequest } from '../model/dish/create-dish-request';
@@ -75,11 +79,27 @@ export class DishService extends BaseService {
     const url = buildUrl(
       ServiceType.API,
       API_CONSTANTS.DISH.CONTROLLER,
-      API_CONSTANTS.DISH.GET_DISH.replace('{id}', id.toString())
+      API_CONSTANTS.DISH.GET_DISH,
+      { id: id.toString() }
     );
 
     return this.http
       .get<ApiResponse<Dish>>(url)
+      .pipe(catchError(this.handleError));
+  }
+
+  getDishWithIngredientsById(
+    id: number
+  ): Observable<ApiResponse<DishWithIngredientsToUpdate>> {
+    const url = buildUrl(
+      ServiceType.API,
+      API_CONSTANTS.DISH.CONTROLLER,
+      API_CONSTANTS.DISH.GET_DISH_WITH_INGREDIENTS,
+      { id: id.toString() }
+    );
+
+    return this.http
+      .get<ApiResponse<DishWithIngredientsToUpdate>>(url)
       .pipe(catchError(this.handleError));
   }
 
@@ -102,7 +122,8 @@ export class DishService extends BaseService {
     const url = buildUrl(
       ServiceType.API,
       API_CONSTANTS.DISH.CONTROLLER,
-      API_CONSTANTS.DISH.UPDATE_DISH.replace('{id}', id.toString())
+      API_CONSTANTS.DISH.UPDATE_DISH,
+      { id: id.toString() }
     );
 
     return this.http
@@ -114,7 +135,8 @@ export class DishService extends BaseService {
     const url = buildUrl(
       ServiceType.API,
       API_CONSTANTS.DISH.CONTROLLER,
-      API_CONSTANTS.DISH.DELETE_DISH.replace('{id}', id.toString())
+      API_CONSTANTS.DISH.DELETE_DISH,
+      { id: id.toString() }
     );
 
     return this.http

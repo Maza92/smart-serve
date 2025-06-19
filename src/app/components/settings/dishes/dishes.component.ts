@@ -4,6 +4,7 @@ import { RouterLink } from '@angular/router';
 import { Dish, DishWithIngredients } from '@app/core/model/data/dish';
 import { DishService } from '@app/core/service/dish.service';
 import { ToastService } from '@app/lib/toast/toast.service';
+import { BackBarComponent } from '@app/shared/back-bar/back-bar.component';
 import { BasePageComponent } from '@app/shared/base-page/base-page.component';
 import { LucideAngularModule } from 'lucide-angular';
 import { finalize } from 'rxjs';
@@ -11,14 +12,21 @@ import { finalize } from 'rxjs';
 @Component({
   selector: 'app-dishes',
   standalone: true,
-  imports: [BasePageComponent, NgFor, NgIf, LucideAngularModule, RouterLink],
+  imports: [
+    BasePageComponent,
+    NgFor,
+    NgIf,
+    LucideAngularModule,
+    RouterLink,
+    BackBarComponent,
+  ],
   templateUrl: './dishes.component.html',
   styleUrl: './dishes.component.css',
 })
 export class DishesComponent implements OnInit {
   dishes: DishWithIngredients[] = [];
   page = 1;
-  pageSize = 2;
+  pageSize = 4;
   hasMore = true;
   loading = false;
 

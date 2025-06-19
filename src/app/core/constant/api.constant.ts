@@ -74,6 +74,7 @@ export const API_CONSTANTS = {
   DISH: {
     CONTROLLER: '/dishes',
     GET_DISH: '/:id',
+    GET_DISH_WITH_INGREDIENTS: '/:id/with-ingredients',
     GET_DISHES: '',
     GET_DISHES_WITH_INGREDIENTS: '/with-recipes',
     CREATE_DISH: '',
@@ -89,6 +90,15 @@ export const API_CONSTANTS = {
     CREATE_CATEGORY_ITEM: '',
     UPDATE_CATEGORY_ITEM: '/:id',
     DELETE_CATEGORY_ITEM: '/:id',
+  },
+
+  RECIPE: {
+    CONTROLLER: '/recipe',
+    GET_RECIPE: '/:id',
+    GET_RECIPES: '',
+    CREATE_RECIPE: '',
+    UPDATE_RECIPE: '/:id',
+    DELETE_RECIPE: '/:id',
   },
 };
 
