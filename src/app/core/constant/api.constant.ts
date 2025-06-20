@@ -51,6 +51,8 @@ export const API_CONSTANTS = {
   INVENTORY: {
     CONTROLLER: '/inventory',
     UPDATE_STOCK: '/update-stock',
+    UPDATE_STOCK_BATCH: '/update-stock-batch',
+    UPDATE_STOCK_BATCH_ASYNC: '/update-stock-batch-async',
   },
 
   INVENTORY_ITEM: {
@@ -60,6 +62,16 @@ export const API_CONSTANTS = {
     CREATE_ITEM: '',
     UPDATE_ITEM: '/:id',
     DELETE_ITEM: '/:id',
+  },
+
+  INVENTORY_MOVEMENT: {
+    CONTROLLER: '/inventory-movements',
+    GET_MOVEMENTS: '',
+    GET_MOVEMENTS_BY_USER: '/by-user/:userId',
+    GET_MOVEMENTS_BY_SUPPLIER: '/by-supplier/:supplierId',
+    GET_MOVEMENTS_BY_ORDER: '/by-order/:orderId',
+    GET_MOVEMENTS_BY_ITEM: '/by-item/:itemId',
+    GET_LAST_MOVEMENTS: '/last',
   },
 
   SUPPLIER: {

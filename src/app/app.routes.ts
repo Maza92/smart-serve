@@ -64,6 +64,39 @@ export const routes: Routes = [
               },
             ],
           },
+          {
+            path: 'movements',
+            children: [
+              {
+                path: '',
+                loadComponent: () =>
+                  import(
+                    './components/inventory/movement/movement.component'
+                  ).then((m) => m.MovementComponent),
+              },
+              {
+                path: 'shop',
+                loadComponent: () =>
+                  import(
+                    './components/inventory/movement/shop-register/shop-register.component'
+                  ).then((m) => m.ShopRegisterComponent),
+              },
+              {
+                path: 'waste',
+                loadComponent: () =>
+                  import(
+                    './components/inventory/movement/waste-register/waste-register.component'
+                  ).then((m) => m.WasteRegisterComponent),
+              },
+              {
+                path: 'manual',
+                loadComponent: () =>
+                  import(
+                    './components/inventory/movement/manual-register/manual-register.component'
+                  ).then((m) => m.ManualRegisterComponent),
+              },
+            ],
+          },
         ],
       },
       {
@@ -110,6 +143,13 @@ export const routes: Routes = [
             loadComponent: () =>
               import('./components/pos/sales/sales.component').then(
                 (m) => m.SalesComponent
+              ),
+          },
+          {
+            path: 'order',
+            loadComponent: () =>
+              import('./components/pos/order/order.component').then(
+                (m) => m.OrderComponent
               ),
           },
         ],

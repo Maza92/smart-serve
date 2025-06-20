@@ -1,20 +1,27 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { CategoryType } from '@app/core/enums/category-enums';
+import { CategoryItem } from '@app/core/model/data/category-item';
+import { Dish } from '@app/core/model/data/dish';
+import {
+  BaseFilterOptions,
+  DishFilterOptions,
+} from '@app/core/model/filter-options';
+import { CategoryItemService } from '@app/core/service/category-item.service';
+import { DishService } from '@app/core/service/dish.service';
 import { NavigationService } from '@app/core/service/navigation.service';
 import { BackBarComponent } from '@app/shared/back-bar/back-bar.component';
 import { BasePageComponent } from '@app/shared/base-page/base-page.component';
 import { LucideAngularModule } from 'lucide-angular';
-
-// Interfaces para el manejo de platos y órdenes
-interface Dish {
-  id: number;
-  name: string;
-  description: string;
-  price: number;
-  image: string;
-  category: string;
-}
+import {
+  debounceTime,
+  distinctUntilChanged,
+  finalize,
+  Subject,
+  takeUntil,
+} from 'rxjs';
 
 interface OrderItem {
   dish: Dish;
@@ -29,58 +36,41 @@ interface OrderItem {
     BackBarComponent,
     CommonModule,
     LucideAngularModule,
+    FormsModule,
   ],
   templateUrl: './sales.component.html',
   styleUrl: './sales.component.css',
 })
-export class SalesComponent implements OnInit {
+export class SalesComponent implements OnInit, OnDestroy {
+  dishes: Dish[] = [];
+  categories: CategoryItem[] = [];
   activeTab: number = 1;
+  page = 1;
+  size = 5;
+  hasMore = true;
+  loading = false;
 
-  dishes: Dish[] = [
-    {
-      id: 1,
-      name: 'Pescado a la parrilla',
-      description: 'Pescado fresco a la parrilla con guarnición',
-      price: 150,
-      image:
-        'https://media.istockphoto.com/id/2191090089/photo/grilled-fish-served-in-a-fine-restaurant-with-green-beans-mash-cherry-tomatoes-olives-and.jpg?s=1024x1024&w=is&k=20&c=QFnyxhysSOOWJBEZ2G_MYktmtSxFw6gMwSCLOqTlk60=',
-      category: 'Comidas',
-    },
-    {
-      id: 2,
-      name: 'Ensalada César',
-      description: 'Ensalada fresca con pollo, crutones y aderezo César',
-      price: 120,
-      image:
-        'https://images.unsplash.com/photo-1550304943-4f24f54ddde9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
-      category: 'Comidas',
-    },
-    {
-      id: 3,
-      name: 'Café Americano',
-      description: 'Café negro recién preparado',
-      price: 50,
-      image:
-        'https://images.unsplash.com/photo-1509042239860-f550ce710b93?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
-      category: 'Bebidas',
-    },
-    {
-      id: 4,
-      name: 'Tarta de chocolate',
-      description: 'Deliciosa tarta de chocolate con frutos rojos',
-      price: 80,
-      image:
-        'https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
-      category: 'Postres',
-    },
-  ];
+  filters: DishFilterOptions = {
+    category: '',
+    isFeatured: false,
+    maxPrice: 0,
+    minPrice: 0,
+    sortBy: 'name',
+    sortDirection: 'asc',
+    search: '',
+  };
 
+  searchInput = '';
+  searchSubject = new Subject<string>();
+  private destroy$ = new Subject<void>();
   selectedDishes: OrderItem[] = [];
 
   path: string | null = null;
 
   constructor(
     private navigationService: NavigationService,
+    private dishService: DishService,
+    private categoryService: CategoryItemService,
     private router: Router
   ) {}
 
@@ -90,6 +80,89 @@ export class SalesComponent implements OnInit {
       ['Pos', 'Caja', 'Reportes', 'Clientes', 'Proveedores', 'Notificaciones'],
       this.path
     );
+
+    this.searchSubject
+      .pipe(debounceTime(300), distinctUntilChanged(), takeUntil(this.destroy$))
+      .subscribe((searchText) => {
+        this.filters.search = searchText;
+        this.loadDishes();
+      });
+
+    this.loadDishes();
+    this.loadCategories();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  onSearchChange(value: string): void {
+    this.searchSubject.next(value);
+  }
+
+  filterBy(category: string): void {
+    if (this.filters.category === category) {
+      this.filters.category = '';
+    } else {
+      this.filters.category = category;
+    }
+    this.resetAndLoad();
+  }
+
+  loadDishes(loadMore: boolean = false) {
+    if (this.loading) return;
+
+    if (loadMore) {
+      this.page++;
+    }
+
+    this.loading = true;
+
+    this.dishService
+      .getDishes(this.page, this.size, this.filters)
+      .pipe(finalize(() => (this.loading = false)))
+      .subscribe({
+        next: (response) => {
+          const newData = response.data.content;
+
+          if (loadMore) {
+            this.dishes = [...this.dishes, ...newData];
+          } else {
+            this.dishes = newData;
+          }
+
+          this.hasMore = newData.length === this.size;
+        },
+        error: (error) => {
+          console.error('Error al cargar platos:', error);
+        },
+      });
+  }
+
+  loadCategories() {
+    this.categoryService
+      .getCategoryItemsByTipe(1, 100, 'name', 'asc', CategoryType.DISH)
+      .pipe(finalize(() => (this.loading = false)))
+      .subscribe({
+        next: (response) => {
+          this.categories = response.data.content;
+        },
+        error: (error) => {
+          console.error('Error al cargar categorías:', error.message);
+        },
+      });
+  }
+
+  resetAndLoad(): void {
+    this.page = 1;
+    this.loadDishes();
+  }
+
+  loadMore(): void {
+    if (this.hasMore && !this.loading) {
+      this.loadDishes(true);
+    }
   }
 
   addToOrder(dish: Dish): void {
@@ -132,7 +205,7 @@ export class SalesComponent implements OnInit {
 
   getTotalPrice(): number {
     return this.selectedDishes.reduce(
-      (total, item) => total + item.dish.price * item.quantity,
+      (total, item) => total + item.dish.basePrice * item.quantity,
       0
     );
   }

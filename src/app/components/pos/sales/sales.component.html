@@ -48,41 +48,61 @@
       }"
     >
       <div class="p-4">
-        <input
-          type="text"
-          class="form-input w-full px-2 py-3"
-          placeholder="Buscar..."
-        />
+        <div class="form-group-icon">
+          <i-lucide
+            name="search"
+            class="icon text-gray-400"
+            size="25"
+          ></i-lucide>
+          <input
+            type="text"
+            [(ngModel)]="searchInput"
+            (ngModelChange)="onSearchChange($event)"
+            class="form-input w-full px-2 py-3"
+            placeholder="Buscar platos..."
+          />
+        </div>
       </div>
       <div class="flex px-4 gap-2 pb-4 overflow-x-auto">
-        <button class="button button-primary px-4 py-2 whitespace-nowrap">
+        <button
+          class="button button-sm px-4 py-2 whitespace-nowrap"
+          [ngClass]="{
+            'button-primary': filters.category === '',
+            'button-outline': filters.category !== ''
+          }"
+          (click)="filterBy('')"
+        >
           Todos
         </button>
-        <button class="button button-outline px-4 py-2 whitespace-nowrap">
-          Bebidas
-        </button>
-        <button class="button button-outline px-4 py-2 whitespace-nowrap">
-          Comidas
-        </button>
-        <button class="button button-outline px-4 py-2 whitespace-nowrap">
-          Postres
+        <button
+          *ngFor="let category of categories"
+          class="button button-sm px-4 py-2 whitespace-nowrap"
+          [ngClass]="{
+            'button-primary': filters.category === category.name,
+            'button-outline': filters.category !== category.name
+          }"
+          (click)="filterBy(category.name)"
+        >
+          {{ category.name }}
         </button>
       </div>
 
       <div class="m-4 space-y-4">
         <div
-          class="border flex p-4 rounded-2xl gap-4 h-32 relative bg-outline border-gray-300"
+          class="border flex p-4 rounded-2xl gap-4 relative bg-outline border-gray-300"
           *ngFor="let dish of dishes"
         >
           <img
             class="w-26 h-auto object-cover rounded-xl shadow"
-            [src]="dish.image"
+            [src]="dish.imageUrl"
             [alt]="dish.name"
           />
-          <div class="flex flex-col gap-1 flex-grow">
-            <h1 class="text-2xl font-bold">{{ dish.name }}</h1>
-            <p class="text-sm text-gray-500">{{ dish.description }}</p>
-            <p class="text-sm font-semibold">Precio: ${{ dish.price }}</p>
+          <div class="flex flex-col gap-1 flex-grow min-w-0">
+            <h1 class="text-2xl font-bold break-words">{{ dish.name }}</h1>
+            <p class="text-sm text-gray-500 break-words">
+              {{ dish.description }}
+            </p>
+            <p class="text-sm font-semibold">Precio: ${{ dish.basePrice }}</p>
           </div>
           <button
             class="button button-primary absolute bottom-4 right-4"
@@ -91,6 +111,32 @@
             <i-lucide name="plus" class="w-5 h-5"></i-lucide>
           </button>
         </div>
+      </div>
+
+      <div *ngIf="loading" class="flex justify-center my-4">
+        <div
+          class="w-8 h-8 border-4 border-t-transparent border-primary-key rounded-full animate-spin"
+        ></div>
+      </div>
+
+      <div
+        *ngIf="hasMore && !loading && dishes.length > 0"
+        class="flex justify-center my-4"
+      >
+        <button (click)="loadMore()" class="button button-outline">
+          Cargar más
+        </button>
+      </div>
+
+      <div
+        *ngIf="dishes.length === 0 && !loading"
+        class="flex flex-col items-center justify-center p-8"
+      >
+        <i-lucide
+          name="utensils"
+          class="w-12 h-12 text-gray-300 mb-4"
+        ></i-lucide>
+        <p class="text-gray-500">No se encontraron platos</p>
       </div>
     </div>
 
@@ -103,18 +149,22 @@
     >
       <div class="m-4 space-y-4" *ngIf="selectedDishes.length > 0">
         <div
-          class="border flex p-4 rounded-2xl gap-4 h-32 relative bg-outline border-gray-300"
+          class="border flex p-4 rounded-2xl gap-4 relative bg-outline border-gray-300"
           *ngFor="let item of selectedDishes; let i = index"
         >
           <img
             class="w-26 h-auto object-cover rounded-xl shadow"
-            [src]="item.dish.image"
+            [src]="item.dish.imageUrl"
             [alt]="item.dish.name"
           />
-          <div class="flex flex-col gap-1 flex-grow">
-            <h1 class="text-2xl font-bold">{{ item.dish.name }}</h1>
-            <p class="text-sm text-gray-500">{{ item.dish.description }}</p>
-            <p class="text-sm font-semibold">Precio: ${{ item.dish.price }}</p>
+          <div class="flex flex-col gap-1 flex-grow min-w-0">
+            <h1 class="text-2xl font-bold break-words">{{ item.dish.name }}</h1>
+            <p class="text-sm text-gray-500 break-words">
+              {{ item.dish.description }}
+            </p>
+            <p class="text-sm font-semibold">
+              Precio: ${{ item.dish.basePrice }}
+            </p>
           </div>
           <div class="absolute bottom-4 right-4 flex items-center gap-2">
             <button
@@ -146,19 +196,16 @@
     </div>
   </div>
 
-  <div slot="footer" class="p-4 flex gap-4">
-    <div class="flex flex-col w-min" *ngIf="selectedDishes.length > 0">
+  <div slot="footer" class="p-4 flex justify-between items-center gap-4">
+    <div class="flex flex-col w-1/2 text-lg" *ngIf="selectedDishes.length > 0">
       <p class="font-semibold">{{ getTotalItems() }} platos</p>
       <p class="font-bold">Total: ${{ getTotalPrice() }}</p>
     </div>
     <button
-      class="button button-action button-primary button-lg w-full"
+      class="button button-primary w-full"
       [disabled]="selectedDishes.length === 0"
       (click)="proceedToOrder()"
     >
-      <span class="button-icon">
-        <i-lucide name="check" class="w-5 h-5"></i-lucide>
-      </span>
       <span class="button-label">Proceder con la orden</span>
     </button>
   </div>

@@ -55,4 +55,10 @@ export const NAV_ITEMS: NavItem[] = [
     path: '/notificaciones',
     exclusions: [],
   },
+  {
+    name: 'Movimientos',
+    icon: 'truck',
+    path: '/home/inventory/movements',
+    exclusions: [],
+  },
 ];

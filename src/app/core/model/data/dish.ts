@@ -5,7 +5,7 @@ export interface Dish {
   name: string;
   description: string;
   basePrice: number;
-  category: string;
+  categoryId: number;
   imageUrl: string;
   preparationTime: number;
   isActive: boolean;
