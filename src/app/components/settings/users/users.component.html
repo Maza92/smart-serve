@@ -74,7 +74,8 @@
       <div
         class="overflow-hidden transition-shadow bg-white rounded-lg shadow-sm hover:shadow-md"
         *ngFor="let user of data"
-        [routerLink]="['/settings/users', user.id]"
+        appGoTo="user.edit"
+        [appGoToSegments]="[user.id]"
       >
         <div class="relative w-full pt-[60%]">
           <img

@@ -4,11 +4,12 @@ import { LucideAngularModule } from 'lucide-angular';
 import { NavigationService } from '../../core/service/navigation.service';
 import { RouterLink } from '@angular/router';
 import { AuthService } from '@app/core/service/auth.service';
+import { GoToDirective } from '@app/shared/directives/go-to.directive';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, LucideAngularModule, RouterLink],
+  imports: [CommonModule, LucideAngularModule, RouterLink, GoToDirective],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
 })
@@ -23,14 +24,10 @@ export class HomeComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.path = this.navigationService.getCurrentComponentPath();
-    this.username = this.authService.getUserName();
-
-    this.navigationService.addExclusions(
-      ['Home', 'Inventario', 'Ajustes', 'Caja', 'Reportes'],
-      this.path
-    );
-
-    this.navigationService.updateNavVisibility(this.path);
+    this.navigationService.configureNavbar([
+      'items',
+      'movements',
+      'notifications',
+    ]);
   }
 }

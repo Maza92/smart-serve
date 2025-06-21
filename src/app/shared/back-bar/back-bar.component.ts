@@ -1,7 +1,8 @@
 import { Component, Input, TemplateRef } from '@angular/core';
-import { Location } from '@angular/common';
 import { LucideAngularModule } from 'lucide-angular';
 import { CommonModule } from '@angular/common';
+import { NavigationService } from '@app/core/service/navigation.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-back-bar',
@@ -15,10 +16,20 @@ export class BackBarComponent {
   @Input() actionTemplate: TemplateRef<any> | null = null;
   @Input() textColor: string = '';
 
-  constructor(private location: Location) {}
+  constructor(
+    private navigationService: NavigationService,
+    private router: Router
+  ) {}
 
   goBack() {
-    this.location.back();
+    const currentUrl = this.router.url;
+    const parentPath = this.navigationService.getParentPath(currentUrl);
+
+    if (parentPath) {
+      this.router.navigate([parentPath]);
+    } else {
+      this.router.navigate(['/home']);
+    }
   }
 
   hasAction(): boolean {
