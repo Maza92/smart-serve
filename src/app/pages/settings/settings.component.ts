@@ -2,12 +2,13 @@ import { Component } from '@angular/core';
 import { BackBarComponent } from '../../shared/back-bar/back-bar.component';
 import { LucideAngularModule } from 'lucide-angular';
 import { AuthService } from '@app/core/service/auth.service';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
+import { GoToDirective } from '@app/shared/directives/go-to.directive';
 
 @Component({
   selector: 'app-settings',
   standalone: true,
-  imports: [BackBarComponent, LucideAngularModule, RouterLink],
+  imports: [BackBarComponent, LucideAngularModule, GoToDirective],
   templateUrl: './settings.component.html',
   styles: ``,
 })
@@ -26,9 +27,5 @@ export class SettingsComponent {
         console.error('Logout failed', error);
       },
     });
-  }
-
-  goTo(path: string) {
-    this.router.navigate([path]);
   }
 }

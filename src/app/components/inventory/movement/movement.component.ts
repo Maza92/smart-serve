@@ -29,27 +29,10 @@ export class MovementComponent implements OnInit, OnDestroy {
 
   constructor(
     private inventoryMovementService: InventoryMovementService,
-    private navigationService: NavigationService,
     private toastService: ToastService,
-    private modalService: ModalService,
-    private router: Router
+    private modalService: ModalService
   ) {}
   ngOnInit(): void {
-    this.path = this.navigationService.getCurrentComponentPath();
-
-    this.navigationService.addExclusions(
-      [
-        'Inventario',
-        'Ajustes',
-        'Caja',
-        'Reportes',
-        'Clientes',
-        'Notificaciones',
-        'Proveedores',
-      ],
-      this.path
-    );
-
     this.loadMovements();
   }
 

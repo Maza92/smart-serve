@@ -30,8 +30,6 @@ export class PosComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.path = this.navigantionService.getCurrentComponentPath();
-
     this.intervalId = setInterval(() => {
       this.updateDateTime();
     }, 1000);
@@ -45,10 +43,12 @@ export class PosComponent implements OnInit, OnDestroy {
       this.networkOnline = false;
     });
 
-    this.navigantionService.addExclusions(
-      ['Pos', 'Caja', 'Reportes', 'Clientes', 'Proveedores', 'Notificaciones'],
-      this.path
-    );
+    this.navigantionService.configureNavbar([
+      'home',
+      'movements',
+      'suppliers',
+      'settings',
+    ]);
   }
 
   ngOnDestroy() {

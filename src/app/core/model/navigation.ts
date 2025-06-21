@@ -1,11 +1,9 @@
 export interface NavItem {
+  key: string;
   name: string;
   icon: string;
   path: string;
-  visible?: boolean;
-  exclusions?: noVisiblePath[];
-}
-
-export interface noVisiblePath {
-  path: string;
+  children?: NavItem[];
+  fullPath?: string;
+  parentKey?: string;
 }

@@ -2,119 +2,95 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { NavItem } from '../model/navigation';
 import { NAV_ITEMS } from '../constant/navigation.constant';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
 })
 export class NavigationService {
-  private navItems: NavItem[] = NAV_ITEMS;
+  private navItemsMap: Map<string, NavItem> = new Map();
+  private pathMap: Map<string, NavItem> = new Map();
 
-  private visibleNavItems = new BehaviorSubject<NavItem[]>(this.navItems);
-  public visibleNavItems$ = this.visibleNavItems.asObservable();
+  private visibleNavItemsSubject = new BehaviorSubject<NavItem[]>([]);
+  public visibleNavItems$ = this.visibleNavItemsSubject.asObservable();
 
-  constructor() {}
+  constructor(private router: Router) {
+    this.processNavItems();
+  }
 
-  updateNavVisibility(currentRoute: string): void {
-    const updatedItems = this.navItems.map((item) => {
-      if (!item.exclusions) return item;
+  private processNavItems(): void {
+    const process = (
+      items: NavItem[],
+      parentKey?: string,
+      parentPath?: string
+    ): void => {
+      for (const item of items) {
+        const base = parentPath || '';
+        item.fullPath = item.path.startsWith('/')
+          ? item.path
+          : `${base}/${item.path}`;
+        item.parentKey = parentKey;
+        this.navItemsMap.set(item.key, item);
+        this.pathMap.set(item.fullPath, item);
 
-      const shouldBeHidden = item.exclusions.some(
-        (exclusion) =>
-          currentRoute === exclusion.path ||
-          (exclusion.path.endsWith('*') &&
-            currentRoute.startsWith(exclusion.path.slice(0, -1)))
+        if (item.children && item.children.length > 0) {
+          process(item.children, item.key, item.fullPath);
+        }
+      }
+    };
+
+    process(NAV_ITEMS);
+  }
+
+  public configureNavbar(keys: string[]): void {
+    const itemsToShow: NavItem[] = [];
+    for (const key of keys) {
+      const item = this.navItemsMap.get(key);
+      if (item) {
+        itemsToShow.push(item);
+      } else {
+        console.warn(
+          `NavigationService: No se encontró el NavItem con la key "${key}".`
+        );
+      }
+    }
+    this.visibleNavItemsSubject.next(itemsToShow);
+  }
+
+  public getParentPath(currentPath: string): string | null {
+    let path = currentPath.split('?')[0];
+
+    while (path.length > 0) {
+      const currentItem = this.pathMap.get(path);
+
+      if (currentItem) {
+        if (currentItem.parentKey) {
+          const parentItem = this.navItemsMap.get(currentItem.parentKey);
+          return parentItem?.fullPath || null;
+        }
+        return null;
+      }
+
+      const lastSlashIndex = path.lastIndexOf('/');
+      if (lastSlashIndex > 0) {
+        path = path.substring(0, lastSlashIndex);
+      } else {
+        path = '';
+      }
+    }
+
+    return null;
+  }
+
+  public goTo(key: string, segments: (string | number)[] = []): void {
+    const item = this.navItemsMap.get(key);
+    if (item && item.fullPath) {
+      const finalPath = [item.fullPath, ...segments].join('/');
+      this.router.navigateByUrl(finalPath);
+    } else {
+      console.error(
+        `NavigationService: Intento de navegar a una key inválida o sin ruta: "${key}"`
       );
-
-      return {
-        ...item,
-        visible: !shouldBeHidden,
-      };
-    });
-
-    this.visibleNavItems.next(updatedItems);
-  }
-
-  configureNavForRoute(route: string): void {
-    this.updateNavVisibility(route);
-  }
-
-  /**
-   * Permite añadir una exclusión dinámica a un item específico
-   */
-  addExclusion(itemName: string, exclusionPath: string): void {
-    const updatedItems = this.navItems.map((item) => {
-      if (item.name !== itemName) {
-        return item;
-      }
-
-      if (!item.exclusions) {
-        item.exclusions = [];
-      }
-
-      if (!item.exclusions.some((e) => e.path === exclusionPath)) {
-        return {
-          ...item,
-          exclusions: [...item.exclusions, { path: exclusionPath }],
-        };
-      }
-      return item;
-    });
-
-    this.navItems = updatedItems;
-    this.updateNavVisibility(window.location.pathname);
-  }
-
-  /**
-   * Permite añadir una misma exclusión a múltiples items de navegación
-   */
-  addExclusions(itemsName: string[], exclusionPath: string): void {
-    const updatedItems = this.navItems.map((item) => {
-      if (!itemsName.includes(item.name)) {
-        return item;
-      }
-
-      if (!item.exclusions) {
-        item.exclusions = [];
-      }
-
-      if (!item.exclusions.some((e) => e.path === exclusionPath)) {
-        return {
-          ...item,
-          exclusions: [...item.exclusions, { path: exclusionPath }],
-        };
-      }
-      return item;
-    });
-
-    this.navItems = updatedItems;
-    this.updateNavVisibility(window.location.pathname);
-  }
-
-  /**
-   * Elimina una exclusión de un item específico
-   */
-  removeExclusion(itemName: string, exclusionPath: string): void {
-    const updatedItems = this.navItems.map((item) => {
-      if (item.name !== itemName) {
-        return item;
-      }
-
-      if (!item.exclusions) {
-        item.exclusions = [];
-      }
-
-      return {
-        ...item,
-        exclusions: item.exclusions.filter((e) => e.path !== exclusionPath),
-      };
-    });
-
-    this.navItems = updatedItems;
-    this.updateNavVisibility(window.location.pathname);
-  }
-
-  getCurrentComponentPath(): string {
-    console.log(window.location.pathname);
-    return window.location.pathname;
+    }
   }
 }

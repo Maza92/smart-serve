@@ -128,7 +128,6 @@ export class DishesCreateComponent implements OnInit {
   onSubmit() {
     if (this.dishForm.valid) {
       const request: CreateDishRequest = this.dishForm.value;
-      console.log('Request:', request);
       this.dishService.createDish(request).subscribe(
         (response) => {
           this.toastService.success(response.message);

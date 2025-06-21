@@ -72,7 +72,8 @@
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
       <div
         *ngFor="let supplier of data"
-        [routerLink]="['/home/inventory/suppliers', supplier.id]"
+        appGoTo="suppliers.details"
+        [appGoToSegments]="[supplier.id]"
         class="p-4 rounded-lg border border-gray-300 cursor-pointer active:opacity-70 transition-all duration-200"
       >
         <h3 class="text-lg font-semibold mb-2">{{ supplier.name }}</h3>

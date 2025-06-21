@@ -39,7 +39,7 @@ import { NavigationService } from '@app/core/service/navigation.service';
 import { CategoryItem } from '@app/core/model/data/category-item';
 import { CategoryItemService } from '@app/core/service/category-item.service';
 import { CategoryType } from '@app/core/enums/category-enums';
-import { RouterLink } from '@angular/router';
+import { GoToDirective } from '@app/shared/directives/go-to.directive';
 
 @Component({
   selector: 'app-items',
@@ -52,7 +52,7 @@ import { RouterLink } from '@angular/router';
     FormsModule,
     ReactiveFormsModule,
     FilterChipComponent,
-    RouterLink,
+    GoToDirective,
   ],
   templateUrl: './items.component.html',
   styleUrl: './items.component.css',
@@ -102,7 +102,8 @@ export class ItemsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.initForm();
-    this.path = this.navigationService.getCurrentComponentPath();
+
+    this.navigationService.configureNavbar(['home', 'movements', 'settings']);
 
     this.searchSubject
       .pipe(debounceTime(300), distinctUntilChanged(), takeUntil(this.destroy$))
@@ -110,18 +111,6 @@ export class ItemsComponent implements OnInit, OnDestroy {
         this.filters.search = value;
         this.resetAndLoad();
       });
-    this.navigationService.addExclusions(
-      [
-        'Inventario',
-        'Ajustes',
-        'Caja',
-        'Reportes',
-        'Productos',
-        'Clientes',
-        'Proveedores',
-      ],
-      this.path
-    );
 
     this.loadItems();
     this.loadSuppliers();

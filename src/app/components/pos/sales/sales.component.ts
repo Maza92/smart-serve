@@ -75,12 +75,6 @@ export class SalesComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.path = this.navigationService.getCurrentComponentPath();
-    this.navigationService.addExclusions(
-      ['Pos', 'Caja', 'Reportes', 'Clientes', 'Proveedores', 'Notificaciones'],
-      this.path
-    );
-
     this.searchSubject
       .pipe(debounceTime(300), distinctUntilChanged(), takeUntil(this.destroy$))
       .subscribe((searchText) => {

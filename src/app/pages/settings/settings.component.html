@@ -4,7 +4,7 @@
     <div
       class="flex gap-2 p-6 items-center justify-center [&>button]:bg-inverse-surface [&>button]:rounded-2xl [&>button]:flex [&>button]:flex-col [&>button]:items-center [&>button]:justify-center [&>button]:min-h-36 [&>button]:w-100 [&>button]:text-primary-container"
     >
-      <button routerLink="/settings/users">
+      <button appGoTo="users">
         <lucide-icon name="users" strokeWidth="2" size="48"></lucide-icon>
         <span>Usuarios</span>
       </button>
@@ -15,7 +15,7 @@
       <div class="flex flex-col gap-4">
         <button
           class="button button-action bg-on-background border w-full"
-          routerLink="/settings/table"
+          appGoTo="table"
         >
           <lucide-icon
             name="settings"
@@ -66,7 +66,7 @@
 
         <button
           class="button button-action bg-on-background border w-full"
-          (click)="goTo('/settings/user')"
+          appGoTo="user"
         >
           <lucide-icon
             name="circle-user-round"
@@ -91,7 +91,7 @@
 
         <button
           class="button button-action bg-on-background border w-full"
-          (click)="goTo('/settings/dishes')"
+          appGoTo="dishes"
         >
           <lucide-icon
             name="apple"

@@ -18,18 +18,11 @@ export class InventoryComponent implements OnInit {
   constructor(private navigationService: NavigationService) {}
 
   ngOnInit(): void {
-    this.path = this.navigationService.getCurrentComponentPath();
-
-    this.navigationService.addExclusions(
-      [
-        'Inventario',
-        'Ajustes',
-        'Caja',
-        'Reportes',
-        'Clientes',
-        'Notificaciones',
-      ],
-      this.path
-    );
+    this.navigationService.configureNavbar([
+      'home',
+      'items',
+      'movements',
+      'suppliers',
+    ]);
   }
 }
