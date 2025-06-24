@@ -1,0 +1,79 @@
+<section
+  class="bg-on-surface rounded-2xl h-full p-4 flex flex-col overflow-y-auto"
+>
+  <div class="flex justify-end items-center">
+    <div class="text-on-error">
+      <lucide-icon name="x" (click)="closeModal()"></lucide-icon>
+    </div>
+  </div>
+
+  <div class="flex flex-col justify-center items-center w-full my-4">
+    <h1 class="text-3xl font-medium">
+      {{ movement?.itemName }}
+    </h1>
+    <p class="text-gray-700">Movimiento de inventario</p>
+  </div>
+
+  <div
+    class="bg-white shadow flex flex-col gap-3 justify-center items-center rounded-xl py-8 mb-4"
+  >
+    <h2
+      class="text-4xl font-medium"
+      [ngClass]="getMovementStyles(movement?.movementType).text"
+    >
+      {{ movement?.movementType?.includes("IN") ? "+" : "-"
+      }}{{ movement?.quantityChanged }}
+    </h2>
+
+    <p class="text-lg text-gray-800">
+      Valor de Movimiento: S/{{ movement?.movementValue }}
+    </p>
+  </div>
+  <div class="bg-white shadow flex flex-col gap-3 rounded-xl px-8 py-4 mb-4">
+    <div class="flex gap-4 items-center border-b border-primary py-4">
+      <div class="bg-orange-100 text-primary-key p-2 rounded-xl">
+        <lucide-icon name="clock"></lucide-icon>
+      </div>
+      <div class="flex flex-col">
+        <p class="text-gray-700 text-sm">Fecha de Movimiento</p>
+        <p class="text-lg">
+          {{ movement?.movementDate | date : "dd MMM yyyy • hh:mm a" }}
+        </p>
+      </div>
+    </div>
+    <div class="flex gap-4 items-center border-b border-primary pt-2 pb-4">
+      <div class="bg-orange-100 text-primary-key p-2 rounded-xl">
+        <lucide-icon name="user"></lucide-icon>
+      </div>
+      <div class="flex flex-col">
+        <p class="text-gray-700 text-sm">Usuario</p>
+        <p class="text-lg">{{ movement?.userName }}</p>
+      </div>
+    </div>
+    <div class="flex gap-4 items-center pb-4 pt-2">
+      <div class="bg-orange-100 text-primary-key p-2 rounded-xl">
+        <lucide-icon name="info"></lucide-icon>
+      </div>
+      <div class="flex flex-col">
+        <p class="text-gray-700 text-sm">Motivo</p>
+        <p class="text-lg">Por {{ getMovementReason(movement?.reason) }}</p>
+      </div>
+    </div>
+  </div>
+  <div
+    class="bg-white shadow flex flex-col items-center justify-center gap-3 rounded-xl p-8"
+  >
+    <h2 class="text-lg font-medium text-gray-800">Contexto de stock</h2>
+    <div class="w-full flex justify-evenly">
+      <div class="w-16 flex flex-col items-center justify-center">
+        <p class="text-sm text-gray-600">Antes:</p>
+        <p class="text-lg font-medium">{{ movement?.quantityBefore }}</p>
+      </div>
+      <div class="border-primary border border-dashed"></div>
+      <div class="w-16">
+        <p class="text-sm text-gray-600">Después</p>
+        <p class="text-lg font-medium">{{ movement?.quantityAfter }}</p>
+      </div>
+    </div>
+  </div>
+</section>

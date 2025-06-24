@@ -1,1 +1,147 @@
-<p>shop-register works!</p>
+<app-base-page title="Registro de compra" [headerTextColor]="'text-black'">
+  <div slot="content" class="m-4">
+    <form [formGroup]="movementForm" class="flex flex-col gap-4">
+      <div class="flex gap-2">
+        <div class="form-group-icon flex-1">
+          <i-lucide
+            name="search"
+            class="icon text-gray-400"
+            size="25"
+          ></i-lucide>
+          <input
+            type="text"
+            [(ngModel)]="searchInput"
+            (ngModelChange)="onSearchChange($event)"
+            [ngModelOptions]="{ standalone: true }"
+            placeholder="Buscar proveedores..."
+            class="form-input py-2 w-full"
+          />
+        </div>
+        <button
+          type="button"
+          class="bg-background text-on-background w-16 flex justify-center items-center active:opacity-70 rounded-full p-2 focus:outline-2 focus:outline-offset-2 focus:outline-background"
+          (click)="clearSearch()"
+        >
+          <i-lucide name="eraser" class="w-4 h-4"></i-lucide>
+        </button>
+      </div>
+
+      <div class="form-group bg-on-surface border-on-surface">
+        <label for="supplier" class="form-label">Proveedor</label>
+        <select
+          name="supplier"
+          id="supplier"
+          class="form-select"
+          formControlName="supplier"
+          (change)="onSupplierChange()"
+        >
+          <option [ngValue]="null" disabled selected>
+            Selecciona un proveedor
+          </option>
+          <option *ngFor="let supplier of suppliers" [ngValue]="supplier">
+            {{ supplier.name }}
+          </option>
+        </select>
+        <i-lucide class="icon" size="30" name="chevron-down"></i-lucide>
+      </div>
+
+      <div class="form-group">
+        <label for="notes" class="form-label">Notas (opcional)</label>
+        <textarea
+          id="notes"
+          formControlName="notes"
+          class="form-input p-2 min-h-[80px]"
+          placeholder="Agregar notas sobre esta compra..."
+        ></textarea>
+      </div>
+
+      <button
+        type="button"
+        class="button button-primary button-action justify-center w-full mt-2"
+        [disabled]="!movementForm.get('supplier')?.value"
+        (click)="openItemSelectModal()"
+      >
+        <i-lucide name="plus" class="button-icon"></i-lucide>
+        <label class="button-label">Seleccionar productos</label>
+      </button>
+
+      <div *ngIf="selectedItems.length > 0" class="mt-4">
+        <h3 class="text-lg font-medium mb-2">Productos seleccionados</h3>
+        <div
+          class="max-h-[400px] overflow-y-auto bg-white shadow-2xl rounded-xl p-2"
+        >
+          <div
+            *ngFor="let item of selectedItems; let i = index"
+            class="bg-on-surface rounded-xl p-3 mb-2"
+          >
+            <div class="flex justify-between items-center mb-2">
+              <h4 class="font-medium">{{ item.item.name }}</h4>
+              <button
+                type="button"
+                class="text-error-container active:text-error"
+                (click)="removeItem(i)"
+              >
+                <i-lucide name="trash-2" class="w-5 h-5"></i-lucide>
+              </button>
+            </div>
+            <div class="text-sm text-gray-500 mb-2">
+              Stock actual: {{ item.item.stockQuantity }} {{ item.item.unit }}
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+              <div class="form-group justify-end">
+                <label class="form-label">Cantidad recibida</label>
+                <input
+                  type="number"
+                  [(ngModel)]="item.quantity"
+                  [ngModelOptions]="{ standalone: true }"
+                  class="form-input p-2"
+                  min="0"
+                  step="1"
+                  placeholder="Cantidad"
+                />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Costo unitario (opcional)</label>
+                <input
+                  type="number"
+                  [(ngModel)]="item.unitCost"
+                  [ngModelOptions]="{ standalone: true }"
+                  class="form-input p-2"
+                  min="0"
+                  step="0.01"
+                  placeholder="Costo unitario"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div slot="footer" class="p-4 flex justify-between">
+    <button
+      type="button"
+      class="button button-outline button-lg"
+      (click)="goToMovements()"
+    >
+      Cancelar
+    </button>
+    <button
+      type="button"
+      class="button button-primary button-lg"
+      [disabled]="
+        movementForm.invalid || selectedItems.length === 0 || isLoading
+      "
+      (click)="saveMovement()"
+    >
+      <i-lucide
+        *ngIf="isLoading"
+        name="loader-2"
+        class="w-5 h-5 mr-2 animate-spin"
+      ></i-lucide>
+      <span *ngIf="!isLoading">Guardar</span>
+      <span *ngIf="isLoading">Procesando...</span>
+    </button>
+  </div>
+</app-base-page>

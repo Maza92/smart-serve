@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { NavigationService } from '@app/core/service/navigation.service';
 import { ModalService } from 'ngx-modal-ease';
 
 @Component({
@@ -15,19 +16,22 @@ import { ModalService } from 'ngx-modal-ease';
       </p>
 
       <button
-        (click)="goTo('/home/inventory/movements/shop')"
+        (click)="goTo('shop')"
+        appGoTo="shop"
         class="button button-outline button-lg"
       >
         Registrar entrada por compra
       </button>
       <button
-        (click)="goTo('/home/inventory/movements/waste')"
+        (click)="goTo('waste')"
+        appGoTo="waste"
         class="button button-outline button-lg"
       >
         Registrar Merma o desperdicio
       </button>
       <button
-        (click)="goTo('/home/inventory/movements/manual')"
+        (click)="goTo('manual')"
+        appGoTo="manual"
         class="button button-outline button-lg"
       >
         Realizar ajuste manual
@@ -36,10 +40,13 @@ import { ModalService } from 'ngx-modal-ease';
   `,
 })
 export class OptionSelectComponent {
-  constructor(private modalService: ModalService, private router: Router) {}
+  constructor(
+    private modalService: ModalService,
+    private navigationService: NavigationService
+  ) {}
 
-  goTo(path: string) {
+  goTo(key: string) {
     this.modalService.closeAll();
-    this.router.navigateByUrl(path);
+    this.navigationService.goTo(key);
   }
 }

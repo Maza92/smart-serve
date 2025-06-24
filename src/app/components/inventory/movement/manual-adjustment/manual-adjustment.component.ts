@@ -24,7 +24,7 @@ import { NavigationService } from '@app/core/service/navigation.service';
 import { GoToDirective } from '@app/shared/directives/go-to.directive';
 
 @Component({
-  selector: 'app-waste-register',
+  selector: 'app-manual-adjustment',
   standalone: true,
   imports: [
     CommonModule,
@@ -34,18 +34,14 @@ import { GoToDirective } from '@app/shared/directives/go-to.directive';
     ReactiveFormsModule,
     GoToDirective,
   ],
-  templateUrl: './waste-register.component.html',
-  styleUrl: './waste-register.component.css',
+  templateUrl: './manual-adjustment.component.html',
+  styles: [``],
 })
-export class WasteRegisterComponent implements OnInit {
+export class ManualAdjustmentComponent implements OnInit {
   selectedItem: InventoryItem | null = null;
   isLoading = false;
-  reasonOptions = [
-    { value: MovementReasonEnum.DAMAGE, label: 'Daño' },
-    { value: MovementReasonEnum.EXPIRY, label: 'Caducidad' },
-  ];
 
-  wasteForm: FormGroup;
+  adjustmentForm: FormGroup;
 
   constructor(
     private fb: FormBuilder,
@@ -54,10 +50,10 @@ export class WasteRegisterComponent implements OnInit {
     private modalService: ModalService,
     private navigationService: NavigationService
   ) {
-    this.wasteForm = this.fb.group({
-      quantity: [null, [Validators.required, Validators.min(0.01)]],
-      reason: [MovementReasonEnum.DAMAGE, Validators.required],
-      notes: [''],
+    this.adjustmentForm = this.fb.group({
+      quantity: [null, Validators.required],
+      movementType: [MovementTypeEnum.ADJUSTMENT_IN, Validators.required],
+      notes: ['', Validators.required],
     });
   }
 
@@ -98,7 +94,7 @@ export class WasteRegisterComponent implements OnInit {
   }
 
   saveMovement() {
-    if (this.wasteForm.invalid) {
+    if (this.adjustmentForm.invalid) {
       this.toastService.error('El formulario es inválido');
       return;
     }
@@ -108,36 +104,34 @@ export class WasteRegisterComponent implements OnInit {
       return;
     }
 
-    const quantity = this.wasteForm.get('quantity')?.value;
-    const reason = this.wasteForm.get('reason')?.value;
-    const notes = this.wasteForm.get('notes')?.value;
+    const quantity = this.adjustmentForm.get('quantity')?.value;
+    const notes = this.adjustmentForm.get('notes')?.value;
+    const movementType = this.adjustmentForm.get('movementType')?.value;
+
+    const absQuantity = Math.abs(quantity);
 
     const updateItem: UpdateInventoryItemStockDto = {
       itemId: this.selectedItem.id,
-      movementType: MovementTypeEnum.ADJUSTMENT_OUT,
-      quantityChanged: quantity,
+      movementType: movementType,
+      quantityChanged: absQuantity,
       unitCostAtTime: this.selectedItem.unitCost,
-      reason: reason,
+      reason: MovementReasonEnum.MANUAL_ADJUSTMENT,
       referenceId: 0,
       referenceType: ReferenceTypeEnum.MANUAL,
-      notes:
-        notes ||
-        `Merma por ${
-          reason === MovementReasonEnum.DAMAGE ? 'daño' : 'caducidad'
-        }`,
+      notes: notes || 'Ajuste manual de inventario',
     };
 
     this.isLoading = true;
     this.inventoryService.updateStock(updateItem).subscribe(
       (response) => {
-        this.toastService.success('Merma registrada correctamente');
+        this.toastService.success('Ajuste registrado correctamente');
         this.resetForm();
         this.isLoading = false;
         this.goToMovements();
       },
       (error) => {
         this.toastService.error(
-          'Error al registrar la merma',
+          'Error al registrar el ajuste',
           error.error?.message || 'Error desconocido'
         );
         this.isLoading = false;
@@ -151,9 +145,8 @@ export class WasteRegisterComponent implements OnInit {
   }
 
   resetForm() {
-    this.wasteForm.reset({
+    this.adjustmentForm.reset({
       quantity: null,
-      reason: MovementReasonEnum.DAMAGE,
       notes: '',
     });
     this.selectedItem = null;

@@ -1,5 +1,120 @@
 <app-base-page headerTextColor="text-black" title="Movimientos de inventario">
-  <div slot="content" class=""></div>
+  <ng-template #header>
+    <app-back-bar title="Movimientos de inventario"> </app-back-bar>
+    <div class="flex gap-4 [&>button]:w-1/2 p-4">
+      <button
+        class="bg-white rounded-2xl flex gap-4 justify-start items-center p-4 shadow-sm"
+      >
+        <div
+          class="bg-on-surface text-primary-key flex justify-center items-center p-2 rounded-full"
+        >
+          <i-lucide name="boxes"></i-lucide>
+        </div>
+        <div class="flex flex-col items-start justify-center">
+          <span class="text-sm text-gray-700"> Productos </span>
+          <span>42</span>
+        </div>
+      </button>
+      <button
+        class="bg-white rounded-2xl flex gap-4 justify-start items-center p-4 shadow-sm"
+      >
+        <div
+          class="bg-on-surface text-primary-key flex justify-center items-center p-2 rounded-full"
+        >
+          <i-lucide name="arrow-right-left"></i-lucide>
+        </div>
+        <div class="flex flex-col items-start justify-center">
+          <span class="text-sm text-gray-700">Movimientos</span>
+          <span class="text-lg">{{ totalMovements }}</span>
+        </div>
+      </button>
+    </div>
+  </ng-template>
+  <div slot="content" class="mx-4 mb-4">
+    <section class="flex flex-col gap-2">
+      <h2 class="font-medium text-2xl my-2">Ultimos movimientos</h2>
+      <div class="flex flex-col gap-4">
+        <div
+          *ngFor="let movement of movements"
+          (click)="openMovementDetailModal(movement)"
+          class="flex gap-4 w-full shadow-sm rounded-2xl p-6 bg-white relative overflow-hidden"
+        >
+          <div
+            class="absolute w-16 h-16 transform rotate-45"
+            style="top: -45px; right: -45px"
+            [ngClass]="getMovementStyles(movement.movementType).corner"
+          ></div>
+          <div
+            class="p-3 h-min rounded-xl flex justify-center items-center"
+            [ngClass]="[
+              getMovementStyles(movement.movementType).bg,
+              getMovementStyles(movement.movementType).text
+            ]"
+          >
+            <i-lucide
+              [name]="getIconNameByMovementType(movement.movementType)"
+            ></i-lucide>
+          </div>
+          <div class="w-full flex justify-between items-center">
+            <div class="flex flex-col gap-2">
+              <h2 class="text-xl font-medium">{{ movement.itemName }}</h2>
+              <p class="text-sm text-gray-700">
+                {{ getMovementReason(movement.reason) }}
+              </p>
+              <p class="text-xs text-gray-500">
+                {{ movement.movementDate | date : "dd MMM yyyy • hh:mm a" }}
+              </p>
+            </div>
+            <div class="flex flex-col justify-between h-full items-end">
+              <p
+                class="text-lg font-medium"
+                [ngClass]="getMovementStyles(movement.movementType).text"
+              >
+                {{
+                  (movement.quantityAfter - movement.quantityBefore >= 0
+                    ? "+"
+                    : "") + movement.quantityChanged
+                }}
+              </p>
+              <p
+                class="text-sm px-2 py-1 rounded-lg"
+                [ngClass]="[
+                  getMovementStyles(movement.movementType).bg,
+                  getMovementStyles(movement.movementType).text
+                ]"
+              >
+                {{ movement.unitCostAtTime }} soles
+              </p>
+            </div>
+          </div>
+        </div>
+        <div
+          *ngIf="movements.length === 0 && !loading"
+          class="text-center py-8"
+        >
+          <i-lucide
+            name="package-x"
+            class="w-16 h-16 mx-auto text-gray-300 mb-4"
+          ></i-lucide>
+          <p class="text-gray-500">No se encontraron movimientos</p>
+        </div>
+
+        <div *ngIf="loading" class="flex justify-center py-4">
+          <div
+            class="animate-spin rounded-full h-6 w-6 border-4 border-primary-key border-t-transparent"
+          ></div>
+        </div>
+
+        <button
+          *ngIf="hasMore && !loading && movements.length > 0"
+          (click)="loadMore()"
+          class="button button-outline button-lg w-full mt-4"
+        >
+          Cargar más
+        </button>
+      </div>
+    </section>
+  </div>
 
   <div slot="footer" class="p-4">
     <button

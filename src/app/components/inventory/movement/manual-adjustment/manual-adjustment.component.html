@@ -1,6 +1,9 @@
-<app-base-page title="Registro de merma" [headerTextColor]="'text-black'">
+<app-base-page
+  title="Ajuste manual de inventario"
+  [headerTextColor]="'text-black'"
+>
   <div slot="content" class="m-4">
-    <form [formGroup]="wasteForm" class="flex flex-col gap-4">
+    <form [formGroup]="adjustmentForm" class="flex flex-col gap-4">
       <div class="bg-on-surface rounded-xl p-4 mb-4">
         <div
           *ngIf="!selectedItem"
@@ -44,51 +47,81 @@
         </div>
       </div>
 
+      <div class="w-full">
+        <div class="form-group bg-on-surface border-on-surface">
+          <label for="movementType" class="form-label"
+            >Tipo de movimiento</label
+          >
+          <select
+            id="movementType"
+            formControlName="movementType"
+            class="form-select"
+          >
+            <option value="ADJUSTMENT_IN">Entrada</option>
+            <option value="ADJUSTMENT_OUT">Salida</option>
+          </select>
+          <i-lucide class="icon" size="30" name="chevron-down"></i-lucide>
+        </div>
+        <div
+          *ngIf="
+            adjustmentForm.get('movementType')?.invalid &&
+            adjustmentForm.get('movementType')?.touched
+          "
+          class="text-error text-sm mt-1"
+        >
+          Debe seleccionar un tipo de movimiento
+        </div>
+      </div>
+
       <div class="form-group">
-        <label for="quantity" class="form-label">Cantidad a dar de baja</label>
+        <label for="quantity" class="form-label">Cantidad de ajuste</label>
         <input
           type="number"
           id="quantity"
           formControlName="quantity"
           class="form-input p-2"
-          min="0.01"
           step="0.01"
-          placeholder="Ingrese la cantidad"
+          placeholder="Ingrese la cantidad (positiva para agregar, negativa para restar)"
         />
         <div
           *ngIf="
-            wasteForm.get('quantity')?.invalid &&
-            wasteForm.get('quantity')?.touched
+            adjustmentForm.get('quantity')?.invalid &&
+            adjustmentForm.get('quantity')?.touched
           "
           class="text-error text-sm mt-1"
         >
-          La cantidad es requerida y debe ser mayor a 0
+          La cantidad es requerida
+        </div>
+        <div class="text-gray-500 text-sm mt-1">
+          <span *ngIf="adjustmentForm.get('quantity')?.value > 0"
+            >Agregar al inventario</span
+          >
+          <span *ngIf="adjustmentForm.get('quantity')?.value < 0"
+            >Restar del inventario</span
+          >
+          <span *ngIf="!adjustmentForm.get('quantity')?.value"
+            >Ingrese un valor positivo para agregar o negativo para restar</span
+          >
         </div>
       </div>
 
-      <div class="form-group bg-on-surface border-on-surface">
-        <label for="reason" class="form-label">Motivo</label>
-        <select
-          name="reason"
-          id="reason"
-          class="form-select"
-          formControlName="reason"
-        >
-          <option *ngFor="let option of reasonOptions" [value]="option.value">
-            {{ option.label }}
-          </option>
-        </select>
-        <i-lucide class="icon" size="30" name="chevron-down"></i-lucide>
-      </div>
-
       <div class="form-group">
-        <label for="notes" class="form-label">Notas (opcional)</label>
+        <label for="notes" class="form-label">Motivo del ajuste</label>
         <textarea
           id="notes"
           formControlName="notes"
           class="form-input p-2 min-h-[80px]"
-          placeholder="Agregar notas sobre esta merma..."
+          placeholder="Explique el motivo del ajuste (ej. conteo físico, corrección de error, etc.)"
         ></textarea>
+        <div
+          *ngIf="
+            adjustmentForm.get('notes')?.invalid &&
+            adjustmentForm.get('notes')?.touched
+          "
+          class="text-error text-sm mt-1"
+        >
+          Debe ingresar el motivo del ajuste
+        </div>
       </div>
     </form>
   </div>
@@ -104,7 +137,12 @@
     <button
       type="button"
       class="button button-primary button-lg"
-      [disabled]="wasteForm.invalid || !selectedItem || isLoading"
+      [disabled]="
+        adjustmentForm.invalid ||
+        !selectedItem ||
+        isLoading ||
+        adjustmentForm.get('quantity')?.value === 0
+      "
       (click)="saveMovement()"
     >
       <i-lucide
