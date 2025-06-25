@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { InventoryItem } from '@app/core/model/data/inventory-item';
 import { BaseFilterOptions } from '@app/core/model/filter-options';
@@ -13,12 +13,66 @@ import { debounce, debounceTime, distinctUntilChanged, Subject } from 'rxjs';
   selector: 'app-item-select',
   standalone: true,
   imports: [CommonModule, FormsModule, LucideAngularModule],
-  templateUrl: './item-select.component.html',
-  styleUrl: './item-select.component.css',
+  template: `
+    <div class="bg-white rounded-3xl p-4">
+      <h1 class="text-xl font-medium">Selecciona un ingrediente</h1>
+
+      <form class="flex flex-col gap-4 py-4">
+        <div class="flex gap-2">
+          <div class="form-group-icon">
+            <i-lucide
+              name="search"
+              class="icon text-gray-400"
+              size="25"
+            ></i-lucide>
+            <input
+              type="text"
+              [(ngModel)]="searchInput"
+              (ngModelChange)="onSearchChange($event)"
+              [ngModelOptions]="{ standalone: true }"
+              placeholder="Buscar proveedores..."
+              class="form-input py-2 w-full"
+            />
+          </div>
+          <button
+            class="bg-background text-on-background w-16 flex justify-center items-center active:opacity-70 rounded-full p-2 focus:outline-2 focus:outline-offset-2 focus:outline-background"
+            (click)="clearSearch()"
+          >
+            <i-lucide name="eraser" class="w-4 h-4"></i-lucide>
+          </button>
+        </div>
+        <div class="form-group bg-on-surface border-on-surface">
+          <label for="item" class="form-label">item</label>
+          <select
+            name="item"
+            id="item"
+            class="form-select"
+            [(ngModel)]="selectedItem"
+          >
+            <option value="" disabled selected>
+              Selecciona un ingrediente
+            </option>
+            <option *ngFor="let item of items" [ngValue]="item">
+              {{ item.name }}
+            </option>
+          </select>
+
+          <lucide-icon class="icon" size="30" name="chevron-down"></lucide-icon>
+        </div>
+        <button
+          class="button button-primary button-lg w-full"
+          [disabled]="!selectedItem"
+          (click)="saveItem()"
+        >
+          Seleccionar
+        </button>
+      </form>
+    </div>
+  `,
 })
 export class ItemSelectComponent implements OnInit {
   items: InventoryItem[] = [];
-  selectedItem!: InventoryItem;
+  @Output() selectedItem!: InventoryItem;
   searchSubject = new Subject<string>();
   searchInput = '';
   page = 1;

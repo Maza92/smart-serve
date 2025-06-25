@@ -21,7 +21,7 @@ import { ToastService } from '@app/lib/toast/toast.service';
 import { BasePageComponent } from '@app/shared/base-page/base-page.component';
 import { LucideAngularModule } from 'lucide-angular';
 import { ModalService } from 'ngx-modal-ease';
-import { ItemSelectComponent } from '../item-select/item-select.component';
+import { ItemSelectComponent } from '../../../../shared/item-select/item-select.component';
 import {
   debounceTime,
   distinctUntilChanged,

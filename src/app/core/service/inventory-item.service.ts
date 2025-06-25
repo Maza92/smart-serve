@@ -62,6 +62,29 @@ export class InventoryItemService extends BaseService {
       .pipe(catchError(this.handleError));
   }
 
+  getInventoryItemsBySupplierId(
+    supplierId: number,
+    page: number,
+    size: number
+  ): Observable<ApiResponse<Paged<InventoryItem>>> {
+    const url = buildUrl(
+      ServiceType.API,
+      API_CONSTANTS.INVENTORY_ITEM.CONTROLLER,
+      API_CONSTANTS.INVENTORY_ITEM.GET_ITEMS_BY_SUPPLIER,
+      { supplierId: supplierId.toString() }
+    );
+
+    let params = new HttpParams()
+      .set('size', size.toString())
+      .set('page', page.toString());
+
+    return this.http
+      .get<ApiResponse<Paged<InventoryItem>>>(url, {
+        params,
+      })
+      .pipe(catchError(this.handleError));
+  }
+
   getInventoryItemById(id: number): Observable<ApiResponse<InventoryItem>> {
     const url = buildUrl(
       ServiceType.API,

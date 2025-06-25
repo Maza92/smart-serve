@@ -51,13 +51,14 @@ export const API_CONSTANTS = {
   INVENTORY: {
     CONTROLLER: '/inventory',
     UPDATE_STOCK: '/update-stock',
-    UPDATE_STOCK_BATCH: '/update-stock-batch',
-    UPDATE_STOCK_BATCH_ASYNC: '/update-stock-batch-async',
+    UPDATE_STOCK_BATCH: '/update-stocks-batch',
+    UPDATE_STOCK_BATCH_ASYNC: '/update-stocks-batch-async',
   },
 
   INVENTORY_ITEM: {
     CONTROLLER: '/inventory-items',
     GET_ITEM: '/:id',
+    GET_ITEMS_BY_SUPPLIER: '/supplier/:supplierId',
     GET_ITEMS: '',
     CREATE_ITEM: '',
     UPDATE_ITEM: '/:id',

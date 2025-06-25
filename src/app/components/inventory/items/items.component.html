@@ -90,6 +90,17 @@
           >
             <div class="flex items-center">
               <div
+                *ngIf="item.imagePath"
+                class="w-20 h-20 object-center object-cover rounded-xl overflow-hidden mr-4"
+              >
+                <img
+                  [src]="item.imagePath"
+                  alt="Item Image"
+                  class="w-full h-full object-cover"
+                />
+              </div>
+              <div
+                *ngIf="!item.imagePath"
                 class="w-20 h-20 rounded-xl overflow-hidden mr-4 bg-gray-200 flex items-center justify-center"
               >
                 <i-lucide

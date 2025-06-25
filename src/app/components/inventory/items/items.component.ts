@@ -65,7 +65,7 @@ export class ItemsComponent implements OnInit, OnDestroy {
 
   items: InventoryItem[] = [];
   page = 1;
-  size = 10;
+  size = 5;
   hasMore = true;
   loading = false;
 
@@ -313,7 +313,7 @@ export class ItemsComponent implements OnInit, OnDestroy {
             this.items = newData;
           }
 
-          this.hasMore = newData.length === this.size;
+          this.hasMore = !response.data.last;
         },
         error: (error) => {
           this.toastService.error('Error', error.message);

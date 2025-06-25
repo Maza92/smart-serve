@@ -4,49 +4,49 @@ export const NAV_ITEMS: NavItem[] = [
   {
     key: 'components',
     name: 'Componentes',
-    icon: 'package',
+    icon: 'layout-grid',
     path: '/components',
   },
   {
     key: 'starter',
     name: 'Starter',
-    icon: 'package',
+    icon: 'rocket',
     path: '/starter',
   },
   {
     key: 'auth',
     name: 'Auth',
-    icon: 'package',
+    icon: 'lock',
     path: '/auth',
     children: [
       {
         key: 'login',
         name: 'Login',
-        icon: 'package',
+        icon: 'log-in',
         path: 'login',
       },
       {
         key: 'register',
         name: 'Registro',
-        icon: 'package',
+        icon: 'user-plus',
         path: 'register',
       },
       {
         key: 'email-verification',
         name: 'Verificación de Email',
-        icon: 'package',
+        icon: 'mail-check',
         path: 'email-verification',
       },
       {
         key: 'code-verification',
         name: 'Verificación de Código',
-        icon: 'package',
+        icon: 'shield-check',
         path: 'code-verification',
       },
       {
         key: 'reset-password',
         name: 'Restablecer Contraseña',
-        icon: 'package',
+        icon: 'key-round',
         path: 'reset-password',
       },
     ],
@@ -60,25 +60,25 @@ export const NAV_ITEMS: NavItem[] = [
       {
         key: 'inventory',
         name: 'Inventario',
-        icon: 'package',
+        icon: 'boxes',
         path: 'inventory',
         children: [
           {
             key: 'suppliers',
             name: 'Proveedores',
-            icon: 'package',
+            icon: 'truck',
             path: 'suppliers',
             children: [
               {
                 key: 'create',
                 name: 'Crear Proveedor',
-                icon: 'package',
+                icon: 'plus-circle',
                 path: 'create',
               },
               {
                 key: 'suppliers.details',
                 name: 'Detalles Proveedor',
-                icon: 'package',
+                icon: 'file-text',
                 path: 'details',
               },
             ],
@@ -86,37 +86,37 @@ export const NAV_ITEMS: NavItem[] = [
           {
             key: 'items',
             name: 'Productos',
-            icon: 'package',
+            icon: 'shopping-basket',
             path: 'items',
             children: [
               {
                 key: 'items.details',
                 name: 'Detalles Producto',
-                icon: 'package',
+                icon: 'file-text',
                 path: 'details',
               },
               {
                 key: 'movements',
                 name: 'Movimientos',
-                icon: 'package',
+                icon: 'arrow-right-left',
                 path: 'movements',
                 children: [
                   {
                     key: 'shop',
                     name: 'Registro de Almacenes',
-                    icon: 'package',
+                    icon: 'shopping-cart',
                     path: 'shop',
                   },
                   {
                     key: 'waste',
                     name: 'Registro de Desechos',
-                    icon: 'package',
+                    icon: 'trash-2',
                     path: 'waste',
                   },
                   {
                     key: 'manual',
                     name: 'Registro Manual',
-                    icon: 'package',
+                    icon: 'pencil',
                     path: 'manual',
                   },
                 ],
@@ -125,29 +125,28 @@ export const NAV_ITEMS: NavItem[] = [
           },
         ],
       },
-
       {
         key: 'pos',
         name: 'Caja',
-        icon: 'package',
+        icon: 'scan-line',
         path: 'pos',
         children: [
           {
             key: 'cash-register',
             name: 'Registro de Efectivo',
-            icon: 'package',
+            icon: 'banknote',
             path: 'cash-register',
           },
           {
             key: 'sales',
             name: 'Ventas',
-            icon: 'package',
+            icon: 'trending-up',
             path: 'sales',
           },
           {
             key: 'order',
             name: 'Pedidos',
-            icon: 'package',
+            icon: 'clipboard-list',
             path: 'order',
           },
         ],
@@ -163,19 +162,19 @@ export const NAV_ITEMS: NavItem[] = [
   {
     key: 'settings',
     name: 'Configuración',
-    icon: 'package',
+    icon: 'settings',
     path: '/settings',
     children: [
       {
         key: 'users',
         name: 'Usuarios',
-        icon: 'package',
+        icon: 'users',
         path: 'users',
         children: [
           {
             key: 'user.edit',
             name: 'Editar Usuario',
-            icon: 'package',
+            icon: 'user-cog',
             path: 'edit',
           },
         ],
@@ -183,31 +182,31 @@ export const NAV_ITEMS: NavItem[] = [
       {
         key: 'user',
         name: 'Editar Usuario',
-        icon: 'package',
+        icon: 'user-cog',
         path: 'user',
       },
       {
         key: 'table',
         name: 'Mesas',
-        icon: 'package',
+        icon: 'table',
         path: 'table',
       },
       {
         key: 'dishes',
         name: 'Platos',
-        icon: 'package',
+        icon: 'utensils-crossed',
         path: 'dishes',
         children: [
           {
             key: 'dishes.create',
             name: 'Crear Plato',
-            icon: 'package',
+            icon: 'plus-circle',
             path: 'create',
           },
           {
             key: 'dishes.edit',
             name: 'Editar Plato',
-            icon: 'package',
+            icon: 'pencil',
             path: 'edit',
           },
         ],
@@ -217,13 +216,13 @@ export const NAV_ITEMS: NavItem[] = [
   {
     key: 'terms',
     name: 'Términos y Condiciones',
-    icon: 'package',
+    icon: 'file-text',
     path: '/terms',
   },
   {
     key: 'privacy',
     name: 'Política de Privacidad',
-    icon: 'package',
+    icon: 'shield',
     path: '/privacy',
   },
 ];
