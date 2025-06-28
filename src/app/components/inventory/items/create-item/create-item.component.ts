@@ -41,6 +41,7 @@ export class CreateItemComponent implements OnInit {
   initForm(): void {
     this.itemForm = this.fb.group({
       name: ['', [Validators.required]],
+      imagePath: ['', [Validators.required]],
       unit: ['', [Validators.required]],
       unitCost: [0, [Validators.required, Validators.min(0)]],
       minStockLevel: [0, [Validators.required, Validators.min(0)]],

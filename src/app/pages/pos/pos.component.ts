@@ -5,11 +5,12 @@ import { formatDate } from '@angular/common';
 import { PingService } from '@app/core/service/ping.service';
 import { NavigationService } from '@app/core/service/navigation.service';
 import { RouterLink } from '@angular/router';
+import { GoToDirective } from '@app/shared/directives/go-to.directive';
 
 @Component({
   selector: 'app-pos',
   standalone: true,
-  imports: [LucideAngularModule, CommonModule, RouterLink],
+  imports: [LucideAngularModule, CommonModule, RouterLink, GoToDirective],
   templateUrl: './pos.component.html',
   styleUrl: './pos.component.css',
 })

@@ -1,5 +1,6 @@
 export interface CreateInventoryItemRequest {
   name: string;
+  imagePath: string;
   unit: string;
   unitCost: number;
   minStockLevel: number;

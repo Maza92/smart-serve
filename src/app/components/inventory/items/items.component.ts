@@ -373,6 +373,7 @@ export class ItemsComponent implements OnInit, OnDestroy {
   initForm(): void {
     this.itemForm = this.formBuilder.group({
       name: ['', [Validators.required]],
+      imagePath: ['', [Validators.required]],
       unit: ['', [Validators.required]],
       unitCost: [0, [Validators.required, Validators.min(0)]],
       minStockLevel: [0, [Validators.required, Validators.min(0)]],
@@ -495,6 +496,7 @@ export class ItemsComponent implements OnInit, OnDestroy {
     if (this.isEditMode && this.currentItemId) {
       const updateRequest: UpdateInventoryItemRequest = {
         name: formValue.name,
+        imagePath: formValue.imagePath,
         unit: formValue.unit,
         unitCost: formValue.unitCost,
         minStockLevel: formValue.minStockLevel,
@@ -519,6 +521,7 @@ export class ItemsComponent implements OnInit, OnDestroy {
     } else {
       const createRequest: CreateInventoryItemRequest = {
         name: formValue.name,
+        imagePath: formValue.imagePath,
         unit: formValue.unit,
         unitCost: formValue.unitCost,
         minStockLevel: formValue.minStockLevel,

@@ -44,6 +44,7 @@ export class EditItemComponent implements OnInit {
   initForm(): void {
     this.itemForm = this.fb.group({
       name: [this.item.name, [Validators.required]],
+      imagePath: [this.item.imagePath, [Validators.required]],
       unit: [this.item.unit, [Validators.required]],
       unitCost: [this.item.unitCost, [Validators.required, Validators.min(0)]],
       minStockLevel: [

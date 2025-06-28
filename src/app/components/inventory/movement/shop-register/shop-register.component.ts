@@ -42,7 +42,6 @@ interface ItemMovement {
     BasePageComponent,
     FormsModule,
     ReactiveFormsModule,
-    GoToDirective,
   ],
   templateUrl: './shop-register.component.html',
   styleUrl: './shop-register.component.css',

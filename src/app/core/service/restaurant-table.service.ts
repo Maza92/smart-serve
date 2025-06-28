@@ -20,7 +20,12 @@ export class RestaurantTableService extends BaseService {
 
   getTables(
     page: number,
-    size: number
+    size: number,
+    number?: number,
+    status?: string,
+    section?: string,
+    sortBy: string = 'id',
+    sortDirection: string = 'asc'
   ): Observable<ApiResponse<Paged<RestaurantTable>>> {
     const url = buildUrl(
       ServiceType.API,
@@ -28,9 +33,21 @@ export class RestaurantTableService extends BaseService {
       API_CONSTANTS.TABLE.GET_TABLES
     );
 
-    const params = new HttpParams()
+    let params = new HttpParams()
       .set('page', page.toString())
-      .set('size', size.toString());
+      .set('size', size.toString())
+      .set('sortBy', sortBy)
+      .set('sortDirection', sortDirection);
+
+    if (number) {
+      params = params.set('number', number.toString());
+    }
+    if (status) {
+      params = params.set('status', status);
+    }
+    if (section) {
+      params = params.set('section', section);
+    }
 
     return this.http
       .get<ApiResponse<Paged<RestaurantTable>>>(url, {

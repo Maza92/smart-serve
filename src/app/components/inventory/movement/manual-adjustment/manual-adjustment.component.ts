@@ -32,7 +32,6 @@ import { GoToDirective } from '@app/shared/directives/go-to.directive';
     BasePageComponent,
     FormsModule,
     ReactiveFormsModule,
-    GoToDirective,
   ],
   templateUrl: './manual-adjustment.component.html',
   styles: [``],

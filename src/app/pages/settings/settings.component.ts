@@ -4,6 +4,7 @@ import { LucideAngularModule } from 'lucide-angular';
 import { AuthService } from '@app/core/service/auth.service';
 import { Router } from '@angular/router';
 import { GoToDirective } from '@app/shared/directives/go-to.directive';
+import { WebSocketService } from '@app/core/service/websocket.service';
 
 @Component({
   selector: 'app-settings',
@@ -15,12 +16,17 @@ import { GoToDirective } from '@app/shared/directives/go-to.directive';
 export class SettingsComponent {
   title: string = 'Ajustes';
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private webSocketService: WebSocketService
+  ) {}
 
   logout() {
     this.authService.logout().subscribe({
       next: () => {
         console.log('Logout successful');
+        this.webSocketService.disconnect();
         this.router.navigate(['/starter']);
       },
       error: (error) => {

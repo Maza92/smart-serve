@@ -113,6 +113,18 @@ export const API_CONSTANTS = {
     UPDATE_RECIPE: '/:id',
     DELETE_RECIPE: '/:id',
   },
+
+  ORDER: {
+    CONTROLLER: '/order',
+    GET_ORDER: '/:id',
+    GET_ORDERS: '',
+    GET_ORDERS_TO_KITCHEN: '/kitchen',
+    CREATE_DRAFT_ORDER: '/draft',
+    SEND_TO_KITCHEN: '/:id/send-to-kitchen',
+    CLAIM_TO_COOK: '/:id/claim-to-cook',
+    MARK_AS_READY: '/:id/mark-as-ready',
+    CREATE_ORDER: '',
+  },
 };
 
 export function getBaseUrl(serviceType: ServiceType): string {
