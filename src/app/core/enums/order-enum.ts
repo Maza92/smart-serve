@@ -10,3 +10,9 @@ export enum OrderStatusEnum {
   RETURNED = 'RETURNED',
   PARTIAL_SERVED = 'PARTIAL_SERVED',
 }
+
+export enum OrderServiceType {
+  DINE_IN = 'DINE_IN',
+  TAKEOUT = 'TAKEOUT',
+  DELIVERY = 'DELIVERY',
+}

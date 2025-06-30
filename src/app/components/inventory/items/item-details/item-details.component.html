@@ -136,7 +136,9 @@
             ></lucide-icon>
             <div class="flex flex-col justify-between">
               <h3>Unidad de medida</h3>
-              <p class="text-black">{{ item?.unit || "N/A" }}</p>
+              <p class="text-black">
+                {{ item?.unitId || "N/A" }} ({{ item?.unitId || "" }})
+              </p>
             </div>
           </div>
           <div class="flex gap-2 my-4 text-gray-500">
@@ -159,7 +161,7 @@
             <div class="flex flex-col justify-between">
               <h3>Nivel mínimo de stock</h3>
               <p class="text-black">
-                {{ item?.minStockLevel || 0 }} {{ item?.unit }}
+                {{ item?.minStockLevel || 0 }} {{ item?.unitId }}
               </p>
             </div>
           </div>
@@ -251,7 +253,7 @@
                         ? "+"
                         : "") + movement.quantityChanged
                     }}
-                    {{ item?.unit }}
+                    {{ item?.unitId }}
                   </td>
                 </tr>
               </tbody>

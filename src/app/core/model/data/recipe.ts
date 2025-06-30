@@ -21,3 +21,17 @@ export interface IngredientSummary {
   notes: string;
   preparationOrder: number;
 }
+
+export interface IngredientToDish extends IngredientSummary {
+  unitId: number;
+}
+
+export interface Ingredient {
+  inventoryItemId: number;
+  name: string;
+  quantityRequired: number;
+  unitId: number;
+  unitName: string;
+  unitAbbreviation: string;
+  unitCost: number;
+}

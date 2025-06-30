@@ -1,4 +1,4 @@
-import { OrderStatusEnum } from '@app/core/enums/order-enum';
+import { OrderServiceType, OrderStatusEnum } from '@app/core/enums/order-enum';
 import { OrderDetailsToKitchen } from './order-details';
 
 export interface Order {
@@ -7,6 +7,8 @@ export interface Order {
   userName: string;
   status: OrderStatusEnum;
   totalPrice: number;
+  comments: string;
+  serviceType: OrderServiceType;
   taxAmount: number;
   discountAmount: number;
   customerName: string;

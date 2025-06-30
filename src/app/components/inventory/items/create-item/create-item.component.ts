@@ -8,8 +8,10 @@ import {
 } from '@angular/forms';
 import { CategoryItem } from '@app/core/model/data/category-item';
 import { Supplier } from '@app/core/model/data/supplier';
+import { Unit } from '@app/core/model/data/unit';
 import { CreateInventoryItemRequest } from '@app/core/model/inventory-item/create-inventory-item';
 import { InventoryItemService } from '@app/core/service/inventory-item.service';
+import { UnitService } from '@app/core/service/unit.service';
 import { ToastService } from '@app/lib/toast/toast.service';
 import { LucideAngularModule } from 'lucide-angular';
 import { ModalService } from 'ngx-modal-ease';
@@ -25,24 +27,27 @@ export class CreateItemComponent implements OnInit {
   itemForm!: FormGroup;
   suppliers: Supplier[] = [];
   categories: CategoryItem[] = [];
+  units: Unit[] = [];
   loading = false;
 
   constructor(
     private fb: FormBuilder,
     private modalService: ModalService,
     private inventoryItemService: InventoryItemService,
+    private unitService: UnitService,
     private toastService: ToastService
   ) {}
 
   ngOnInit(): void {
     this.initForm();
+    this.loadUnits();
   }
 
   initForm(): void {
     this.itemForm = this.fb.group({
       name: ['', [Validators.required]],
       imagePath: ['', [Validators.required]],
-      unit: ['', [Validators.required]],
+      unitId: ['', [Validators.required]],
       unitCost: [0, [Validators.required, Validators.min(0)]],
       minStockLevel: [0, [Validators.required, Validators.min(0)]],
       supplierId: ['', [Validators.required]],
@@ -50,6 +55,17 @@ export class CreateItemComponent implements OnInit {
       location: ['', [Validators.required]],
       expiryDate: [null],
       isActive: [true],
+    });
+  }
+
+  loadUnits(): void {
+    this.unitService.getUnits().subscribe({
+      next: (response) => {
+        this.units = response.data;
+      },
+      error: (error) => {
+        this.toastService.error('Error al cargar las unidades');
+      },
     });
   }
 

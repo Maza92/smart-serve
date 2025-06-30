@@ -137,16 +137,26 @@ export const NAV_ITEMS: NavItem[] = [
             path: 'sales',
           },
           {
-            key: 'order',
-            name: 'Pedidos',
-            icon: 'clipboard-list',
-            path: 'order',
-          },
-          {
             key: 'tables',
             name: 'Mesas',
             icon: 'table',
             path: 'tables',
+            children: [
+              {
+                key: 'menu',
+                name: 'Menu',
+                icon: 'list',
+                path: 'menu',
+                children: [
+                  {
+                    key: 'order',
+                    name: 'Pedidos',
+                    icon: 'clipboard-list',
+                    path: 'order',
+                  },
+                ],
+              },
+            ],
           },
           {
             key: 'kitchen',

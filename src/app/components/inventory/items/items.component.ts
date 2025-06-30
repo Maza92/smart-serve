@@ -1,21 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import {
-  FormsModule,
-  ReactiveFormsModule,
-  FormBuilder,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { InventoryItem } from '@app/core/model/data/inventory-item';
 import { Supplier } from '@app/core/model/data/supplier';
 import {
   InventoryItemsFilterOptions,
   ChipFilter,
-  BaseFilterOptions,
 } from '@app/core/model/filter-options';
-import { CreateInventoryItemRequest } from '@app/core/model/inventory-item/create-inventory-item';
-import { UpdateInventoryItemRequest } from '@app/core/model/inventory-item/update-inventory-item';
 import { InventoryItemService } from '@app/core/service/inventory-item.service';
 import { SupplierService } from '@app/core/service/supplier.service';
 import { ToastService } from '@app/lib/toast/toast.service';
@@ -50,7 +41,6 @@ import { GoToDirective } from '@app/shared/directives/go-to.directive';
     BackBarComponent,
     LucideAngularModule,
     FormsModule,
-    ReactiveFormsModule,
     FilterChipComponent,
     GoToDirective,
   ],
@@ -81,37 +71,27 @@ export class ItemsComponent implements OnInit, OnDestroy {
   searchSubject = new Subject<string>();
   private destroy$ = new Subject<void>();
 
-  itemForm!: FormGroup;
   suppliers: Supplier[] = [];
   categories: CategoryItem[] = [];
-  isEditMode = false;
-  currentItemId: number | null = null;
-
-  path: string | null = null;
 
   constructor(
     private inventoryItemService: InventoryItemService,
     private supplierService: SupplierService,
     private modalService: ModalService,
     private toastService: ToastService,
-    private formBuilder: FormBuilder,
     private alertService: AlertService,
     private navigationService: NavigationService,
     private categoryItemService: CategoryItemService
   ) {}
 
   ngOnInit(): void {
-    this.initForm();
-
     this.navigationService.configureNavbar(['home', 'movements', 'settings']);
-
     this.searchSubject
       .pipe(debounceTime(300), distinctUntilChanged(), takeUntil(this.destroy$))
       .subscribe((value) => {
         this.filters.search = value;
         this.resetAndLoad();
       });
-
     this.loadItems();
     this.loadSuppliers();
     this.loadCategories();
@@ -204,7 +184,6 @@ export class ItemsComponent implements OnInit, OnDestroy {
         },
         size: {
           width: '100%',
-          maxHeight: '80vh',
         },
         actions: {
           escape: true,
@@ -370,21 +349,6 @@ export class ItemsComponent implements OnInit, OnDestroy {
     }
   }
 
-  initForm(): void {
-    this.itemForm = this.formBuilder.group({
-      name: ['', [Validators.required]],
-      imagePath: ['', [Validators.required]],
-      unit: ['', [Validators.required]],
-      unitCost: [0, [Validators.required, Validators.min(0)]],
-      minStockLevel: [0, [Validators.required, Validators.min(0)]],
-      supplierId: [null, [Validators.required]],
-      categoryId: [null, [Validators.required]],
-      location: ['', [Validators.required]],
-      expiryDate: [''],
-      isActive: [true],
-    });
-  }
-
   openCreateModal(): void {
     this.modalService
       .open(CreateItemComponent, {
@@ -401,7 +365,6 @@ export class ItemsComponent implements OnInit, OnDestroy {
         },
         size: {
           width: '100%',
-          maxHeight: '80vh',
         },
         actions: {
           escape: true,
@@ -432,13 +395,11 @@ export class ItemsComponent implements OnInit, OnDestroy {
         },
         size: {
           width: '100%',
-          maxHeight: '80vh',
         },
         actions: {
           escape: true,
           click: true,
         },
-
         data: { item, suppliers: this.suppliers, categories: this.categories },
       })
       .then((result) => {
@@ -480,67 +441,5 @@ export class ItemsComponent implements OnInit, OnDestroy {
         ],
       }
     );
-  }
-
-  saveItem(): void {
-    if (this.itemForm.invalid) {
-      this.toastService.error(
-        'Error',
-        'Formulario inválido. Por favor, revisa los campos.'
-      );
-      return;
-    }
-
-    const formValue = this.itemForm.value;
-
-    if (this.isEditMode && this.currentItemId) {
-      const updateRequest: UpdateInventoryItemRequest = {
-        name: formValue.name,
-        imagePath: formValue.imagePath,
-        unit: formValue.unit,
-        unitCost: formValue.unitCost,
-        minStockLevel: formValue.minStockLevel,
-        supplierId: formValue.supplierId,
-        categoryId: formValue.categoryId,
-        location: formValue.location,
-        expiryDate: formValue.expiryDate,
-        isActive: formValue.isActive,
-      };
-
-      this.inventoryItemService
-        .updateInventoryItem(this.currentItemId, updateRequest)
-        .subscribe({
-          next: (response) => {
-            this.toastService.success('Éxito', response.message);
-            this.resetAndLoad();
-          },
-          error: (error) => {
-            this.toastService.error('Error', error.message);
-          },
-        });
-    } else {
-      const createRequest: CreateInventoryItemRequest = {
-        name: formValue.name,
-        imagePath: formValue.imagePath,
-        unit: formValue.unit,
-        unitCost: formValue.unitCost,
-        minStockLevel: formValue.minStockLevel,
-        supplierId: formValue.supplierId,
-        categoryId: formValue.categoryId,
-        location: formValue.location,
-        expiryDate: formValue.expiryDate,
-        isActive: formValue.isActive,
-      };
-
-      this.inventoryItemService.createInventoryItem(createRequest).subscribe({
-        next: (response) => {
-          this.toastService.success('Éxito', response.message);
-          this.resetAndLoad();
-        },
-        error: (error) => {
-          this.toastService.error('Error', error.message);
-        },
-      });
-    }
   }
 }

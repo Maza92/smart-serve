@@ -88,6 +88,7 @@ export const API_CONSTANTS = {
     CONTROLLER: '/dishes',
     GET_DISH: '/:id',
     GET_DISH_WITH_INGREDIENTS: '/:id/with-ingredients',
+    GET_DISH_INGREDIENTS: '/:id/ingredients',
     GET_DISHES: '',
     GET_DISHES_WITH_INGREDIENTS: '/with-recipes',
     CREATE_DISH: '',
@@ -124,6 +125,11 @@ export const API_CONSTANTS = {
     CLAIM_TO_COOK: '/:id/claim-to-cook',
     MARK_AS_READY: '/:id/mark-as-ready',
     CREATE_ORDER: '',
+  },
+
+  UNIT: {
+    CONTROLLER: '/units',
+    GET_UNITS: '',
   },
 };
 

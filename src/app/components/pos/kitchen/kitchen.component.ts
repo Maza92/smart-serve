@@ -3,6 +3,10 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { WEBSOCKET_CHANNELS } from '@app/core/constant/websocket-channels';
 import { OrderStatusEnum } from '@app/core/enums/order-enum';
 import { OrderToKitchen } from '@app/core/model/data/order';
+import {
+  OrderModification,
+  OrderModificationAction,
+} from '@app/core/model/order/modifications';
 import { NavigationService } from '@app/core/service/navigation.service';
 import { OrderService } from '@app/core/service/order.service';
 import { WebSocketService } from '@app/core/service/websocket.service';
@@ -11,10 +15,6 @@ import { BasePageComponent } from '@app/shared/base-page/base-page.component';
 import { GoToDirective } from '@app/shared/directives/go-to.directive';
 import { LucideAngularModule } from 'lucide-angular';
 import { Subscription } from 'rxjs';
-interface OrderUpdate {
-  orderId: number;
-  status: OrderStatusEnum;
-}
 
 interface OrderTimer {
   orderId: number;
@@ -257,5 +257,56 @@ export class KitchenComponent implements OnInit, OnDestroy {
 
   trackByOrderId(index: number, order: OrderToKitchen): number {
     return order.id;
+  }
+
+  getModificationText(modification: OrderModification): string {
+    switch (modification.action) {
+      case OrderModificationAction.REMOVE:
+        return `Sin ${modification.ingredientName}`;
+      case OrderModificationAction.ADD:
+        return `+ ${modification.ingredientName}`;
+      case OrderModificationAction.EXTRA:
+        return `Extra ${modification.ingredientName}`;
+      case OrderModificationAction.LESS:
+        return `Menos ${modification.ingredientName}`;
+      case OrderModificationAction.NOTE:
+        return modification.ingredientName;
+      default:
+        return modification.ingredientName;
+    }
+  }
+
+  getModificationClass(modification: OrderModification): string {
+    switch (modification.action) {
+      case OrderModificationAction.REMOVE:
+        return 'text-red-600 bg-red-50 border-red-200';
+      case OrderModificationAction.ADD:
+        return 'text-green-600 bg-green-50 border-green-200';
+      case OrderModificationAction.EXTRA:
+        return 'text-blue-600 bg-blue-50 border-blue-200';
+      case OrderModificationAction.LESS:
+        return 'text-orange-600 bg-orange-50 border-orange-200';
+      case OrderModificationAction.NOTE:
+        return 'text-purple-600 bg-purple-50 border-purple-200';
+      default:
+        return 'text-gray-600 bg-gray-50 border-gray-200';
+    }
+  }
+
+  getModificationIcon(modification: OrderModification): string {
+    switch (modification.action) {
+      case OrderModificationAction.REMOVE:
+        return 'x';
+      case OrderModificationAction.ADD:
+        return 'plus';
+      case OrderModificationAction.EXTRA:
+        return 'plus-circle';
+      case OrderModificationAction.LESS:
+        return 'minus-circle';
+      case OrderModificationAction.NOTE:
+        return 'message-circle';
+      default:
+        return 'info';
+    }
   }
 }

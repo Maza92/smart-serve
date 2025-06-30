@@ -1,35 +1,150 @@
 <app-base-page title="Mi Página" [showFooter]="true">
   <ng-template #header>
     <app-back-bar title="Mesas"></app-back-bar>
+    <div class="p-4">
+      <div
+        class="bg-white p-1 rounded-xl flex gap-1 justify-center items-center h-12 relative"
+      >
+        <div
+          class="absolute h-[calc(100%-8px)] rounded-xl bg-primary-key transition-all duration-300 ease-in-out"
+          [ngStyle]="{
+            width: 'calc(50% - 4px)',
+            left: activeTab === 1 ? '4px' : 'calc(50% + 2px)'
+          }"
+        ></div>
+
+        <button
+          class="rounded-xl w-full h-full z-10 transition-colors duration-200"
+          [ngClass]="{
+            'font-semibold text-on-background': activeTab === 1,
+            'font-regular text-background': activeTab !== 1
+          }"
+          (click)="activeTab = 1"
+        >
+          Disponibles
+        </button>
+        <button
+          class="rounded-xl w-full h-full z-10 transition-colors duration-200"
+          [ngClass]="{
+            'font-semibold text-on-background': activeTab === 2,
+            'font-regular text-background': activeTab !== 2
+          }"
+          (click)="activeTab = 2"
+        >
+          Ocupadas
+        </button>
+      </div>
+    </div>
   </ng-template>
 
   <div slot="content" class="m-4 space-y-4">
-    <button (click)="connect()" class="button button-primary">conectar</button>
-    <button (click)="disconnect()" class="button button-primary">
-      desconectar
-    </button>
-    <button (click)="init()" class="button button-primary">iniciar</button>
+    <div class="w-full flex-1">
+      <div class="relative w-full h-full">
+        <div
+          class="transition-all duration-300 ease-in-out absolute w-full h-full"
+          [ngClass]="{
+            'opacity-100 z-10': activeTab === 1,
+            'opacity-0 z-0': activeTab !== 1
+          }"
+        >
+          <div
+            *ngIf="availableTables.length === 0"
+            class="w-full flex flex-col items-center justify-center"
+          >
+            <i-lucide
+              name="inbox"
+              class="text-gray-400 w-16 h-16 mb-4"
+            ></i-lucide>
+            <p class="text-gray-600 text-sm">
+              No se encontraron mesas disponibles
+            </p>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div
+              *ngFor="let table of availableTables"
+              class="card border border-green-400 bg-white"
+              (click)="oSelectTable(table.id)"
+            >
+              <div class="card-head">
+                <div class="flex items-center justify-start gap-2">
+                  <h3 class="text-3xl font-bold">T{{ table.number }}</h3>
+                  <div
+                    class="bg-green-300 text-sm text-green-800 rounded-full px-3 flex gap-0 justify-center items-center"
+                  >
+                    <i-lucide
+                      name="check"
+                      class="w-4 h-4 mt-[0.5px]"
+                      [strokeWidth]="3"
+                    ></i-lucide>
+                    <span> disponible </span>
+                  </div>
+                </div>
+              </div>
 
-    <div class="flex flex-col space-y-4">
-      <div class="flex justify-between">
-        <h1 class="text-2xl font-bold">Mesas</h1>
-      </div>
-    </div>
-    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-      <div
-        *ngFor="let table of tables"
-        class="bg-white shadow-sm rounded-lg p-4 flex flex-col space-y-4"
-      >
-        <div class="flex justify-between">
-          <h2 class="text-xl font-bold">Mesa {{ table.number }}</h2>
+              <div class="card-body text-gray-500">
+                <div class="flex items-center gap-2">
+                  <i-lucide name="users" class="w-5 h-5"></i-lucide>
+                  <p class="card-text">{{ table.capacity }} asientos</p>
+                </div>
+                <div class="flex items-center gap-2">
+                  <i-lucide name="map-pin" class="w-5 h-5"></i-lucide>
+                  <p class="card-text">Sección: {{ table.section }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="flex justify-between">
-          <p class="text-sm">
-            {{ table.section }}
-          </p>
-          <p class="text-sm">
-            {{ table.status }}
-          </p>
+        <div
+          class="transition-all duration-300 ease-in-out absolute w-full h-full"
+          [ngClass]="{
+            'opacity-100 z-10': activeTab === 2,
+            'opacity-0 z-0': activeTab !== 2
+          }"
+        >
+          <div
+            *ngIf="occupiedTables.length === 0"
+            class="w-full flex flex-col items-center justify-center"
+          >
+            <i-lucide
+              name="inbox"
+              class="text-gray-400 w-16 h-16 mb-4"
+            ></i-lucide>
+            <p class="text-gray-600 text-sm">
+              No se encontraron mesas ocupadas
+            </p>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div
+              *ngFor="let table of occupiedTables"
+              class="card border border-red-400 bg-white"
+            >
+              <div class="card-head">
+                <div class="flex items-center justify-start gap-2">
+                  <h3 class="text-3xl font-bold">T{{ table.number }}</h3>
+                  <div
+                    class="bg-red-300 text-sm text-red-800 rounded-full px-3 flex gap-0 justify-center items-center"
+                  >
+                    <i-lucide
+                      name="dot"
+                      class="w-5 h-5 [&>svg]:scale-[2.5]"
+                    ></i-lucide>
+                    <span class="mr-2"> ocupada </span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card-body text-gray-500">
+                <div class="flex items-center gap-2">
+                  <i-lucide name="users" class="w-5 h-5"></i-lucide>
+                  <p class="card-text">{{ table.capacity }} asientos</p>
+                </div>
+                <div class="flex items-center gap-2">
+                  <i-lucide name="map-pin" class="w-5 h-5"></i-lucide>
+                  <p class="card-text">Sección: {{ table.section }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

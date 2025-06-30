@@ -9,8 +9,10 @@ import {
 import { CategoryItem } from '@app/core/model/data/category-item';
 import { InventoryItem } from '@app/core/model/data/inventory-item';
 import { Supplier } from '@app/core/model/data/supplier';
+import { Unit } from '@app/core/model/data/unit';
 import { UpdateInventoryItemRequest } from '@app/core/model/inventory-item/update-inventory-item';
 import { InventoryItemService } from '@app/core/service/inventory-item.service';
+import { UnitService } from '@app/core/service/unit.service';
 import { ToastService } from '@app/lib/toast/toast.service';
 import { LucideAngularModule } from 'lucide-angular';
 import { ModalService } from 'ngx-modal-ease';
@@ -28,24 +30,38 @@ export class EditItemComponent implements OnInit {
   @Input() categories: CategoryItem[] = [];
 
   itemForm!: FormGroup;
+  units: Unit[] = [];
   loading = false;
 
   constructor(
     private fb: FormBuilder,
     private modalService: ModalService,
     private inventoryItemService: InventoryItemService,
+    private unitService: UnitService,
     private toastService: ToastService
   ) {}
 
   ngOnInit(): void {
+    this.loadUnits();
     this.initForm();
+  }
+
+  loadUnits(): void {
+    this.unitService.getUnits().subscribe({
+      next: (response) => {
+        this.units = response.data;
+      },
+      error: (error) => {
+        this.toastService.error('Error al cargar las unidades');
+      },
+    });
   }
 
   initForm(): void {
     this.itemForm = this.fb.group({
       name: [this.item.name, [Validators.required]],
       imagePath: [this.item.imagePath, [Validators.required]],
-      unit: [this.item.unit, [Validators.required]],
+      unitId: [this.item.unitId, [Validators.required]],
       unitCost: [this.item.unitCost, [Validators.required, Validators.min(0)]],
       minStockLevel: [
         this.item.minStockLevel,

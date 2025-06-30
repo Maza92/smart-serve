@@ -23,12 +23,26 @@ export const posRoutes: Routes = [
         component: SalesComponent,
       },
       {
-        path: 'order',
-        component: OrderComponent,
-      },
-      {
         path: 'tables',
-        component: TablesComponent,
+        children: [
+          {
+            path: '',
+            component: TablesComponent,
+          },
+          {
+            path: 'menu',
+            children: [
+              {
+                path: '',
+                component: SalesComponent,
+              },
+              {
+                path: 'order',
+                component: OrderComponent,
+              },
+            ],
+          },
+        ],
       },
       {
         path: 'kitchen',

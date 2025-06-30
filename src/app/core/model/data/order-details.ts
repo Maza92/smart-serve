@@ -1,3 +1,5 @@
+import { OrderModification } from '../order/modifications';
+
 export interface OrderDetails {}
 
 export interface OrderDetailsToKitchen {
@@ -6,5 +8,5 @@ export interface OrderDetailsToKitchen {
   dishName: string;
   categoryName: string;
   estimatedPreparationTime: string;
-  modifications: any;
+  modifications: OrderModification[];
 }

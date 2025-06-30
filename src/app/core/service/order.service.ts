@@ -7,6 +7,11 @@ import { Paged } from '../model/paged';
 import { OrderToKitchen } from '../model/data/order';
 import { API_CONSTANTS, buildUrl } from '../constant';
 import { ServiceType } from '../enums/api-enums';
+import {
+  CreateDraftOrderRequest,
+  CreateDraftOrderResponse,
+} from '../model/order/create-draft-order';
+import { UpdateOrderWithDetailsRequest } from '../model/order/update-order-with-details';
 
 @Injectable({
   providedIn: 'root',
@@ -16,7 +21,24 @@ export class OrderService extends BaseService {
     super();
   }
 
-  sendToKitchen(orderId: number): Observable<ApiResponse<void>> {
+  createDraftOrder(
+    request: CreateDraftOrderRequest
+  ): Observable<ApiResponse<CreateDraftOrderResponse>> {
+    const url = buildUrl(
+      ServiceType.API,
+      API_CONSTANTS.ORDER.CONTROLLER,
+      API_CONSTANTS.ORDER.CREATE_DRAFT_ORDER
+    );
+
+    return this.http
+      .post<ApiResponse<CreateDraftOrderResponse>>(url, request)
+      .pipe(catchError(this.handleError));
+  }
+
+  sendToKitchen(
+    request: UpdateOrderWithDetailsRequest,
+    orderId: number
+  ): Observable<ApiResponse<void>> {
     const url = buildUrl(
       ServiceType.API,
       API_CONSTANTS.ORDER.CONTROLLER,
@@ -27,7 +49,7 @@ export class OrderService extends BaseService {
     );
 
     return this.http
-      .put<ApiResponse<void>>(url, null)
+      .put<ApiResponse<void>>(url, request)
       .pipe(catchError(this.handleError));
   }
 

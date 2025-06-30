@@ -1,7 +1,7 @@
 export interface UpdateInventoryItemRequest {
   name: string;
   imagePath: string;
-  unit: string;
+  unitId: string;
   unitCost: number;
   minStockLevel: number;
   supplierId: number;

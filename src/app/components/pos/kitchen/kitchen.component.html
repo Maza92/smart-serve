@@ -102,12 +102,12 @@
                         "
                         class="border-gray-300"
                         [ngClass]="{
-                          'border-b-1 pb-2':
+                          'border-b-1 pb-3':
                             order.orderDetails.length > 1 &&
                             index < order.orderDetails.length - 1
                         }"
                       >
-                        <div class="flex justify-between items-center">
+                        <div class="flex justify-between items-center mb-2">
                           <span class="font-light text-sm"
                             >{{ item.quantity }}x {{ item.dishName }}</span
                           >
@@ -115,6 +115,30 @@
                             class="text-xs bg-gray-200 text-black rounded-sm px-2 py-1 text-center"
                           >
                             {{ item.categoryName }}
+                          </div>
+                        </div>
+
+                        <!-- Modifications Display -->
+                        <div
+                          *ngIf="
+                            item.modifications && item.modifications.length > 0
+                          "
+                          class="mt-2"
+                        >
+                          <div class="flex flex-wrap gap-1">
+                            <div
+                              *ngFor="let modification of item.modifications"
+                              class="inline-flex items-center gap-1 text-xs px-2 py-1 rounded-full border"
+                              [ngClass]="getModificationClass(modification)"
+                            >
+                              <lucide-icon
+                                [name]="getModificationIcon(modification)"
+                                size="12"
+                              ></lucide-icon>
+                              <span class="font-medium">{{
+                                getModificationText(modification)
+                              }}</span>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -195,12 +219,12 @@
                         "
                         class="border-gray-300"
                         [ngClass]="{
-                          'border-b-1 pb-2':
+                          'border-b-1 pb-3':
                             order.orderDetails.length > 1 &&
                             index < order.orderDetails.length - 1
                         }"
                       >
-                        <div class="flex justify-between items-center">
+                        <div class="flex justify-between items-center mb-2">
                           <span class="font-light text-sm"
                             >{{ item.quantity }}x {{ item.dishName }}</span
                           >
@@ -208,6 +232,29 @@
                             class="text-xs bg-gray-200 text-black rounded-sm px-2 py-1 text-center"
                           >
                             {{ item.categoryName }}
+                          </div>
+                        </div>
+
+                        <div
+                          *ngIf="
+                            item.modifications && item.modifications.length > 0
+                          "
+                          class="mt-2"
+                        >
+                          <div class="flex flex-wrap gap-1">
+                            <div
+                              *ngFor="let modification of item.modifications"
+                              class="inline-flex items-center gap-1 text-xs px-2 py-1 rounded-full border"
+                              [ngClass]="getModificationClass(modification)"
+                            >
+                              <lucide-icon
+                                [name]="getModificationIcon(modification)"
+                                size="12"
+                              ></lucide-icon>
+                              <span class="font-medium">{{
+                                getModificationText(modification)
+                              }}</span>
+                            </div>
                           </div>
                         </div>
                       </div>
