@@ -115,7 +115,9 @@
                   {{ item.name }}
                 </h3>
                 <p class="text-sm text-surface-bright mb-0.5">
-                  {{ item.stockQuantity }} en Stock ({{ item.unit }})
+                  {{ item.stockQuantity }} en Stock ({{
+                    item.unitAbbreviation
+                  }})
                 </p>
                 <p class="text-xs text-gray-500">{{ item.supplierName }}</p>
               </div>

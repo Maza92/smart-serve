@@ -14,6 +14,7 @@ import { OpenCashRegisterComponent } from './open-cash-register/open-cash-regist
 import { Type } from '@angular/core';
 import { CloseCashRegisterComponent } from './close-cash-register/close-cash-register.component';
 import { finalize } from 'rxjs';
+import { NavigationService } from '@app/core/service/navigation.service';
 
 @Component({
   selector: 'app-cash-register',
@@ -33,12 +34,19 @@ export class CashRegisterComponent implements OnInit {
   constructor(
     private cashRegisterService: CashRegisterService,
     private toastService: ToastService,
-    private modalService: ModalService
+    private modalService: ModalService,
+    private navigationService: NavigationService
   ) {}
 
   ngOnInit(): void {
     this.loadCashRegisters();
     this.getStatus();
+    this.navigationService.configureNavbar(['home', 'settings']);
+  }
+
+  resetAndReload() {
+    this.page = 1;
+    this.loadCashRegisters();
   }
 
   loadCashRegisters(loadMore: boolean = false): void {
@@ -51,7 +59,7 @@ export class CashRegisterComponent implements OnInit {
     this.loading = true;
 
     this.cashRegisterService
-      .getCashRegisters(this.page, this.pageSize)
+      .getCashRegisters(this.page, this.pageSize, 'DESC', 'createdAt')
       .pipe(finalize(() => (this.loading = false)))
       .subscribe({
         next: (response) => {
@@ -84,6 +92,7 @@ export class CashRegisterComponent implements OnInit {
       .open(CreateCashRegisterComponent, this.modalOptions)
       .then(() => {
         this.getStatus();
+        this.resetAndReload();
       });
   }
 
@@ -94,6 +103,7 @@ export class CashRegisterComponent implements OnInit {
       .open(OpenCashRegisterComponent, this.modalOptions)
       .then(() => {
         this.getStatus();
+        this.resetAndReload();
       });
   }
 
@@ -104,6 +114,7 @@ export class CashRegisterComponent implements OnInit {
       .open(CloseCashRegisterComponent, this.modalOptions)
       .then(() => {
         this.getStatus();
+        this.resetAndReload();
       });
   }
 
@@ -135,5 +146,23 @@ export class CashRegisterComponent implements OnInit {
         click: true,
       },
     };
+  }
+
+  getPinStyle(status: string) {
+    const styleMap = {
+      CREATED: {
+        bg: 'bg-primary-key',
+        text: 'text-white',
+      },
+      OPENED: {
+        bg: 'bg-green-100',
+        text: 'text-green-700',
+      },
+      CLOSED: {
+        bg: 'bg-red-100',
+        text: 'text-red-700',
+      },
+    };
+    return styleMap[status as keyof typeof styleMap] || styleMap['CLOSED'];
   }
 }

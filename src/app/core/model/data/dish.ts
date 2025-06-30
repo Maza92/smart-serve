@@ -1,4 +1,4 @@
-import { IngredientSummary, RecipeSummary } from './recipe';
+import { IngredientSummary, IngredientToDish, RecipeSummary } from './recipe';
 
 export interface Dish {
   id: number;
@@ -32,5 +32,5 @@ export interface DishWithIngredientsToUpdate {
   categoryId: number;
   imageUrl: string;
   preparationTime: number;
-  ingredients: IngredientSummary[];
+  ingredients: IngredientToDish[];
 }

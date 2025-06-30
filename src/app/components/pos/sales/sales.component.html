@@ -1,7 +1,19 @@
 <app-base-page>
   <ng-template #header>
     <div class="shadow">
-      <app-back-bar title="Menú"></app-back-bar>
+      <div class="flex w-full items-center p-2 bg-transparent text-black">
+        <button (click)="goBack()" class="flex-none icon">
+          <lucide-icon
+            name="chevron-left"
+            size="32"
+            [strokeWidth]="1.5"
+          ></lucide-icon>
+        </button>
+        <h1 class="flex-1 text-center font-medium text-lg">Menú</h1>
+
+        <div class="flex-none invisible w-8"></div>
+      </div>
+
       <div class="w-full p-4">
         <div
           class="bg-on-surface p-1 rounded-xl flex gap-1 justify-center items-center h-12 relative"
@@ -147,10 +159,10 @@
         'opacity-0 z-0': activeTab !== 2
       }"
     >
-      <div class="m-4 space-y-4" *ngIf="selectedDishes.length > 0">
+      <div class="m-4 space-y-4" *ngIf="selectedItems$ | async as items">
         <div
           class="border flex p-4 rounded-2xl gap-4 relative bg-outline border-gray-300"
-          *ngFor="let item of selectedDishes; let i = index"
+          *ngFor="let item of items; let i = index"
         >
           <img
             class="w-26 h-auto object-cover rounded-xl shadow"
@@ -169,41 +181,46 @@
           <div class="absolute bottom-4 right-4 flex items-center gap-2">
             <button
               class="button button-outline p-1 rounded-full"
-              (click)="decreaseQuantity(i)"
+              (click)="decreaseQuantity(item)"
             >
               <i-lucide name="minus" class="w-5 h-5"></i-lucide>
             </button>
             <span class="font-semibold">{{ item.quantity }}</span>
             <button
               class="button button-primary p-1 rounded-full"
-              (click)="increaseQuantity(i)"
+              (click)="increaseQuantity(item)"
             >
               <i-lucide name="plus" class="w-5 h-5"></i-lucide>
             </button>
           </div>
         </div>
-      </div>
-      <div
-        class="flex flex-col items-center justify-center h-64"
-        *ngIf="selectedDishes.length === 0"
-      >
-        <i-lucide
-          name="shopping-cart"
-          class="w-16 h-16 text-gray-400"
-        ></i-lucide>
-        <p class="text-gray-500 mt-4">No hay platos seleccionados</p>
+        <div
+          class="flex flex-col items-center justify-center h-64"
+          *ngIf="items.length === 0"
+        >
+          <i-lucide
+            name="shopping-cart"
+            class="w-16 h-16 text-gray-400"
+          ></i-lucide>
+          <p class="text-gray-500 mt-4">No hay platos seleccionados</p>
+        </div>
       </div>
     </div>
   </div>
 
   <div slot="footer" class="p-4 flex justify-between items-center gap-4">
-    <div class="flex flex-col w-1/2 text-lg" *ngIf="selectedDishes.length > 0">
-      <p class="font-semibold">{{ getTotalItems() }} platos</p>
-      <p class="font-bold">Total: ${{ getTotalPrice() }}</p>
+    <div
+      class="flex flex-col w-1/2 text-lg"
+      *ngIf="
+        (selectedItems$ | async)?.length && (selectedItems$ | async)!.length > 0
+      "
+    >
+      <p class="font-semibold">{{ totalItems$ | async }} platos</p>
+      <p class="font-bold">Total: ${{ totalPrice$ | async }}</p>
     </div>
     <button
       class="button button-primary w-full"
-      [disabled]="selectedDishes.length === 0"
+      [disabled]="(selectedItems$ | async)?.length === 0"
       (click)="proceedToOrder()"
     >
       <span class="button-label">Proceder con la orden</span>

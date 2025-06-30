@@ -1,6 +1,6 @@
-import { IngredientSummary } from '../data/recipe';
+import { IngredientSummary, IngredientToDish } from '../data/recipe';
 
-export interface IngredientWithStatus extends IngredientSummary {
+export interface IngredientWithStatus extends IngredientToDish {
   status: IngredientStatus;
   isUpdating: boolean;
   updateTimeout?: any;

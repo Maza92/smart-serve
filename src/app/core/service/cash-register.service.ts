@@ -21,7 +21,9 @@ export class CashRegisterService extends BaseService {
 
   getCashRegisters(
     page: number,
-    pageSize: number
+    pageSize: number,
+    sortDirection: string,
+    sortBy: string
   ): Observable<ApiResponse<Paged<CashRegister>>> {
     const url = buildUrl(
       ServiceType.API,
@@ -31,7 +33,9 @@ export class CashRegisterService extends BaseService {
 
     let params = new HttpParams()
       .set('page', page.toString())
-      .set('size', pageSize.toString());
+      .set('size', pageSize.toString())
+      .set('sortDirection', sortDirection)
+      .set('sortBy', sortBy);
 
     return this.http
       .get<ApiResponse<Paged<CashRegister>>>(url, {

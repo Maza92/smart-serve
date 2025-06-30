@@ -35,7 +35,7 @@
             <h4 class="font-medium text-lg">{{ selectedItem.name }}</h4>
             <div class="text-sm text-gray-500 mt-1">
               Stock actual: {{ selectedItem.stockQuantity }}
-              {{ selectedItem.unit }}
+              {{ selectedItem.unitAbbreviation }}
             </div>
             <div
               *ngIf="selectedItem.supplierName"

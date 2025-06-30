@@ -1,0 +1,23 @@
+<div
+  [class]="containerClasses"
+  #swipeContainer
+  (mousedown)="onSwipeStart($event)"
+  (touchstart)="onSwipeStart($event)"
+>
+  <span [class]="textClasses">
+    {{ displayText }}
+  </span>
+
+  <div
+    [class]="handleClasses"
+    #sliderHandle
+    [ngStyle]="{ transform: 'translateX(' + sliderPosition + 'px)' }"
+  >
+    <lucide-icon
+      name="chevronRightIcon"
+      class="text-white"
+      size="24"
+      [class.animate-pulse]="isSwiping"
+    ></lucide-icon>
+  </div>
+</div>

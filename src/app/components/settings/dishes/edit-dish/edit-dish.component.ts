@@ -1,9 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
-  FormArray,
   FormsModule,
   ReactiveFormsModule,
   Validators,
@@ -26,7 +25,7 @@ import {
   debounceTime,
   distinctUntilChanged,
   filter,
-  forkJoin,
+  skip,
   Subscription,
 } from 'rxjs';
 import { CreateRecipeRequest } from '@app/core/model/recipe/create-recipe';
@@ -36,6 +35,8 @@ import {
   IngredientWithStatus,
 } from '@app/core/model/util/Ingredient';
 import { AlertService } from '@app/lib/alert/alert.service';
+import { Unit } from '@app/core/model/data/unit';
+import { UnitService } from '@app/core/service/unit.service';
 
 @Component({
   selector: 'app-edit-dish',
@@ -51,9 +52,10 @@ import { AlertService } from '@app/lib/alert/alert.service';
   templateUrl: './edit-dish.component.html',
   styleUrls: ['./edit-dish.component.css'],
 })
-export class EditDishComponent implements OnInit {
+export class EditDishComponent implements OnInit, OnDestroy {
   ingredients: IngredientWithStatus[] = [];
   categories: CategoryItem[] = [];
+  units: Unit[] = [];
   dishForm!: FormGroup;
   id: number | null = null;
   loading = false;
@@ -70,6 +72,7 @@ export class EditDishComponent implements OnInit {
     private categoryService: CategoryItemService,
     private toastService: ToastService,
     private alertService: AlertService,
+    private unitService: UnitService,
     private route: ActivatedRoute
   ) {
     this.id = Number(this.route.snapshot.params['id']);
@@ -77,11 +80,7 @@ export class EditDishComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadCategories();
-    if (this.id) {
-      this.loadDishData();
-      this.setupAutoSave();
-    }
+    this.loadInitialData();
   }
 
   ngOnDestroy(): void {
@@ -89,20 +88,35 @@ export class EditDishComponent implements OnInit {
     if (this.dishSaveTimeout) {
       clearTimeout(this.dishSaveTimeout);
     }
+    this.ingredients.forEach((ingredient) => {
+      if (ingredient.updateTimeout) {
+        clearTimeout(ingredient.updateTimeout);
+      }
+    });
+  }
+
+  private loadInitialData(): void {
+    this.loading = true;
+
+    Promise.all([this.loadCategories(), this.loadUnits()])
+      .then(() => {
+        if (this.id) {
+          this.loadDishData();
+          this.setupAutoSave();
+        } else {
+          this.loading = false;
+        }
+      })
+      .catch((error) => {
+        this.toastService.error('Error al cargar datos iniciales');
+        this.loading = false;
+      });
   }
 
   private setupAutoSave(): void {
-    const dishFieldsOnly = this.dishForm.get([
-      'name',
-      'description',
-      'basePrice',
-      'categoryId',
-      'imageUrl',
-      'preparationTime',
-    ]);
-
-    this.dishFormSubscription = dishFieldsOnly?.valueChanges
+    this.dishFormSubscription = this.dishForm.valueChanges
       .pipe(
+        skip(1),
         debounceTime(2000),
         distinctUntilChanged(
           (prev, curr) => JSON.stringify(prev) === JSON.stringify(curr)
@@ -140,7 +154,6 @@ export class EditDishComponent implements OnInit {
   }
 
   private loadDishData(): void {
-    this.loading = true;
     if (!this.id) return;
 
     this.dishService.getDishWithIngredientsById(this.id).subscribe({
@@ -157,6 +170,7 @@ export class EditDishComponent implements OnInit {
 
         this.ingredients = dish.ingredients.map((ingredient) => ({
           ...ingredient,
+          unitId: ingredient.unitId,
           status: 'existing' as IngredientStatus,
           isUpdating: false,
         }));
@@ -196,12 +210,14 @@ export class EditDishComponent implements OnInit {
       .then((result) => {
         if (!result || !result.data) return;
         const item = result.data as InventoryItem;
+
         const newIngredient: IngredientWithStatus = {
           recipeId: 0,
           inventoryItemId: item.id,
           inventoryItemName: item.name,
-          quantityRequired: 0,
+          quantityRequired: 1,
           notes: '',
+          unitId: this.units.length > 0 ? this.units[0].id : 1,
           preparationOrder: this.ingredients.length + 1,
           status: 'creating',
           isUpdating: true,
@@ -210,12 +226,14 @@ export class EditDishComponent implements OnInit {
         this.ingredients.push(newIngredient);
 
         if (!this.id) return;
+
         const createRequest: CreateRecipeRequest = {
           inventoryItemId: item.id,
           quantityRequired: 1,
           notes: '',
           preparationOrder: this.ingredients.length,
           dishId: this.id,
+          unitId: newIngredient.unitId,
         };
 
         this.recipeService.createRecipe(createRequest).subscribe({
@@ -239,12 +257,12 @@ export class EditDishComponent implements OnInit {
       });
   }
 
-  updateIngredient(index: number, field: any, event: Event): void {
+  updateIngredient(index: number, field: string, value: any): void {
     const ingredient = this.ingredients[index];
     if (!ingredient.recipeId || ingredient.status === 'creating') return;
 
     ingredient.isUpdating = true;
-    const value = (event.target as HTMLInputElement).value;
+
     switch (field) {
       case 'quantityRequired':
         ingredient.quantityRequired = Number(value);
@@ -255,6 +273,9 @@ export class EditDishComponent implements OnInit {
       case 'preparationOrder':
         ingredient.preparationOrder = Number(value);
         break;
+      case 'unitId':
+        ingredient.unitId = Number(value);
+        break;
     }
 
     if (ingredient.updateTimeout) {
@@ -264,6 +285,7 @@ export class EditDishComponent implements OnInit {
     ingredient.updateTimeout = setTimeout(() => {
       const updateRequest: UpdateRecipeRequest = {
         inventoryItemId: ingredient.inventoryItemId,
+        unitId: ingredient.unitId,
         quantityRequired: ingredient.quantityRequired,
         notes: ingredient.notes,
         preparationOrder: ingredient.preparationOrder,
@@ -337,6 +359,11 @@ export class EditDishComponent implements OnInit {
     }
   }
 
+  getUnitName(unitId: number): string {
+    const unit = this.units.find((u) => u.id === unitId);
+    return unit ? `${unit.name} (${unit.abbreviation})` : 'Sin unidad';
+  }
+
   private initForm(): void {
     this.dishForm = this.fb.group({
       name: ['', Validators.required],
@@ -348,16 +375,35 @@ export class EditDishComponent implements OnInit {
     });
   }
 
-  private loadCategories(): void {
-    this.categoryService
-      .getCategoryItemsByTipe(1, 100, 'name', 'asc', CategoryType.DISH)
-      .subscribe({
+  private loadCategories(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.categoryService
+        .getCategoryItemsByTipe(1, 100, 'name', 'asc', CategoryType.DISH)
+        .subscribe({
+          next: (response) => {
+            this.categories = response.data.content;
+            resolve();
+          },
+          error: (error) => {
+            this.toastService.error('Error al cargar categorías');
+            reject(error);
+          },
+        });
+    });
+  }
+
+  private loadUnits(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.unitService.getUnits().subscribe({
         next: (response) => {
-          this.categories = response.data.content;
+          this.units = response.data || [];
+          resolve();
         },
         error: (error) => {
-          this.toastService.error(error.message);
+          this.toastService.error('Error al cargar unidades');
+          reject(error);
         },
       });
+    });
   }
 }

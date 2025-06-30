@@ -128,6 +128,22 @@
                 [formControlName]="'quantityRequired'"
               />
             </div>
+            <div class="form-group bg-on-surface border-on-surface mt-2">
+              <label class="form-label" for="dish-unit">Unidad</label>
+              <select
+                class="form-select p-2"
+                id="dish-unit"
+                formControlName="unitId"
+              >
+                <option value="" disabled selected>
+                  Selecciona una unidad
+                </option>
+                <option *ngFor="let unit of units" [value]="unit.id">
+                  {{ unit.name }} ({{ unit.abbreviation }})
+                </option>
+              </select>
+              <i-lucide class="icon" size="30" name="chevron-down"></i-lucide>
+            </div>
             <div class="form-group">
               <label class="form-label" for="ingredient-notes">Notas</label>
               <input

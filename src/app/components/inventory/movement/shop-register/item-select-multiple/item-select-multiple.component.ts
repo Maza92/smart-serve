@@ -61,7 +61,7 @@ import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
               [for]="'item-' + item.id"
               class="form-label cursor-pointer flex-1"
             >
-              {{ item.name }} ({{ item.unit }})
+              {{ item.name }} ({{ item.unitId || item.unitId }})
             </label>
           </div>
         </div>
