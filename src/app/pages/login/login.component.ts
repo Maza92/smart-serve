@@ -11,6 +11,8 @@ import { CommonModule } from '@angular/common';
 import { AuthService } from '@app/core/service/auth.service';
 import { ToastService } from '@app/lib/toast/toast.service';
 import { FormsModule } from '@angular/forms';
+import { GoToDirective } from '@app/shared/directives/go-to.directive';
+import { WebSocketService } from '@app/core/service/websocket.service';
 
 @Component({
   selector: 'app-login',
@@ -19,7 +21,7 @@ import { FormsModule } from '@angular/forms';
     LucideAngularModule,
     ReactiveFormsModule,
     CommonModule,
-    RouterLink,
+    GoToDirective,
     FormsModule,
   ],
   templateUrl: './login.component.html',
@@ -34,7 +36,8 @@ export class LoginComponent {
     private builder: FormBuilder,
     private authService: AuthService,
     private router: Router,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private webSocketService: WebSocketService
   ) {
     this.loginForm = this.builder.group({
       email: ['', [Validators.email, Validators.required]],
@@ -71,6 +74,7 @@ export class LoginComponent {
       next: (response) => {
         this.isLoading = false;
         console.log('Successful login:', response);
+        this.webSocketService.connect(response.token);
         this.router.navigate(['/home']);
       },
       error: (error) => {

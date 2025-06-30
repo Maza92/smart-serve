@@ -41,6 +41,9 @@ importers:
       '@capacitor/core':
         specifier: ^7.2.0
         version: 7.2.0
+      '@stomp/rx-stomp':
+        specifier: ^2.0.1
+        version: 2.0.1(@stomp/stompjs@7.1.1)(rxjs@7.8.2)(uuid@8.3.2)
       '@tailwindcss/postcss':
         specifier: ^4.1.5
         version: 4.1.5
@@ -1641,6 +1644,16 @@ packages:
 
   '@socket.io/component-emitter@3.1.2':
     resolution: {integrity: sha512-9BCxFwvbGg/RsZK9tjXd8s4UcwR0MWeFQ1XEKIQVVvAGJyINdrqKMcTRyLoK8Rse1GjzLV9cwjWV1olXRWEXVA==}
+
+  '@stomp/rx-stomp@2.0.1':
+    resolution: {integrity: sha512-wcRrqXqqLOOTWQrUTv9WIzcRmVeoYJM/824PVDjRVLgkP+pCVlp0CO4BsM/uisDWerX02M+Ly6Dzn3HKnj5vyQ==}
+    peerDependencies:
+      '@stomp/stompjs': ^7.0.0
+      rxjs: ^7.2.0
+      uuid: '>=9.0.0 <12.0.0'
+
+  '@stomp/stompjs@7.1.1':
+    resolution: {integrity: sha512-chcDs6YkAnKp1FqzwhGvh3i7v0+/ytzqWdKYw6XzINEKAzke/iD00dNgFPWSZEqktHOK+C1gSzXhLkLbARIaZw==}
 
   '@tailwindcss/node@4.1.5':
     resolution: {integrity: sha512-CBhSWo0vLnWhXIvpD0qsPephiaUYfHUX3U9anwDaHZAeuGpTiB3XmsxPAN6qX7bFhipyGBqOa1QYQVVhkOUGxg==}
@@ -6353,6 +6366,14 @@ snapshots:
   '@sindresorhus/merge-streams@2.3.0': {}
 
   '@socket.io/component-emitter@3.1.2': {}
+
+  '@stomp/rx-stomp@2.0.1(@stomp/stompjs@7.1.1)(rxjs@7.8.2)(uuid@8.3.2)':
+    dependencies:
+      '@stomp/stompjs': 7.1.1
+      rxjs: 7.8.2
+      uuid: 8.3.2
+
+  '@stomp/stompjs@7.1.1': {}
 
   '@tailwindcss/node@4.1.5':
     dependencies:

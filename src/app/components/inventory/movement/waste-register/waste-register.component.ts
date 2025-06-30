@@ -32,7 +32,6 @@ import { GoToDirective } from '@app/shared/directives/go-to.directive';
     BasePageComponent,
     FormsModule,
     ReactiveFormsModule,
-    GoToDirective,
   ],
   templateUrl: './waste-register.component.html',
   styleUrl: './waste-register.component.css',

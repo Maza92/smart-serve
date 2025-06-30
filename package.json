@@ -21,6 +21,7 @@
     "@capacitor/app": "^7.0.1",
     "@capacitor/cli": "^7.2.0",
     "@capacitor/core": "^7.2.0",
+    "@stomp/rx-stomp": "^2.0.1",
     "@tailwindcss/postcss": "^4.1.5",
     "lucide-angular": "^0.507.0",
     "ngx-modal-ease": "^0.1.3",

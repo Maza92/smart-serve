@@ -4,7 +4,7 @@
       <!-- Loading spinner -->
       <div *ngIf="loading" class="flex justify-center items-center p-8">
         <div
-          class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"
+          class="w-8 h-8 border-4 border-t-transparent border-primary-key rounded-full animate-spin"
         ></div>
       </div>
 
@@ -108,9 +108,9 @@
             Ingredientes ({{ ingredients.length }})
           </h3>
 
-          <div class="flex flex-col gap-2" *ngIf="ingredients.length > 0">
+          <div class="flex flex-col gap-4" *ngIf="ingredients.length > 0">
             <div
-              class="flex flex-col gap-4 bg-primary-fixed p-4 rounded-xl border border-primary-fixed-dim relative"
+              class="flex flex-col gap-4 bg-white shadow p-4 rounded-xl relative"
               *ngFor="let ingredient of ingredients; let i = index"
               [class.opacity-50]="ingredient.status === 'deleting'"
             >
@@ -155,8 +155,11 @@
                   type="number"
                   class="form-input p-2 w-full"
                   placeholder="Cantidad"
-                  [value]="ingredient.quantityRequired"
-                  (input)="updateIngredient(i, 'quantityRequired', $event)"
+                  [(ngModel)]="ingredient.quantityRequired"
+                  [ngModelOptions]="{ standalone: true }"
+                  (ngModelChange)="
+                    updateIngredient(i, 'quantityRequired', $event)
+                  "
                   [disabled]="
                     ingredient.status === 'creating' ||
                     ingredient.status === 'deleting'
@@ -170,13 +173,39 @@
                   type="text"
                   class="form-input p-2 w-full"
                   placeholder="Notas"
-                  [value]="ingredient.notes"
-                  (input)="updateIngredient(i, 'notes', $event)"
+                  [(ngModel)]="ingredient.notes"
+                  (ngModelChange)="updateIngredient(i, 'notes', $event)"
+                  [ngModelOptions]="{ standalone: true }"
                   [disabled]="
                     ingredient.status === 'creating' ||
                     ingredient.status === 'deleting'
                   "
                 />
+              </div>
+
+              <div class="form-group bg-on-surface border-on-surface mt-2">
+                <label class="form-label" for="dish-unit-{{ i }}">Unidad</label>
+                <select
+                  class="form-select p-2"
+                  id="dish-unit-{{ i }}"
+                  [(ngModel)]="ingredient.unitId"
+                  (ngModelChange)="updateIngredient(i, 'unitId', $event)"
+                  [ngModelOptions]="{ standalone: true }"
+                  [disabled]="
+                    ingredient.status === 'creating' ||
+                    ingredient.status === 'deleting'
+                  "
+                >
+                  <option value="" disabled>Selecciona una unidad</option>
+                  <option *ngFor="let unit of units" [value]="unit.id">
+                    {{ unit.name }} ({{ unit.abbreviation }})
+                  </option>
+                </select>
+                <lucide-icon
+                  class="icon"
+                  size="30"
+                  name="chevron-down"
+                ></lucide-icon>
               </div>
 
               <div class="form-group">
@@ -185,8 +214,11 @@
                   type="number"
                   class="form-input p-2 w-full"
                   placeholder="Orden de preparación"
-                  [value]="ingredient.preparationOrder"
-                  (input)="updateIngredient(i, 'preparationOrder', $event)"
+                  [(ngModel)]="ingredient.preparationOrder"
+                  (ngModelChange)="
+                    updateIngredient(i, 'preparationOrder', $event)
+                  "
+                  [ngModelOptions]="{ standalone: true }"
                   [disabled]="
                     ingredient.status === 'creating' ||
                     ingredient.status === 'deleting'
