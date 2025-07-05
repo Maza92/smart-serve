@@ -6,6 +6,8 @@ import { PingService } from '@app/core/service/ping.service';
 import { NavigationService } from '@app/core/service/navigation.service';
 import { RouterLink } from '@angular/router';
 import { GoToDirective } from '@app/shared/directives/go-to.directive';
+import { TodaySales } from '@app/core/model/order/today-sales';
+import { OrderService } from '@app/core/service/order.service';
 
 @Component({
   selector: 'app-pos',
@@ -22,10 +24,12 @@ export class PosComponent implements OnInit, OnDestroy {
   serverStatus: boolean = true;
   networkOnline = navigator.onLine;
   path: string | null = null;
+  todaySales: TodaySales | null = null;
 
   constructor(
     private pingService: PingService,
-    private navigantionService: NavigationService
+    private navigantionService: NavigationService,
+    private orderService: OrderService
   ) {
     this.updateDateTime();
   }
@@ -50,6 +54,8 @@ export class PosComponent implements OnInit, OnDestroy {
       'suppliers',
       'settings',
     ]);
+
+    this.getTodaySales();
   }
 
   ngOnDestroy() {
@@ -82,5 +88,16 @@ export class PosComponent implements OnInit, OnDestroy {
       second: '2-digit',
       hour12: true,
     });
+  }
+
+  getTodaySales() {
+    this.orderService.getTodaySales().subscribe(
+      (response) => {
+        this.todaySales = response.data;
+      },
+      (error) => {
+        this.todaySales = null;
+      }
+    );
   }
 }

@@ -1,8 +1,15 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { filter, first, map, switchMap } from 'rxjs/operators';
+import {
+  distinctUntilChanged,
+  filter,
+  first,
+  map,
+  switchMap,
+} from 'rxjs/operators';
 import { environment } from '@environments/environment';
 import { RxStomp } from '@stomp/rx-stomp';
+import { AuthService } from './auth.service';
 
 type ConnectionState = 'CONNECTED' | 'DISCONNECTED' | 'CONNECTING';
 
@@ -14,9 +21,13 @@ export class WebSocketService {
 
   private state = new BehaviorSubject<ConnectionState>('DISCONNECTED');
 
-  constructor() {
+  constructor(private authService: AuthService) {
     this.rxStomp = new RxStomp();
+    this.setupStateTracking();
+    this.manageConnection();
+  }
 
+  private setupStateTracking(): void {
     this.rxStomp.connectionState$.subscribe((stompState) => {
       switch (stompState) {
         case 0:
@@ -32,7 +43,24 @@ export class WebSocketService {
     });
   }
 
-  public connect(authToken: string): void {
+  private manageConnection(): void {
+    this.authService
+      .getAuthTokenObservable()
+      .pipe(distinctUntilChanged())
+      .subscribe((token) => {
+        if (token && this.state.value === 'DISCONNECTED') {
+          console.log(
+            'Token de autenticación detectado. Conectando WebSocket...'
+          );
+          this.connect(token);
+        } else if (!token && this.state.value !== 'DISCONNECTED') {
+          console.log('Sin token de autenticación. Desconectando WebSocket...');
+          this.disconnect();
+        }
+      });
+  }
+
+  private connect(authToken: string): void {
     if (this.state.value === 'CONNECTED' || this.state.value === 'CONNECTING') {
       console.log('Ya está conectado o conectándose.');
       return;

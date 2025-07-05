@@ -129,12 +129,26 @@ export const NAV_ITEMS: NavItem[] = [
             name: 'Registro de Efectivo',
             icon: 'banknote',
             path: 'cash-register',
+            children: [
+              {
+                key: 'cash-movements',
+                name: 'Movimientos',
+                icon: 'arrow-right-left',
+                path: 'cash-movements',
+              },
+            ],
           },
           {
             key: 'sales',
             name: 'Ventas',
             icon: 'trending-up',
             path: 'sales',
+          },
+          {
+            key: 'invoice',
+            name: 'Facturas',
+            icon: 'receipt',
+            path: 'invoice',
           },
           {
             key: 'tables',

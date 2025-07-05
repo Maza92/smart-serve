@@ -62,33 +62,64 @@
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             <div
               *ngFor="let table of availableTables"
-              class="card border border-green-400 bg-white"
-              (click)="oSelectTable(table.id)"
+              class="rounded-2xl overflow-hidden bg-white shadow"
             >
-              <div class="card-head">
-                <div class="flex items-center justify-start gap-2">
-                  <h3 class="text-3xl font-bold">T{{ table.number }}</h3>
-                  <div
-                    class="bg-green-300 text-sm text-green-800 rounded-full px-3 flex gap-0 justify-center items-center"
-                  >
-                    <i-lucide
-                      name="check"
-                      class="w-4 h-4 mt-[0.5px]"
-                      [strokeWidth]="3"
-                    ></i-lucide>
-                    <span> disponible </span>
+              <div
+                class="w-full h-3"
+                [ngClass]="[getTableCardStyle(table.status).background]"
+              ></div>
+              <div class="p-6 relative flex flex-col gap-4">
+                <div class="absolute right-6 top-2 text-on-surface">
+                  <i-lucide
+                    [name]="getTableStatusInfo(table.status).icon"
+                    class="w-12 h-12 mt-[0.5px]"
+                    [strokeWidth]="3"
+                  ></i-lucide>
+                </div>
+                <div class="card-head">
+                  <h3 class="text-4xl font-bold">T{{ table.number }}</h3>
+                </div>
+                <div class="card-body flex flex-col gap-4 text-gray-700">
+                  <div class="bg-outline rounded-lg p-3">
+                    <div class="flex items-center gap-2">
+                      <i-lucide name="users" class="w-5 h-5"></i-lucide>
+                      <p class="card-text">
+                        Capacidad: {{ table.capacity }} personas
+                      </p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                      <i-lucide name="map-pin" class="w-5 h-5"></i-lucide>
+                      <p class="card-text">Sección: {{ table.section }}</p>
+                    </div>
                   </div>
-                </div>
-              </div>
-
-              <div class="card-body text-gray-500">
-                <div class="flex items-center gap-2">
-                  <i-lucide name="users" class="w-5 h-5"></i-lucide>
-                  <p class="card-text">{{ table.capacity }} asientos</p>
-                </div>
-                <div class="flex items-center gap-2">
-                  <i-lucide name="map-pin" class="w-5 h-5"></i-lucide>
-                  <p class="card-text">Sección: {{ table.section }}</p>
+                  <div
+                    class="flex justify-start items-center"
+                    [ngClass]="[getTableStatusInfo(table.status).color]"
+                  >
+                    <div class="flex justify-center items-center">
+                      <i-lucide
+                        name="dot"
+                        class="2-5 h-5 [&>svg]:scale-[4]"
+                      ></i-lucide>
+                    </div>
+                    <span> {{ getTableStatusInfo(table.status).text }} </span>
+                  </div>
+                  <div>
+                    <button
+                      (click)="oSelectTable(table.id)"
+                      class="button button-action w-full h-16 justify-center active:opacity-80 hover:opacity-80"
+                      [ngClass]="[
+                        getTableCardStyle(table.status).background,
+                        getTableCardStyle(table.status).button
+                      ]"
+                    >
+                      <i-lucide
+                        name="mouse-pointer-click"
+                        class="w-6 h-6 button-icon"
+                      ></i-lucide>
+                      <label class="button-label"> Seleccionar </label>
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -116,31 +147,67 @@
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             <div
               *ngFor="let table of occupiedTables"
-              class="card border border-red-400 bg-white"
+              class="rounded-2xl overflow-hidden bg-white shadow"
             >
-              <div class="card-head">
-                <div class="flex items-center justify-start gap-2">
-                  <h3 class="text-3xl font-bold">T{{ table.number }}</h3>
-                  <div
-                    class="bg-red-300 text-sm text-red-800 rounded-full px-3 flex gap-0 justify-center items-center"
-                  >
-                    <i-lucide
-                      name="dot"
-                      class="w-5 h-5 [&>svg]:scale-[2.5]"
-                    ></i-lucide>
-                    <span class="mr-2"> ocupada </span>
-                  </div>
+              <div
+                class="w-full h-3"
+                [ngClass]="[getTableCardStyle(table.status).background]"
+              ></div>
+              <div class="p-6 relative flex flex-col gap-4">
+                <div class="absolute right-6 top-2 text-on-surface">
+                  <i-lucide
+                    [name]="getTableStatusInfo(table.status).icon"
+                    class="w-12 h-12 mt-[0.5px]"
+                    [strokeWidth]="3"
+                  ></i-lucide>
                 </div>
-              </div>
+                <div class="card-head">
+                  <h3 class="text-4xl font-bold">T{{ table.number }}</h3>
+                </div>
 
-              <div class="card-body text-gray-500">
-                <div class="flex items-center gap-2">
-                  <i-lucide name="users" class="w-5 h-5"></i-lucide>
-                  <p class="card-text">{{ table.capacity }} asientos</p>
-                </div>
-                <div class="flex items-center gap-2">
-                  <i-lucide name="map-pin" class="w-5 h-5"></i-lucide>
-                  <p class="card-text">Sección: {{ table.section }}</p>
+                <div class="card-body flex flex-col gap-4 text-gray-700">
+                  <div class="bg-outline rounded-lg p-3">
+                    <div class="flex items-center gap-2">
+                      <i-lucide name="users" class="w-5 h-5"></i-lucide>
+                      <p class="card-text">
+                        Capacidad: {{ table.capacity }} personas
+                      </p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                      <i-lucide name="map-pin" class="w-5 h-5"></i-lucide>
+                      <p class="card-text">Sección: {{ table.section }}</p>
+                    </div>
+                  </div>
+                  <div
+                    class="flex justify-start items-center"
+                    [ngClass]="getTableStatusInfo(table.status).color"
+                  >
+                    <div class="flex justify-center items-center">
+                      <i-lucide
+                        name="dot"
+                        class="2-5 h-5 [&>svg]:scale-[4]"
+                      ></i-lucide>
+                    </div>
+                    <span>
+                      {{ getTableStatusInfo(table.status).text }}
+                    </span>
+                  </div>
+                  <div>
+                    <button
+                      (click)="openOrderDetail(table.id)"
+                      class="button button-action w-full h-16 justify-center active:opacity-80 hover:opacity-80"
+                      [ngClass]="[
+                        getTableCardStyle(table.status).background,
+                        getTableCardStyle(table.status).button
+                      ]"
+                    >
+                      <i-lucide
+                        name="mouse-pointer-click"
+                        class="w-6 h-6 button-icon"
+                      ></i-lucide>
+                      <label class="button-label"> Ver detalle </label>
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>

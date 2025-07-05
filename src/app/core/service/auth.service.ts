@@ -1,6 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, catchError, map, throwError } from 'rxjs';
+import {
+  BehaviorSubject,
+  Observable,
+  catchError,
+  map,
+  tap,
+  throwError,
+} from 'rxjs';
 import { API_CONSTANTS, buildUrl } from '@core/constant/api.constant';
 import { LocalStorageService } from '@core/service/local-storage.service';
 import { LoginResponse } from '@core/model/auth/login-response';
@@ -27,11 +34,14 @@ export class AuthService extends BaseService {
   private readonly USER_NAME_KEY = 'user_name';
   private readonly USER_ID_KEY = 'user_id';
 
+  private authToken$ = new BehaviorSubject<string | null>(null);
+
   constructor(
     private http: HttpClient,
     private localStorageService: LocalStorageService
   ) {
     super();
+    this.authToken$.next(this.getAuthTokenFromStorage());
   }
 
   login(request: LoginRequest): Observable<LoginResponse> {
@@ -54,6 +64,7 @@ export class AuthService extends BaseService {
         );
         this.localStorageService.set(this.USER_NAME_KEY, response.username);
         this.localStorageService.set(this.USER_ID_KEY, response.userId);
+        this.authToken$.next(response.token);
         return response;
       }),
       catchError((error) => this.handleError(error))
@@ -68,7 +79,7 @@ export class AuthService extends BaseService {
     );
 
     return this.http.post<void>(url, {}).pipe(
-      map(() => {
+      tap(() => {
         this.clearAuthData();
       }),
       catchError(this.handleError)
@@ -91,7 +102,7 @@ export class AuthService extends BaseService {
     const request: RefreshTokenRequest = { refreshToken };
 
     return this.http.post<RefreshTokenResponse>(url, request).pipe(
-      map((response) => {
+      tap((response) => {
         this.localStorageService.set(this.AUTH_TOKEN_KEY, response.accessToken);
         this.localStorageService.set(
           this.REFRESH_TOKEN_KEY,
@@ -101,6 +112,7 @@ export class AuthService extends BaseService {
           this.TOKEN_EXPIRATION_KEY,
           response.expiration
         );
+        this.authToken$.next(response.accessToken);
         return response;
       }),
       catchError(this.handleError)
@@ -189,10 +201,11 @@ export class AuthService extends BaseService {
     this.localStorageService.remove(this.AUTH_TOKEN_KEY);
     this.localStorageService.remove(this.REFRESH_TOKEN_KEY);
     this.localStorageService.remove(this.TOKEN_EXPIRATION_KEY);
+    this.authToken$.next(null);
   }
 
   isAuthenticated(): boolean {
-    return this.localStorageService.exists(this.AUTH_TOKEN_KEY);
+    return !!this.authToken$.getValue();
   }
 
   getAuthToken(): string | null {
@@ -217,5 +230,17 @@ export class AuthService extends BaseService {
 
   getUserName(): string | null {
     return this.localStorageService.get<string>(this.USER_NAME_KEY);
+  }
+
+  public getAuthTokenObservable(): Observable<string | null> {
+    return this.authToken$.asObservable();
+  }
+
+  public getAuthTokenSnapshot(): string | null {
+    return this.authToken$.getValue();
+  }
+
+  private getAuthTokenFromStorage(): string | null {
+    return this.localStorageService.get<string>(this.AUTH_TOKEN_KEY);
   }
 }

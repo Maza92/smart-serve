@@ -1,6 +1,15 @@
 import { OrderModification } from '../order/modifications';
 
-export interface OrderDetails {}
+export interface OrderDetails {
+  id: number;
+  dishId: number;
+  dishName: string;
+  quantity: number;
+  unitPrice: number;
+  finalPrice: number;
+  status: string;
+  preparedAt: string;
+}
 
 export interface OrderDetailsToKitchen {
   id: number;

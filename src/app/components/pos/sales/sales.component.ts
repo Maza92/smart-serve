@@ -5,10 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CategoryType } from '@app/core/enums/category-enums';
 import { CategoryItem } from '@app/core/model/data/category-item';
 import { Dish } from '@app/core/model/data/dish';
-import {
-  BaseFilterOptions,
-  DishFilterOptions,
-} from '@app/core/model/filter-options';
+import { DishFilterOptions } from '@app/core/model/filter-options';
 import { OrderItem } from '@app/core/model/order-state/order-state';
 import { CreateDraftOrderRequest } from '@app/core/model/order/create-draft-order';
 import { UpdateOrderWithDetailsRequest } from '@app/core/model/order/update-order-with-details';

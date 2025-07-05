@@ -1,0 +1,12 @@
+<div
+  class="inline-flex items-center px-2 py-2 rounded-full bg-neutral-key bg-opacity-10 text-on-background text-xs"
+>
+  <span>{{ filter.label }}</span>
+  <button
+    (click)="onRemove()"
+    lass="ml-1 focus:outline-none"
+    aria-label="Eliminar filtro"
+  >
+    <lucide-icon name="x" size="12"></lucide-icon>
+  </button>
+</div>

@@ -49,8 +49,8 @@
           'opacity-0 z-0': activeTab !== 1
         }"
       >
-        <div class="h-full flex gap-6 md:mx-30">
-          <div class="flex-1 flex flex-col min-h-0">
+        <div class="h-full flex flex-col lg:flex-row lg:gap-6 md:mx-30">
+          <div class="flex-1 flex flex-col min-h-0 mb-4 lg:mb-0">
             <div
               class="flex w-full justify-between items-center mb-4 flex-shrink-0"
             >
@@ -62,7 +62,7 @@
               </div>
             </div>
 
-            <div class="relative flex-1 min-h-0">
+            <div class="relative flex-1 min-h-0 h-64 lg:h-auto">
               <div
                 id="pending-container"
                 class="h-full overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-gray-300"
@@ -118,7 +118,6 @@
                           </div>
                         </div>
 
-                        <!-- Modifications Display -->
                         <div
                           *ngIf="
                             item.modifications && item.modifications.length > 0
@@ -179,7 +178,7 @@
               </div>
             </div>
 
-            <div class="relative flex-1 min-h-0">
+            <div class="relative flex-1 min-h-0 h-64 lg:h-auto">
               <div
                 id="preparation-container"
                 class="h-full overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-gray-300"

@@ -1,0 +1,42 @@
+.text-gray-800 {
+  color: #1e2939;
+}
+
+.text-gray-500 {
+  color: #6a7282;
+}
+
+.border-gray-200 {
+  border-color: #e5e7eb;
+}
+
+.text-gray-600 {
+  color: #4a5565;
+}
+
+.shadow-lg {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+
+  #invoiceContent,
+  #invoiceContent * {
+    visibility: visible;
+  }
+
+  #invoiceContent {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    margin: 0;
+    padding: 1rem;
+    box-shadow: none;
+    border: none;
+  }
+}

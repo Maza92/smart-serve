@@ -1,7 +1,9 @@
+import { TableStatusEnum } from '@app/core/enums/table-enum';
+
 export interface RestaurantTable {
   id: number;
   number: number;
   capacity: number;
-  status: string;
+  status: TableStatusEnum;
   section: string;
 }

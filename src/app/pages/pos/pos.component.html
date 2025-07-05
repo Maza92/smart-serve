@@ -43,7 +43,7 @@
   </nav>
   <div class="sales-pulse mx-4 bg-outline rounded-3xl p-5">
     <div class="flex justify-between items-center mb-2">
-      <h2 class="text-gray-600 font-medium">Total Sales</h2>
+      <h2 class="text-gray-600 font-medium">Ventas totales</h2>
       <lucide-icon
         name="pie-chart"
         class="text-primary"
@@ -51,17 +51,33 @@
       ></lucide-icon>
     </div>
     <div class="flex items-end">
-      <span class="text-3xl font-bold text-primary-key">$1,842.75</span>
-      <span class="ml-2 text-sm font-medium text-green-500 flex items-center">
+      <span class="text-3xl font-bold text-primary-key">{{
+        todaySales?.totalSales | currency
+      }}</span>
+      <span
+        class="ml-2 text-sm font-medium 0 flex items-center"
+        [ngClass]="{
+          'text-red-500': todaySales?.trendType === 'DOWN',
+          'text-green-500': todaySales?.trendType === 'UP',
+          'text-primary-key': todaySales?.trendType === 'STABLE'
+        }"
+      >
         <lucide-icon
           name="chevron-up"
-          class="text-green-500"
           size="16"
+          *ngIf="todaySales?.trendType === 'UP'"
         ></lucide-icon>
-        12.4%
+        <lucide-icon
+          name="chevron-down"
+          size="16"
+          *ngIf="todaySales?.trendType === 'DOWN'"
+        ></lucide-icon>
+        {{ todaySales?.trendType === "DOWN" ? "baja" : "alta" }}
       </span>
     </div>
-    <div class="mt-2 text-xs text-gray-500">Today, 24 transactions</div>
+    <div class="mt-2 text-xs text-gray-500">
+      {{ todaySales?.todaySales | number }} ventas hoy
+    </div>
   </div>
 
   <main

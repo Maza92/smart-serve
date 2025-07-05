@@ -3,7 +3,11 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { Supplier } from '@app/core/model/data/supplier';
-import { BaseFilterOptions, ChipFilter } from '@app/core/model/filter-options';
+import {
+  BaseRequiredSortFilterOptions,
+  BaseSearchFilterOptions,
+  ChipFilter,
+} from '@app/core/model/filter-options';
 import { SupplierService } from '@app/core/service/supplier.service';
 import { ToastService } from '@app/lib/toast/toast.service';
 import { LucideAngularModule } from 'lucide-angular';
@@ -49,7 +53,7 @@ export class SuppliersComponent implements OnInit, OnDestroy {
 
   path: string | null = null;
 
-  filters: BaseFilterOptions = {
+  filters: BaseRequiredSortFilterOptions = {
     search: '',
     status: null,
     sortBy: 'name',
@@ -123,7 +127,8 @@ export class SuppliersComponent implements OnInit, OnDestroy {
         },
       })
       .then((result) => {
-        const filterResult = result.data as BaseFilterOptions | null;
+        const filterResult =
+          result.data as BaseRequiredSortFilterOptions | null;
         if (filterResult) {
           this.filters = filterResult;
           this.updateActiveFilters();

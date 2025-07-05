@@ -2,7 +2,10 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit, Output, output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { InventoryItem } from '@app/core/model/data/inventory-item';
-import { BaseFilterOptions } from '@app/core/model/filter-options';
+import {
+  BaseRequiredSortFilterOptions,
+  BaseSearchFilterOptions,
+} from '@app/core/model/filter-options';
 import { InventoryItemService } from '@app/core/service/inventory-item.service';
 import { ToastService } from '@app/lib/toast/toast.service';
 import { LucideAngularModule } from 'lucide-angular';
@@ -78,7 +81,7 @@ export class ItemSelectComponent implements OnInit {
   page = 1;
   pageSize = 10;
 
-  filters: BaseFilterOptions = {
+  filters: BaseRequiredSortFilterOptions = {
     search: '',
     sortBy: 'name',
     sortDirection: 'asc',

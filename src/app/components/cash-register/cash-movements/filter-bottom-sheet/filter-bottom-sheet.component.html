@@ -1,0 +1,100 @@
+<div class="bg-white rounded-xl w-full">
+  <div
+    class="flex justify-between items-center mb-2 p-4 border-b border-gray-300"
+  >
+    <h2 class="text-lg font-medium">Filtros</h2>
+    <button (click)="cancel()" class="text-gray-500">
+      <i-lucide name="x" class="w-6 h-6"></i-lucide>
+    </button>
+  </div>
+
+  <div class="p-4">
+    <div class="flex flex-col gap-6 max-h-[60vh] overflow-y-auto py-2">
+      <div class="mb-6">
+        <h3 class="text-sm font-medium mb-2">Tipo de movimiento</h3>
+        <div class="flex flex-wrap gap-2">
+          <button
+            *ngFor="let type of movementTypes"
+            (click)="filters.movementType = type.value"
+            [ngClass]="{
+              'button-primary': filters.movementType === type.value,
+              'button-outline': filters.movementType !== type.value
+            }"
+            class="button button-sm"
+          >
+            {{ type.label }}
+          </button>
+        </div>
+      </div>
+
+      <div class="mb-6">
+        <h3 class="text-sm font-medium text-gray-400 mb-2">Rango de fechas</h3>
+        <div class="grid grid-cols-2 gap-3">
+          <div class="form-group bg-outline border-transparent">
+            <label class="form-label">Desde</label>
+            <input
+              type="date"
+              [(ngModel)]="filters.startDate"
+              class="form-input p-2"
+            />
+          </div>
+          <div class="form-group bg-outline border-transparent">
+            <label class="form-label">Hasta</label>
+            <input
+              type="date"
+              [(ngModel)]="filters.endDate"
+              class="form-input p-2"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="mb-6">
+        <h3 class="text-sm font-medium text-gray-400 mb-2">Ordenar por</h3>
+        <div class="flex gap-4">
+          <div class="form-group bg-outline border-transparent flex-1">
+            <label class="form-label">Criterio</label>
+            <select [(ngModel)]="filters.sortBy" class="form-select">
+              <option *ngFor="let option of sortOptions" [value]="option.value">
+                {{ option.label }}
+              </option>
+            </select>
+            <i-lucide class="icon" size="30" name="chevron-down"></i-lucide>
+          </div>
+
+          <div class="flex border border-primary-key bg-primary-key rounded-xl">
+            <button
+              [ngClass]="{
+                'bg-primary-key text-white': filters.sortDirection === 'asc',
+                'bg-white': filters.sortDirection !== 'asc'
+              }"
+              class="p-2 flex items-center justify-center rounded-l-xl"
+              (click)="filters.sortDirection = 'asc'"
+            >
+              <i-lucide name="arrow-up" class="w-5 h-5"></i-lucide>
+            </button>
+            <button
+              [ngClass]="{
+                'bg-primary-key text-white': filters.sortDirection === 'desc',
+                'bg-white': filters.sortDirection !== 'desc'
+              }"
+              class="p-2 flex items-center justify-center rounded-r-xl"
+              (click)="filters.sortDirection = 'desc'"
+            >
+              <i-lucide name="arrow-down" class="w-5 h-5"></i-lucide>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex gap-3 mt-6">
+      <button (click)="clearFilters()" class="button button-outline flex-1">
+        Limpiar
+      </button>
+      <button (click)="applyFilters()" class="button button-primary flex-1">
+        Aplicar
+      </button>
+    </div>
+  </div>
+</div>
