@@ -13,7 +13,11 @@
     </div>
   </ng-template>
 
-  <div slot="content" class="space-y-4" *ngIf="!isLoading && dashboardData; else loading">
+  <div
+    slot="content"
+    class="space-y-4"
+    *ngIf="!isLoading && dashboardData; else loading"
+  >
     <div class="w-full p-2">
       <div class="grid grid-cols-2 gap-4 px-2">
         <div class="bg-primary-container rounded-3xl p-6 flex flex-col gap-2">
@@ -27,10 +31,33 @@
             ></lucide-icon>
           </div>
           <div class="flex items-end gap-2">
-            <h3 class="text-3xl font-bold text-on-primary-container">{{ dashboardData.metrics.totalItems.currentCount }}</h3>
-            <div class="flex items-center" [ngClass]="{'text-tertiary': dashboardData.metrics.totalItems.trend === 'UP', 'text-error': dashboardData.metrics.totalItems.trend === 'DOWN'}" class="text-sm">
-              <lucide-icon [name]="dashboardData.metrics.totalItems.trend === 'UP' ? 'trending-up' : dashboardData.metrics.totalItems.trend === 'DOWN' ? 'trending-down' : 'minus'" size="14"></lucide-icon>
-              <span>{{ dashboardData.metrics.totalItems.percentageChange }}%</span>
+            <h3 class="text-3xl font-bold text-on-primary-container">
+              {{ dashboardData.metrics.totalItems.currentCount }}
+            </h3>
+            <div
+              class="flex items-center"
+              [ngClass]="{
+                'text-tertiary':
+                  dashboardData.metrics.totalItems.trend === 'UP',
+                'text-error': dashboardData.metrics.totalItems.trend === 'DOWN'
+              }"
+              class="text-sm"
+            >
+              <lucide-icon
+                [name]="
+                  dashboardData.metrics.totalItems.trend === 'UP'
+                    ? 'trending-up'
+                    : dashboardData.metrics.totalItems.trend === 'DOWN'
+                    ? 'trending-down'
+                    : 'minus'
+                "
+                size="14"
+              ></lucide-icon>
+              <span
+                >{{
+                  dashboardData.metrics.totalItems.percentageChange.toFixed(1)
+                }}%</span
+              >
             </div>
           </div>
           <p class="text-on-primary-container text-xs">
@@ -49,10 +76,32 @@
             ></lucide-icon>
           </div>
           <div class="flex items-end gap-2">
-            <h3 class="text-3xl font-bold text-on-secondary-container">{{ dashboardData.metrics.lowStock.currentCount }}</h3>
-            <div class="flex items-center" [ngClass]="{'text-tertiary': dashboardData.metrics.lowStock.trend === 'UP', 'text-error': dashboardData.metrics.lowStock.trend === 'DOWN'}" class="text-sm">
-              <lucide-icon [name]="dashboardData.metrics.lowStock.trend === 'UP' ? 'trending-up' : dashboardData.metrics.lowStock.trend === 'DOWN' ? 'trending-down' : 'minus'" size="14"></lucide-icon>
-              <span>{{ dashboardData.metrics.lowStock.percentageChange }}%</span>
+            <h3 class="text-3xl font-bold text-on-secondary-container">
+              {{ dashboardData.metrics.lowStock.currentCount }}
+            </h3>
+            <div
+              class="flex items-center"
+              [ngClass]="{
+                'text-tertiary': dashboardData.metrics.lowStock.trend === 'UP',
+                'text-error': dashboardData.metrics.lowStock.trend === 'DOWN'
+              }"
+              class="text-sm"
+            >
+              <lucide-icon
+                [name]="
+                  dashboardData.metrics.lowStock.trend === 'UP'
+                    ? 'trending-up'
+                    : dashboardData.metrics.lowStock.trend === 'DOWN'
+                    ? 'trending-down'
+                    : 'minus'
+                "
+                size="14"
+              ></lucide-icon>
+              <span
+                >{{
+                  dashboardData.metrics.lowStock.percentageChange.toFixed(1)
+                }}%</span
+              >
             </div>
           </div>
           <p class="text-on-secondary-container text-xs">
@@ -71,12 +120,38 @@
             ></lucide-icon>
           </div>
           <div class="flex items-end gap-2">
-            <h3 class="text-3xl font-bold text-on-tertiary-container">
-              ${{ dashboardData.metrics.totalValue.currentValue.toLocaleString('es-ES', {minimumFractionDigits: 2, maximumFractionDigits: 2}) }}
+            <h3 class="text-xl font-bold text-on-tertiary-container">
+              ${{
+                dashboardData.metrics.totalValue.currentValue.toLocaleString(
+                  "es-ES",
+                  { minimumFractionDigits: 0, maximumFractionDigits: 0 }
+                )
+              }}
             </h3>
-            <div class="flex items-center" [ngClass]="{'text-tertiary': dashboardData.metrics.totalValue.trend === 'UP', 'text-error': dashboardData.metrics.totalValue.trend === 'DOWN'}" class="text-sm">
-              <lucide-icon [name]="dashboardData.metrics.totalValue.trend === 'UP' ? 'trending-up' : dashboardData.metrics.totalValue.trend === 'DOWN' ? 'trending-down' : 'minus'" size="14"></lucide-icon>
-              <span>{{ dashboardData.metrics.totalValue.percentageChange.toFixed(1) }}%</span>
+            <div
+              class="flex items-center"
+              [ngClass]="{
+                'text-tertiary':
+                  dashboardData.metrics.totalValue.trend === 'UP',
+                'text-error': dashboardData.metrics.totalValue.trend === 'DOWN'
+              }"
+              class="text-sm"
+            >
+              <lucide-icon
+                [name]="
+                  dashboardData.metrics.totalValue.trend === 'UP'
+                    ? 'trending-up'
+                    : dashboardData.metrics.totalValue.trend === 'DOWN'
+                    ? 'trending-down'
+                    : 'minus'
+                "
+                size="14"
+              ></lucide-icon>
+              <span
+                >{{
+                  dashboardData.metrics.totalValue.percentageChange.toFixed(1)
+                }}%</span
+              >
             </div>
           </div>
           <p class="text-on-tertiary-container text-xs">
@@ -97,13 +172,24 @@
             ></lucide-icon>
           </div>
           <div class="flex items-end gap-2">
-            <h3 class="text-3xl font-bold text-on-surface">{{ dashboardData.metrics.categories.currentCount }}</h3>
-            <div class="flex items-center text-tertiary text-sm" *ngIf="dashboardData.metrics.categories.newCategoriesThisMonth > 0">
+            <h3 class="text-3xl font-bold text-on-surface">
+              {{ dashboardData.metrics.categories.currentCount }}
+            </h3>
+            <div
+              class="flex items-center text-tertiary text-sm"
+              *ngIf="
+                dashboardData.metrics.categories.newCategoriesThisMonth > 0
+              "
+            >
               <lucide-icon name="plus" size="14"></lucide-icon>
-              <span>{{ dashboardData.metrics.categories.newCategoriesThisMonth }}</span>
+              <span>{{
+                dashboardData.metrics.categories.newCategoriesThisMonth
+              }}</span>
             </div>
           </div>
-          <p class="text-on-surface text-xs">{{ dashboardData.metrics.categories.changeDescription }}</p>
+          <p class="text-on-surface text-xs">
+            {{ dashboardData.metrics.categories.changeDescription }}
+          </p>
         </div>
       </div>
     </div>
@@ -113,16 +199,25 @@
         <p class="text-inverse-on-surface text-lg font-light">
           Niveles de Stock por Categoría
         </p>
-        <h2 class="text-4xl font-bold flex gap-2 text-surface" *ngIf="dashboardData.categoryStockLevels && dashboardData.categoryStockLevels.length > 0">
-          <span class="text-tertiary-container" *ngIf="dashboardData.categoryStockLevels[0].stockPercentage > 0">+</span>{{ dashboardData.categoryStockLevels[0].stockPercentage.toFixed(1) }}%
-        </h2>
       </div>
       <div class="w-full grid grid-cols-2 gap-6">
         <div *ngFor="let category of dashboardData.categoryStockLevels">
-          <h3 class="text-inverse-on-surface text-sm font-light">{{ category.categoryName }}</h3>
-          <p class="text-shadow-inverse-on-surface text-xl font-medium">{{ category.stockPercentage.toFixed(0) }}%</p>
+          <h3 class="text-inverse-on-surface text-sm font-light">
+            {{ category.categoryName }}
+          </h3>
+          <p class="text-shadow-inverse-on-surface text-xl font-medium">
+            {{ category.stockPercentage.toFixed(0) }}%
+          </p>
           <div class="w-full h-4 bg-on-surface rounded-full overflow-hidden">
-            <div class="h-full bg-primary" [ngStyle]="{'width': (category.stockPercentage > 100 ? 100 : category.stockPercentage) + '%'}"></div>
+            <div
+              class="h-full bg-primary"
+              [ngStyle]="{
+                width:
+                  (category.stockPercentage > 100
+                    ? 100
+                    : category.stockPercentage) + '%'
+              }"
+            ></div>
           </div>
         </div>
       </div>
@@ -163,7 +258,9 @@
   </div>
   <ng-template #loading>
     <div class="flex justify-center items-center h-full">
-      <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+      <div
+        class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"
+      ></div>
     </div>
   </ng-template>
 </app-base-page>

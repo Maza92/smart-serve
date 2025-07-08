@@ -1,0 +1,25 @@
+export enum TransactionTypeEnum {
+  SALE = 'SALE',
+  REFUND = 'REFUND',
+  MANUAL_ADJUSTMENT = 'MANUAL_ADJUSTMENT',
+  EXPENSE = 'EXPENSE',
+}
+
+export enum TransactionStatusEnum {
+  PENDING = 'PENDING',
+  COMPLETED = 'COMPLETED',
+  CANCELLED = 'CANCELLED',
+  REJECTED = 'REJECTED',
+  FAILED = 'FAILED',
+}
+
+export enum PaymentMethodEnum {
+  CASH = 'CASH',
+  CREDIT_CARD = 'CREDIT_CARD',
+  DEBIT_CARD = 'DEBIT_CARD',
+  BANK_TRANSFER = 'BANK_TRANSFER',
+  YAPE = 'YAPE',
+  PLIN = 'PLIN',
+  ONLINE_PAYMENT = 'ONLINE_PAYMENT',
+  COURTESY = 'COURTESY',
+}

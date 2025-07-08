@@ -4,10 +4,15 @@
       <h1 class="text-5xl font-medium -translate-x-[2px]">Bienvenido</h1>
       <p class="text-xl">Hola, {{ username }}</p>
     </div>
+
     <nav
       class="grid grid-cols-2 gap-4 [&>article]:p-6 [&>article]:box-border [&>article]:rounded-3xl [&>article]:flex [&>article]:flex-col [&>article]:gap-4 [&>article]:justify-center [&>article]:items-start [&>article]:hover:opacity-75 [&>article]:transition-all [&>article]:duration-300 [&>article]:cursor-pointer [&>article>h3]:text-xl [&>article>h3]:font-medium"
     >
-      <article class="bg-primary text-background" appGoTo="inventory">
+      <article
+        class="bg-primary text-background"
+        appGoTo="inventory"
+        [appHasRole]="['ADMIN', 'COOK', 'BAKER']"
+      >
         <lucide-icon
           name="square-check"
           strokeWidth="3"
@@ -15,12 +20,22 @@
         ></lucide-icon>
         <h3 class="text-xl font-medium">Inventario</h3>
       </article>
-      <article class="bg-background text-primary" routerLink="/home/pos">
+
+      <article
+        class="bg-background text-primary"
+        routerLink="/home/pos"
+        appGoTo="pos"
+        [appHasRole]="['ADMIN', 'CASHIER', 'WAITER', 'COOK', 'BAKER']"
+      >
         <lucide-icon name="dollar-sign" strokeWidth="3" size="36"></lucide-icon>
         <h3 class="text-xl font-medium">Pos</h3>
       </article>
 
-      <article class="bg-background text-primary">
+      <article
+        class="bg-background text-primary"
+        appGoTo="report"
+        [appHasRole]="['ADMIN', 'CASHIER', 'WAITER']"
+      >
         <lucide-icon
           name="chart-no-axes-column-increasing"
           strokeWidth="3"
@@ -28,53 +43,135 @@
         ></lucide-icon>
         <h3 class="text-xl font-medium">Reportes</h3>
       </article>
+
       <article class="bg-primary text-background" routerLink="/settings">
         <lucide-icon name="settings" strokeWidth="3" size="36"></lucide-icon>
         <h3 class="text-xl font-medium">Ajustes</h3>
       </article>
     </nav>
   </header>
+
   <footer
     class="bg-white rounded-t-2xl flex-1 flex flex-col text-inverse-on-surface overflow-hidden"
   >
     <section class="px-6 py-4 flex flex-col flex-1 overflow-hidden">
-      <div class="flex justify-between mb-4">
+      <div class="flex justify-between items-center mb-4">
         <h2 class="text-xl">Notificaciones</h2>
-        <div class="bg-outline p-2 rounded-full relative">
-          <lucide-icon name="bell" strokeWidth="3" size="14"></lucide-icon>
-          <span
-            class="absolute -top-2 -right-2 bg-primary text-background text-xs rounded-full min-w-[20px] h-[20px] flex items-center justify-center"
+        <div class="flex items-center gap-2">
+          <button
+            (click)="onRefresh()"
+            class="bg-outline p-2 rounded-full hover:bg-gray-200 transition-colors"
+            [disabled]="isLoading"
           >
-            {{ notificationTest.length }}
-          </span>
+            <lucide-icon
+              name="refresh-cw"
+              strokeWidth="3"
+              size="14"
+              [class.animate-spin]="isLoading"
+            >
+            </lucide-icon>
+          </button>
+
+          <div class="bg-outline p-2 rounded-full relative">
+            <lucide-icon name="bell" strokeWidth="3" size="14"></lucide-icon>
+            <span
+              *ngIf="unreadCount > 0"
+              class="absolute -top-2 -right-2 bg-primary text-background text-xs rounded-full min-w-[20px] h-[20px] flex items-center justify-center"
+            >
+              {{ unreadCount }}
+            </span>
+          </div>
         </div>
       </div>
-      <ul
-        class="overflow-y-auto flex-1 rounded-2xl snap-y snap-mandatory scroll-smooth"
-        role="list"
-        aria-live="polite"
-      >
-        <li
-          class="snap-start alert alert-info h-full"
-          *ngFor="let i of notificationTest"
-          [ngClass]="`alert-${['info', 'success', 'warning', 'error'][i % 4]}`"
+
+      <div class="flex-1 overflow-hidden">
+        <ul
+          #notificationsList
+          class="overflow-y-auto flex-1 h-full rounded-2xl snap-y snap-mandatory scroll-smooth max-w-none sm:max-w-lg md:max-w-xl lg:max-w-2xl xl:max-w-3xl mx-auto"
+          role="list"
+          aria-live="polite"
         >
-          <article class="alert-content">
-            <span>
+          <li
+            *ngFor="
+              let notification of notifications;
+              trackBy: trackByNotificationId
+            "
+            class="snap-start notification-item"
+            [class]="'alert alert-' + notification.type"
+            (touchstart)="onTouchStart($event, notification.id)"
+            (touchmove)="onTouchMove($event, notification.id)"
+            (touchend)="onTouchEnd($event, notification.id)"
+            [style.transform]="getSwipeTransform(notification.id)"
+            [style.opacity]="getSwipeOpacity(notification.id)"
+            [style.transition]="
+              swipeStates[notification.id].isDragging
+                ? 'none'
+                : 'transform 0.3s ease-out, opacity 0.3s ease-out'
+            "
+          >
+            <article class="alert-content relative">
+              <span class="alert-icon-wrapper">
+                <lucide-icon
+                  class="alert-icon"
+                  [name]="getNotificationIcon(notification.type)"
+                  strokeWidth="3"
+                  size="20"
+                >
+                </lucide-icon>
+              </span>
+
+              <div class="alert-text">
+                <time class="alert-title">
+                  {{ notification.relatedEntityType }}
+                </time>
+                <h4 class="alert-subtitle">
+                  {{ notification.relatedEntityId }}
+                </h4>
+                <p class="alert-message">{{ notification.message }}</p>
+              </div>
+
+              <div
+                class="swipe-indicator"
+                [class.visible]="swipeStates[notification.id].translateX < -20"
+              >
+                <lucide-icon
+                  name="check"
+                  strokeWidth="3"
+                  size="16"
+                ></lucide-icon>
+                <span>Marcar como leída</span>
+              </div>
+            </article>
+          </li>
+
+          <li *ngIf="isLoading" class="snap-start loading-item">
+            <div class="loading-content">
               <lucide-icon
-                class="alert-icon"
-                name="bell"
+                name="loader-2"
+                class="animate-spin"
                 strokeWidth="3"
                 size="20"
               ></lucide-icon>
-            </span>
-            <time class="alert-title"> 10:00 AM </time>
-            <p class="alert-message">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
-            </p>
-          </article>
-        </li>
-      </ul>
+              <span>Cargando notificaciones...</span>
+            </div>
+          </li>
+
+          <li
+            *ngIf="notifications.length === 0 && !isLoading"
+            class="snap-start empty-state"
+          >
+            <div class="empty-content">
+              <lucide-icon
+                name="bell-off"
+                strokeWidth="3"
+                size="48"
+              ></lucide-icon>
+              <h3>No tienes notificaciones</h3>
+              <p>Cuando tengas nuevas notificaciones aparecerán aquí</p>
+            </div>
+          </li>
+        </ul>
+      </div>
     </section>
   </footer>
 </section>

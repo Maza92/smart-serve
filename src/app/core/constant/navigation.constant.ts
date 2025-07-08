@@ -51,6 +51,26 @@ export const NAV_ITEMS: NavItem[] = [
     path: '/home',
     children: [
       {
+        key: 'report',
+        name: 'Reportes',
+        icon: 'bar-chart-3',
+        path: 'report',
+        children: [
+          {
+            key: 'dish-performance',
+            name: 'dish',
+            icon: 'chart-pie',
+            path: 'dish-performance',
+          },
+          {
+            key: 'waiter-performance',
+            name: 'waiter',
+            icon: 'chart-pie',
+            path: 'waiter-performance',
+          },
+        ],
+      },
+      {
         key: 'inventory',
         name: 'Inventario',
         icon: 'boxes',
@@ -125,6 +145,12 @@ export const NAV_ITEMS: NavItem[] = [
         path: 'pos',
         children: [
           {
+            key: 'transaction',
+            name: 'Transaccion',
+            icon: 'arrow-right-left',
+            path: 'transaction',
+          },
+          {
             key: 'cash-register',
             name: 'Registro de Efectivo',
             icon: 'banknote',
@@ -194,6 +220,12 @@ export const NAV_ITEMS: NavItem[] = [
     icon: 'settings',
     path: '/settings',
     children: [
+      {
+        key: 'sessions',
+        name: 'Sesiones',
+        icon: 'monitor',
+        path: 'sessions',
+      },
       {
         key: 'users',
         name: 'Usuarios',

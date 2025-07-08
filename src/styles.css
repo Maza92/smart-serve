@@ -12,6 +12,19 @@ input:-webkit-autofill:focus {
   transition: background-color 0s 600000s, color 0s 600000s !important;
 }
 
+.disabled-by-role {
+  opacity: 0.5;
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
+.disabled-by-role input,
+.disabled-by-role textarea,
+.disabled-by-role select,
+.disabled-by-role button {
+  pointer-events: none;
+}
+
 @import "./styles/components/button.css";
 @import "./styles/components/icon.css";
 @import "./styles/components/form.css";

@@ -1,4 +1,9 @@
 import { CashMovementTypeEnum } from '../enums/cash-movement-enums';
+import {
+  PaymentMethodEnum,
+  TransactionStatusEnum,
+  TransactionTypeEnum,
+} from '../enums/transaction-enums';
 
 export interface BaseSortOptions {
   sortBy?: string;
@@ -27,6 +32,20 @@ export interface BasePriceFilterOptions {
 
 export interface FilterOptions extends BaseRequiredSortFilterOptions {
   role?: string | null;
+}
+
+export interface TransactionFilterOptions extends BaseDateFilterOptions {
+  cashRegisterId?: number;
+  orderId?: number;
+  userId?: number;
+  paymentMethod?: PaymentMethodEnum;
+  transactionType?: TransactionTypeEnum;
+  status?: TransactionStatusEnum;
+}
+
+export interface notifiactionFilterOptions extends BaseDateFilterOptions {
+  isRead: boolean;
+  type?: string;
 }
 
 export interface CashMovementFilterOptions extends BaseDateFilterOptions {

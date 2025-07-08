@@ -4,15 +4,17 @@ import { CommonModule } from '@angular/common';
 import { formatDate } from '@angular/common';
 import { PingService } from '@app/core/service/ping.service';
 import { NavigationService } from '@app/core/service/navigation.service';
-import { RouterLink } from '@angular/router';
 import { GoToDirective } from '@app/shared/directives/go-to.directive';
 import { TodaySales } from '@app/core/model/order/today-sales';
 import { OrderService } from '@app/core/service/order.service';
+import { HasRoleDirective } from '@app/shared/directives/has-role.directive';
+import { AuthService } from '@app/core/service/auth.service';
+import { ToastService } from '@app/lib/toast/toast.service';
 
 @Component({
   selector: 'app-pos',
   standalone: true,
-  imports: [LucideAngularModule, CommonModule, RouterLink, GoToDirective],
+  imports: [LucideAngularModule, CommonModule, GoToDirective, HasRoleDirective],
   templateUrl: './pos.component.html',
   styleUrl: './pos.component.css',
 })
@@ -25,11 +27,14 @@ export class PosComponent implements OnInit, OnDestroy {
   networkOnline = navigator.onLine;
   path: string | null = null;
   todaySales: TodaySales | null = null;
+  todaySalesError: string | null = null;
 
   constructor(
     private pingService: PingService,
     private navigantionService: NavigationService,
-    private orderService: OrderService
+    private orderService: OrderService,
+    private authService: AuthService,
+    private toast: ToastService
   ) {
     this.updateDateTime();
   }
@@ -96,8 +101,18 @@ export class PosComponent implements OnInit, OnDestroy {
         this.todaySales = response.data;
       },
       (error) => {
+        this.toast.error(error.message);
+        this.todaySalesError = error.message;
         this.todaySales = null;
       }
     );
+  }
+
+  navigateToTables() {
+    if (this.todaySalesError) {
+      this.toast.error(this.todaySalesError);
+      return;
+    }
+    this.navigantionService.goTo('tables');
   }
 }

@@ -1,0 +1,141 @@
+<section class="w-full h-dvh bg-outline">
+  <div class="sticky top-0 z-20 bg-outline">
+    <app-back-bar title="Procesar pago" textColor="text-black"></app-back-bar>
+  </div>
+  <div class="w-full p-6">
+    <form [formGroup]="transactionForm" class="flex flex-col gap-4">
+      <div>
+        <div class="form-group-icon mb-2">
+          <lucide-icon
+            class="icon text-on-background"
+            name="dollar-sign"
+          ></lucide-icon>
+          <input
+            formControlName="amount"
+            type="number"
+            step="0.01"
+            class="form-input w-full h-16"
+            placeholder="Monto"
+            [ngClass]="{
+              'form-input-error':
+                transactionForm.get('amount')?.invalid &&
+                transactionForm.get('amount')?.touched
+            }"
+          />
+        </div>
+
+        <div
+          *ngIf="
+            transactionForm.get('amount')?.invalid &&
+            (transactionForm.get('amount')?.touched ||
+              transactionForm.get('amount')?.dirty)
+          "
+          class="form-error-message"
+        >
+          <p *ngIf="transactionForm.get('amount')?.errors?.['required']">
+            El monto es requerido
+          </p>
+          <p *ngIf="transactionForm.get('amount')?.errors?.['min']">
+            El monto debe ser mayor a 0
+          </p>
+        </div>
+      </div>
+
+      <div class="form-group bg-on-surface border-on-surface">
+        <label class="form-label">Método de pago</label>
+        <select formControlName="paymentMethod" class="form-select">
+          <option *ngFor="let method of paymentMethods" [value]="method">
+            {{ getPaymentMethodLabel(method) }}
+          </option>
+        </select>
+        <lucide-icon class="icon" name="chevron-down"></lucide-icon>
+      </div>
+
+      <div *ngIf="showReferenceField">
+        <div class="form-group-icon mb-2">
+          <lucide-icon
+            class="icon text-on-background"
+            name="hash"
+          ></lucide-icon>
+          <input
+            formControlName="referenceNumber"
+            type="text"
+            class="form-input w-full h-16"
+            placeholder="Número de referencia"
+          />
+        </div>
+      </div>
+
+      <ng-container *ngIf="showCardFields" formGroupName="paymentDetails">
+        <div>
+          <div class="form-group-icon mb-2">
+            <lucide-icon
+              class="icon text-on-background"
+              name="credit-card"
+            ></lucide-icon>
+            <input
+              formControlName="cardNumber"
+              type="text"
+              class="form-input w-full h-16"
+              placeholder="Número de tarjeta"
+            />
+          </div>
+        </div>
+
+        <div>
+          <div class="form-group-icon mb-2">
+            <lucide-icon
+              class="icon text-on-background"
+              name="user"
+            ></lucide-icon>
+            <input
+              formControlName="cardHolder"
+              type="text"
+              class="form-input w-full h-16"
+              placeholder="Titular de la tarjeta"
+            />
+          </div>
+        </div>
+
+        <div>
+          <div class="form-group-icon mb-2">
+            <lucide-icon
+              class="icon text-on-background"
+              name="calendar"
+            ></lucide-icon>
+            <input
+              formControlName="expiryDate"
+              type="text"
+              class="form-input w-full h-16"
+              placeholder="MM/AA"
+            />
+          </div>
+        </div>
+
+        <div>
+          <div class="form-group-icon mb-2">
+            <lucide-icon
+              class="icon text-on-background"
+              name="shield"
+            ></lucide-icon>
+            <input
+              formControlName="cvv"
+              type="text"
+              class="form-input w-full h-16"
+              placeholder="CVV"
+            />
+          </div>
+        </div>
+      </ng-container>
+
+      <button
+        class="button button-primary button-lg w-full h-16 mt-4"
+        [disabled]="transactionForm.invalid || isSubmitting"
+        (click)="onSubmit()"
+      >
+        <span *ngIf="!isSubmitting">Procesar pago</span>
+        <span *ngIf="isSubmitting">Procesando...</span>
+      </button>
+    </form>
+  </div>
+</section>

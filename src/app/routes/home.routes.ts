@@ -5,6 +5,7 @@ import { AuthGuard } from '@app/core/guard/auth.guard';
 import { inventoryRoutes } from './home/inventory.routes';
 import { itemsRoutes } from './home/inventory/items.routes';
 import { posRoutes } from './home/pos.routes';
+import { reportRoutes } from './home/report.routes';
 
 export const homeRoutes: Routes = [
   {
@@ -18,6 +19,7 @@ export const homeRoutes: Routes = [
       },
       ...inventoryRoutes,
       ...posRoutes,
+      ...reportRoutes,
     ],
   },
 ];

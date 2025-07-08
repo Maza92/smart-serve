@@ -1,0 +1,150 @@
+<section class="w-full h-dvh bg-outline flex flex-col">
+  <app-back-bar
+    [title]="'Sesiones Activas'"
+    textColor="text-background"
+  ></app-back-bar>
+
+  <div class="w-full bg-outline p-4">
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="text-lg font-semibold text-gray-900">
+        Administración de Sesiones
+      </h2>
+      <button
+        (click)="revokeAllSessions()"
+        [disabled]="revoking || !activeSession?.sessions?.length"
+        class="button button-sm button-primary button-action justify-center"
+        [ngClass]="{
+          'opacity-50 cursor-not-allowed':
+            revoking || !activeSession?.sessions?.length
+        }"
+      >
+        <i-lucide name="log-out" class="button-icon"></i-lucide>
+        <span class="button-label">Revocar Todas</span>
+      </button>
+    </div>
+
+    <div *ngIf="activeSession" class="bg-white p-4 rounded-lg shadow-sm mb-0">
+      <div class="flex items-center mb-2">
+        <i-lucide name="user" class="w-5 h-5 text-gray-500 mr-2"></i-lucide>
+        <span class="font-medium text-gray-900">{{
+          activeSession.username
+        }}</span>
+        <span class="text-sm text-gray-500 ml-2"
+          >(ID: {{ activeSession.userId }})</span
+        >
+      </div>
+      <p class="text-sm text-gray-600">
+        {{ activeSession.sessions.length || 0 }} sesión(es) activa(s)
+      </p>
+    </div>
+  </div>
+
+  <div class="flex-grow p-4 overflow-auto">
+    <div *ngIf="loading" class="flex justify-center items-center h-32">
+      <div
+        class="w-8 h-8 border-4 border-t-transparent border-primary-key rounded-full animate-spin"
+      ></div>
+    </div>
+
+    <div
+      *ngIf="
+        !loading &&
+        activeSession &&
+        activeSession.sessions &&
+        activeSession.sessions.length > 0
+      "
+      class="space-y-4"
+    >
+      <div
+        *ngFor="let session of activeSession.sessions"
+        class="bg-white rounded-lg shadow-sm border overflow-hidden"
+        [ngClass]="{
+          'border-error-container bg-error-container/5': isSessionExpired(
+            session.expiry
+          ),
+          'border-gray-200': !isSessionExpired(session.expiry)
+        }"
+      >
+        <div class="p-4">
+          <div class="flex justify-between items-start mb-3">
+            <div class="flex items-center">
+              <i-lucide
+                name="monitor"
+                class="w-5 h-5 mr-2"
+                [ngClass]="{
+                  'text-error': isSessionExpired(session.expiry),
+                  'text-primary': !isSessionExpired(session.expiry)
+                }"
+              ></i-lucide>
+              <span class="font-medium text-gray-900">
+                Sesión #{{ session.sessionId }}
+              </span>
+              <span
+                *ngIf="isSessionExpired(session.expiry)"
+                class="ml-2 px-2 py-1 text-xs bg-error text-white rounded-full"
+              >
+                Expirada
+              </span>
+              <span
+                *ngIf="!isSessionExpired(session.expiry)"
+                class="ml-2 px-2 py-1 text-xs bg-tertiary-container text-white rounded-full"
+              >
+                Activa
+              </span>
+            </div>
+            <button
+              (click)="revokeSession(session.sessionId)"
+              [disabled]="revoking"
+              class="button button-sm button-outline button-action"
+              [ngClass]="{
+                'opacity-50 cursor-not-allowed': revoking
+              }"
+            >
+              <i-lucide name="x" class="button-icon w-4 h-4 mr-1"></i-lucide>
+              <span class="button-label">Revocar</span>
+            </button>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+            <div>
+              <span class="text-gray-500">Creada:</span>
+              <p class="font-medium">{{ formatDate(session.createdAt) }}</p>
+            </div>
+            <div>
+              <span class="text-gray-500">Expira:</span>
+              <p
+                class="font-medium"
+                [ngClass]="{
+                  'text-error': isSessionExpired(session.expiry),
+                  'text-gray-900': !isSessionExpired(session.expiry)
+                }"
+              >
+                {{ formatDate(session.expiry) }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      *ngIf="
+        !loading &&
+        (!activeSession ||
+          !activeSession.sessions ||
+          activeSession.sessions.length === 0)
+      "
+      class="flex flex-col items-center justify-center p-8"
+    >
+      <i-lucide
+        name="monitor-off"
+        class="w-12 h-12 text-gray-300 mb-4"
+      ></i-lucide>
+      <p class="text-gray-500 text-center">No hay sesiones activas</p>
+      <button (click)="loadActiveSessions()" class="button button-outline mt-4">
+        <i-lucide name="refresh-cw" class="w-4 h-4 mr-2"></i-lucide>
+        Actualizar
+      </button>
+    </div>
+  </div>
+</section>

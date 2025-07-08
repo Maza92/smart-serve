@@ -5,6 +5,7 @@ import {
   Observable,
   catchError,
   map,
+  switchMap,
   tap,
   throwError,
 } from 'rxjs';
@@ -23,6 +24,9 @@ import { RecoverPasswordRequest } from '@core/model/auth/recover-password-reques
 import { ResetPasswordRequest } from '@core/model/auth/reset-password-request';
 import { ResetPasswordByAdminRequest } from '@core/model/auth/reset-password-by-admin-request';
 import { ServiceType } from '../enums/api-enums';
+import { ActiveSession } from '../model/auth/active-session';
+import { User } from '../model/data/user';
+import { ApiResponse } from '../model/api';
 
 @Injectable({
   providedIn: 'root',
@@ -32,16 +36,32 @@ export class AuthService extends BaseService {
   private readonly REFRESH_TOKEN_KEY = 'refresh_token';
   private readonly TOKEN_EXPIRATION_KEY = 'token_expiration';
   private readonly USER_NAME_KEY = 'user_name';
+  private readonly USER_PROFILE_KEY = 'user_profile';
   private readonly USER_ID_KEY = 'user_id';
 
   private authToken$ = new BehaviorSubject<string | null>(null);
+  private currentUser$ = new BehaviorSubject<User | null>(null);
 
   constructor(
     private http: HttpClient,
     private localStorageService: LocalStorageService
   ) {
     super();
-    this.authToken$.next(this.getAuthTokenFromStorage());
+    this.loadSessionFromStorage();
+  }
+
+  private loadSessionFromStorage(): void {
+    const token = this.getAuthTokenFromStorage();
+    this.authToken$.next(token);
+
+    const userProfile = this.localStorageService.get<User>(
+      this.USER_PROFILE_KEY
+    );
+    this.currentUser$.next(userProfile);
+
+    if (token && !userProfile) {
+      this.fetchAndStoreUserProfile().subscribe();
+    }
   }
 
   login(request: LoginRequest): Observable<LoginResponse> {
@@ -52,7 +72,7 @@ export class AuthService extends BaseService {
     );
 
     return this.http.post<LoginResponse>(url, request).pipe(
-      map((response) => {
+      switchMap((response: LoginResponse) => {
         this.localStorageService.set(this.AUTH_TOKEN_KEY, response.token);
         this.localStorageService.set(
           this.REFRESH_TOKEN_KEY,
@@ -65,9 +85,27 @@ export class AuthService extends BaseService {
         this.localStorageService.set(this.USER_NAME_KEY, response.username);
         this.localStorageService.set(this.USER_ID_KEY, response.userId);
         this.authToken$.next(response.token);
-        return response;
+        return this.fetchAndStoreUserProfile().pipe(map(() => response));
       }),
-      catchError((error) => this.handleError(error))
+      catchError((error) => {
+        this.clearAuthData();
+        return this.handleError(error);
+      })
+    );
+  }
+
+  fetchAndStoreUserProfile(): Observable<ApiResponse<User>> {
+    const url = buildUrl(
+      ServiceType.API,
+      API_CONSTANTS.USER.CONTROLLER,
+      API_CONSTANTS.USER.GET_ME
+    );
+
+    return this.http.get<ApiResponse<User>>(url).pipe(
+      tap((response) => {
+        this.localStorageService.set(this.USER_PROFILE_KEY, response.data);
+        this.currentUser$.next(response.data);
+      })
     );
   }
 
@@ -82,7 +120,10 @@ export class AuthService extends BaseService {
       tap(() => {
         this.clearAuthData();
       }),
-      catchError(this.handleError)
+      catchError((error) => {
+        this.clearAuthData();
+        return this.handleError(error);
+      })
     );
   }
 
@@ -197,15 +238,66 @@ export class AuthService extends BaseService {
       .pipe(catchError(this.handleError));
   }
 
+  getActiveSessions(): Observable<ActiveSession> {
+    const url = buildUrl(
+      ServiceType.AUTH,
+      API_CONSTANTS.AUTH.CONTROLLER,
+      API_CONSTANTS.AUTH.GET_ACTIVE_SESSIONS
+    );
+
+    return this.http.get<ActiveSession>(url).pipe(catchError(this.handleError));
+  }
+
+  revokeAllSessions(): Observable<void> {
+    const url = buildUrl(
+      ServiceType.AUTH,
+      API_CONSTANTS.AUTH.CONTROLLER,
+      API_CONSTANTS.AUTH.REVOKE_ALL_SESSIONS
+    );
+
+    return this.http.post<void>(url, {}).pipe(catchError(this.handleError));
+  }
+
+  revokeSession(id: number): Observable<void> {
+    const url = buildUrl(
+      ServiceType.AUTH,
+      API_CONSTANTS.AUTH.CONTROLLER,
+      API_CONSTANTS.AUTH.REVOKE_SESSION,
+      { id: id.toString() }
+    );
+
+    return this.http.post<void>(url, {}).pipe(catchError(this.handleError));
+  }
+
   clearAuthData(): void {
     this.localStorageService.remove(this.AUTH_TOKEN_KEY);
     this.localStorageService.remove(this.REFRESH_TOKEN_KEY);
     this.localStorageService.remove(this.TOKEN_EXPIRATION_KEY);
+    this.localStorageService.remove(this.USER_PROFILE_KEY);
     this.authToken$.next(null);
+    this.currentUser$.next(null);
   }
 
   isAuthenticated(): boolean {
     return !!this.authToken$.getValue();
+  }
+
+  public getCurrentUser(): Observable<User | null> {
+    return this.currentUser$.asObservable();
+  }
+
+  public getCurrentUserSnapshot(): User | null {
+    return this.currentUser$.getValue();
+  }
+
+  public userHasRole(role: string): Observable<boolean> {
+    return this.currentUser$.pipe(map((user) => user?.roleName === role));
+  }
+
+  public userHasAnyRole(roles: string[]): Observable<boolean> {
+    return this.currentUser$.pipe(
+      map((user) => roles.includes(user?.roleName ?? ''))
+    );
   }
 
   getAuthToken(): string | null {

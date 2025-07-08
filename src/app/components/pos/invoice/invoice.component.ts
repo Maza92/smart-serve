@@ -136,7 +136,10 @@ export class InvoiceComponent implements OnInit {
       return;
     }
 
-    this.orderService.payOrder(this.orderId).subscribe({
+    this.navigationService.goTo('transaction', [this.orderId]);
+
+    /* 
+this.orderService.payOrder(this.orderId).subscribe({
       next: () => {
         this.toastService.success('Orden pagada', 'Éxito');
         this.navigationService.goTo('tables');
@@ -145,5 +148,6 @@ export class InvoiceComponent implements OnInit {
         this.toastService.error(error.message, 'Error');
       },
     });
+    */
   }
 }

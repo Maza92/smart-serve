@@ -6,6 +6,7 @@ import { KitchenComponent } from '@app/components/pos/kitchen/kitchen.component'
 import { OrderComponent } from '@app/components/pos/order/order.component';
 import { SalesComponent } from '@app/components/pos/sales/sales.component';
 import { TablesComponent } from '@app/components/pos/tables/tables.component';
+import { TransactionComponent } from '@app/components/pos/transaction/transaction.component';
 import { PosComponent } from '@app/pages/pos/pos.component';
 
 export const posRoutes: Routes = [
@@ -62,6 +63,10 @@ export const posRoutes: Routes = [
       {
         path: 'kitchen',
         component: KitchenComponent,
+      },
+      {
+        path: 'transaction/:id',
+        component: TransactionComponent,
       },
     ],
   },
