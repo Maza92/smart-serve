@@ -1,0 +1,405 @@
+<main
+  class="w-full h-full bg-on-surface relative p-4 overflow-hidden flex flex-col"
+>
+  <button class="absolute top-4 left-4 text-gray-500 z-20" appGoTo="pos">
+    <lucide-icon name="x" strokeWidth="3" size="26"></lucide-icon>
+  </button>
+
+  <div class="w-auto p-4 md:mx-30 mb-4 flex-shrink-0">
+    <div
+      class="bg-white p-1 rounded-xl flex gap-1 justify-center items-center h-12 relative"
+    >
+      <div
+        class="absolute h-[calc(100%-8px)] rounded-xl bg-primary-key transition-all duration-300 ease-in-out"
+        [ngStyle]="{
+          width: 'calc(50% - 4px)',
+          left: activeTab === 1 ? '4px' : 'calc(50% + 2px)'
+        }"
+      ></div>
+
+      <button
+        class="rounded-xl w-full h-full z-10 transition-colors duration-200"
+        [ngClass]="{
+          'font-semibold text-on-background': activeTab === 1,
+          'font-regular text-background': activeTab !== 1
+        }"
+        (click)="activeTab = 1"
+      >
+        Pendientes
+      </button>
+      <button
+        class="rounded-xl w-full h-full z-10 transition-colors duration-200"
+        [ngClass]="{
+          'font-semibold text-on-background': activeTab === 2,
+          'font-regular text-background': activeTab !== 2
+        }"
+        (click)="activeTab = 2"
+      >
+        Listos
+      </button>
+    </div>
+  </div>
+
+  <div class="w-full flex-1 overflow-hidden">
+    <div class="relative w-full h-full">
+      <div
+        class="transition-all duration-300 ease-in-out absolute w-full h-full"
+        [ngClass]="{
+          'opacity-100 z-10': activeTab === 1,
+          'opacity-0 z-0': activeTab !== 1
+        }"
+      >
+        <div class="h-full flex flex-col lg:flex-row lg:gap-6 md:mx-30">
+          <div class="flex-1 flex flex-col min-h-0 mb-4 lg:mb-0">
+            <div
+              class="flex w-full justify-between items-center mb-4 flex-shrink-0"
+            >
+              <h2 class="text-xl font-medium">Pendientes</h2>
+              <div
+                class="bg-gray-300 rounded-full text-black text-sm px-2 py-1 font-light"
+              >
+                {{ pendingOrdersArray.length }} pedidos
+              </div>
+            </div>
+
+            <div class="relative flex-1 min-h-0 h-64 lg:h-auto">
+              <div
+                id="pending-container"
+                class="h-full overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-gray-300"
+              >
+                <div class="flex flex-col gap-4 pb-16">
+                  <div
+                    *ngFor="
+                      let order of pendingOrdersArray;
+                      trackBy: trackByOrderId
+                    "
+                    class="flex flex-col justify-start gap-6 bg-white rounded-xl p-5 border-2 border-gray-300 min-h-72 flex-shrink-0 transition-all duration-300"
+                    [ngClass]="{
+                      'opacity-50 scale-95': isAnimating(order.id)
+                    }"
+                  >
+                    <div class="flex w-full justify-between items-start">
+                      <div>
+                        <h3 class="text-sm text-primary-key">
+                          Orden #{{ order.id }}
+                        </h3>
+                        <h3 class="text-lg font-medium">
+                          Mesa {{ order.tableNumber }}
+                        </h3>
+                      </div>
+                      <p
+                        class="bg-gray-100 rounded-full px-2 py-1 text-gray-500 text-xs"
+                      >
+                        {{ order.orderDetails.length }} artículos
+                      </p>
+                    </div>
+
+                    <div class="flex flex-col gap-2 flex-1">
+                      <div
+                        *ngFor="
+                          let item of order.orderDetails;
+                          let index = index
+                        "
+                        class="border-gray-300"
+                        [ngClass]="{
+                          'border-b-1 pb-3':
+                            order.orderDetails.length > 1 &&
+                            index < order.orderDetails.length - 1
+                        }"
+                      >
+                        <div class="flex justify-between items-center mb-2">
+                          <span class="font-light text-sm"
+                            >{{ item.quantity }}x {{ item.dishName }}</span
+                          >
+                          <div
+                            class="text-xs bg-gray-200 text-black rounded-sm px-2 py-1 text-center"
+                          >
+                            {{ item.categoryName }}
+                          </div>
+                        </div>
+
+                        <div
+                          *ngIf="
+                            item.modifications && item.modifications.length > 0
+                          "
+                          class="mt-2"
+                        >
+                          <div class="flex flex-wrap gap-1">
+                            <div
+                              *ngFor="let modification of item.modifications"
+                              class="inline-flex items-center gap-1 text-xs px-2 py-1 rounded-full border"
+                              [ngClass]="getModificationClass(modification)"
+                            >
+                              <lucide-icon
+                                [name]="getModificationIcon(modification)"
+                                size="12"
+                              ></lucide-icon>
+                              <span class="font-medium">{{
+                                getModificationText(modification)
+                              }}</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="mt-auto">
+                      <button
+                        class="button button-primary w-full transition-all duration-200 hover:shadow-lg"
+                        (click)="onStartOrder(order.id)"
+                        [disabled]="isAnimating(order.id)"
+                      >
+                        Comenzar
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <button
+                *ngIf="pendingOrdersArray.length > 0"
+                class="absolute bottom-4 right-4 bg-primary-key text-white rounded-full p-3 shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-110"
+                (click)="scrollToTop('pending-container')"
+              >
+                <lucide-icon name="arrow-up" size="20"></lucide-icon>
+              </button>
+            </div>
+          </div>
+
+          <div class="flex-1 flex flex-col min-h-0">
+            <div
+              class="flex w-full justify-between items-center mb-4 flex-shrink-0"
+            >
+              <h2 class="text-xl font-medium">En preparación</h2>
+              <div
+                class="bg-gray-300 rounded-full text-black text-sm px-2 py-1 font-light"
+              >
+                {{ inPreparationOrdersArray.length }} pedidos
+              </div>
+            </div>
+
+            <div class="relative flex-1 min-h-0 h-64 lg:h-auto">
+              <div
+                id="preparation-container"
+                class="h-full overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-gray-300"
+              >
+                <div class="flex flex-col gap-4 pb-16">
+                  <div
+                    *ngFor="
+                      let order of inPreparationOrdersArray;
+                      trackBy: trackByOrderId
+                    "
+                    class="flex flex-col justify-start gap-6 bg-white rounded-xl p-5 border-2 border-primary-key min-h-72 flex-shrink-0 transition-all duration-300"
+                    [ngClass]="{
+                      'opacity-50 scale-95': isAnimating(order.id)
+                    }"
+                  >
+                    <div class="flex w-full justify-between items-start">
+                      <div>
+                        <h3 class="text-sm text-primary-key">
+                          Orden #{{ order.id }}
+                        </h3>
+                        <h3 class="text-lg font-medium">
+                          Mesa {{ order.tableNumber }}
+                        </h3>
+                      </div>
+                      <p
+                        class="bg-gray-100 rounded-full px-2 py-1 text-gray-500 text-xs"
+                      >
+                        {{ order.orderDetails.length }} artículos
+                      </p>
+                    </div>
+
+                    <div class="flex flex-col gap-2 flex-1">
+                      <div
+                        *ngFor="
+                          let item of order.orderDetails;
+                          let index = index
+                        "
+                        class="border-gray-300"
+                        [ngClass]="{
+                          'border-b-1 pb-3':
+                            order.orderDetails.length > 1 &&
+                            index < order.orderDetails.length - 1
+                        }"
+                      >
+                        <div class="flex justify-between items-center mb-2">
+                          <span class="font-light text-sm"
+                            >{{ item.quantity }}x {{ item.dishName }}</span
+                          >
+                          <div
+                            class="text-xs bg-gray-200 text-black rounded-sm px-2 py-1 text-center"
+                          >
+                            {{ item.categoryName }}
+                          </div>
+                        </div>
+
+                        <div
+                          *ngIf="
+                            item.modifications && item.modifications.length > 0
+                          "
+                          class="mt-2"
+                        >
+                          <div class="flex flex-wrap gap-1">
+                            <div
+                              *ngFor="let modification of item.modifications"
+                              class="inline-flex items-center gap-1 text-xs px-2 py-1 rounded-full border"
+                              [ngClass]="getModificationClass(modification)"
+                            >
+                              <lucide-icon
+                                [name]="getModificationIcon(modification)"
+                                size="12"
+                              ></lucide-icon>
+                              <span class="font-medium">{{
+                                getModificationText(modification)
+                              }}</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="flex gap-2 mt-auto">
+                      <div
+                        class="bg-orange-100 rounded-xl text-xl text-primary-key w-36 flex items-center justify-center font-bold"
+                      >
+                        <span id="timer-{{ order.id }}">00:00</span>
+                      </div>
+                      <button
+                        class="button button-primary w-full transition-all duration-200 hover:shadow-lg"
+                        (click)="onMarkReady(order.id)"
+                        [disabled]="isAnimating(order.id)"
+                      >
+                        Marcar como listo
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <button
+                *ngIf="inPreparationOrdersArray.length > 0"
+                class="absolute bottom-4 right-4 bg-primary-key text-white rounded-full p-3 shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-110"
+                (click)="scrollToTop('preparation-container')"
+              >
+                <lucide-icon name="arrow-up" size="20"></lucide-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="transition-all duration-300 ease-in-out absolute w-full h-full"
+        [ngClass]="{
+          'opacity-100 z-10': activeTab === 2,
+          'opacity-0 z-0': activeTab !== 2
+        }"
+      >
+        <div class="h-full flex flex-col md:mx-30 min-h-0">
+          <div
+            class="flex w-full justify-between items-center mb-4 flex-shrink-0"
+          >
+            <h2 class="text-xl font-medium">Listos</h2>
+            <div
+              class="bg-gray-300 rounded-full text-black text-sm px-2 py-1 font-light"
+            >
+              {{ readyOrdersArray.length }} pedidos
+            </div>
+          </div>
+
+          <div class="relative flex-1 min-h-0">
+            <div
+              id="ready-container"
+              class="h-full overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-gray-300"
+            >
+              <div
+                class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pb-16"
+              >
+                <div
+                  *ngFor="
+                    let order of readyOrdersArray;
+                    trackBy: trackByOrderId
+                  "
+                  class="flex flex-col justify-start gap-6 bg-white rounded-xl p-5 border-2 border-green-400 min-h-72 transition-all duration-300 hover:shadow-lg"
+                  [ngClass]="{
+                    'opacity-50 scale-95': isAnimating(order.id)
+                  }"
+                >
+                  <div class="flex w-full justify-between items-start">
+                    <div>
+                      <h3 class="text-sm text-green-600">
+                        Orden #{{ order.id }}
+                      </h3>
+                      <h3 class="text-lg font-medium">
+                        Mesa {{ order.tableNumber }}
+                      </h3>
+                    </div>
+                    <div class="flex flex-col items-end gap-1">
+                      <p
+                        class="bg-gray-100 rounded-full px-2 py-1 text-gray-500 text-xs"
+                      >
+                        {{ order.orderDetails.length }} artículos
+                      </p>
+                      <div
+                        class="bg-green-100 rounded-full px-2 py-1 text-green-600 text-xs font-medium"
+                      >
+                        Listo
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="flex flex-col gap-2 flex-1">
+                    <div
+                      *ngFor="let item of order.orderDetails; let index = index"
+                      class="border-gray-300"
+                      [ngClass]="{
+                        'border-b-1 pb-2':
+                          order.orderDetails.length > 1 &&
+                          index < order.orderDetails.length - 1
+                      }"
+                    >
+                      <div class="flex justify-between items-center">
+                        <span class="font-light text-sm"
+                          >{{ item.quantity }}x {{ item.dishName }}</span
+                        >
+                        <div
+                          class="text-xs bg-gray-200 text-black rounded-sm px-2 py-1 text-center"
+                        >
+                          {{ item.categoryName }}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="mt-auto">
+                    <div
+                      class="bg-green-50 border border-green-200 rounded-lg p-3 text-center"
+                    >
+                      <lucide-icon
+                        name="check-circle"
+                        class="text-green-500 mx-auto mb-1"
+                        size="24"
+                      ></lucide-icon>
+                      <p class="text-green-700 text-sm font-medium">
+                        Esperando recogida
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <button
+              *ngIf="readyOrdersArray.length > 0"
+              class="absolute bottom-4 right-4 bg-green-700 text-white rounded-full p-3 shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-110"
+              (click)="scrollToTop('ready-container')"
+            >
+              <lucide-icon name="arrow-up" size="20"></lucide-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>

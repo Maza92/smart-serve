@@ -1,43 +1,31 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CategoryType } from '@app/core/enums/category-enums';
 import { CategoryItem } from '@app/core/model/data/category-item';
 import { Dish } from '@app/core/model/data/dish';
-import {
-  BaseFilterOptions,
-  DishFilterOptions,
-} from '@app/core/model/filter-options';
+import { DishFilterOptions } from '@app/core/model/filter-options';
+import { OrderItem } from '@app/core/model/order-state/order-state';
 import { CategoryItemService } from '@app/core/service/category-item.service';
 import { DishService } from '@app/core/service/dish.service';
 import { NavigationService } from '@app/core/service/navigation.service';
-import { BackBarComponent } from '@app/shared/back-bar/back-bar.component';
+import { OrderStateService } from '@app/core/service/order-state.service';
 import { BasePageComponent } from '@app/shared/base-page/base-page.component';
 import { LucideAngularModule } from 'lucide-angular';
 import {
   debounceTime,
   distinctUntilChanged,
   finalize,
+  Observable,
   Subject,
   takeUntil,
 } from 'rxjs';
 
-interface OrderItem {
-  dish: Dish;
-  quantity: number;
-}
-
 @Component({
   selector: 'app-sales',
   standalone: true,
-  imports: [
-    BasePageComponent,
-    BackBarComponent,
-    CommonModule,
-    LucideAngularModule,
-    FormsModule,
-  ],
+  imports: [BasePageComponent, CommonModule, LucideAngularModule, FormsModule],
   templateUrl: './sales.component.html',
   styleUrl: './sales.component.css',
 })
@@ -49,6 +37,7 @@ export class SalesComponent implements OnInit, OnDestroy {
   size = 5;
   hasMore = true;
   loading = false;
+  orderId: number | null = null;
 
   filters: DishFilterOptions = {
     category: '',
@@ -62,8 +51,12 @@ export class SalesComponent implements OnInit, OnDestroy {
 
   searchInput = '';
   searchSubject = new Subject<string>();
+
+  public selectedItems$: Observable<OrderItem[]>;
+  public totalItems$: Observable<number>;
+  public totalPrice$: Observable<number>;
+
   private destroy$ = new Subject<void>();
-  selectedDishes: OrderItem[] = [];
 
   path: string | null = null;
 
@@ -71,16 +64,16 @@ export class SalesComponent implements OnInit, OnDestroy {
     private navigationService: NavigationService,
     private dishService: DishService,
     private categoryService: CategoryItemService,
-    private router: Router
-  ) {}
+    private router: Router,
+    private route: ActivatedRoute,
+    private orderStateService: OrderStateService
+  ) {
+    this.selectedItems$ = this.orderStateService.items$;
+    this.totalItems$ = this.orderStateService.totalItems$;
+    this.totalPrice$ = this.orderStateService.totalPrice$;
+  }
 
   ngOnInit(): void {
-    this.path = this.navigationService.getCurrentComponentPath();
-    this.navigationService.addExclusions(
-      ['Pos', 'Caja', 'Reportes', 'Clientes', 'Proveedores', 'Notificaciones'],
-      this.path
-    );
-
     this.searchSubject
       .pipe(debounceTime(300), distinctUntilChanged(), takeUntil(this.destroy$))
       .subscribe((searchText) => {
@@ -88,6 +81,10 @@ export class SalesComponent implements OnInit, OnDestroy {
         this.loadDishes();
       });
 
+    this.orderId = this.route.snapshot.params['orderId'];
+    console.log('Order ID:', this.orderId);
+
+    this.navigationService.configureNavbar(['home', 'settings']);
     this.loadDishes();
     this.loadCategories();
   }
@@ -166,51 +163,23 @@ export class SalesComponent implements OnInit, OnDestroy {
   }
 
   addToOrder(dish: Dish): void {
-    const existingItem = this.selectedDishes.find(
-      (item) => item.dish.id === dish.id
-    );
-
-    if (existingItem) {
-      existingItem.quantity += 1;
-    } else {
-      this.selectedDishes.push({
-        dish: dish,
-        quantity: 1,
-      });
-    }
+    this.orderStateService.addDish(dish);
   }
 
-  increaseQuantity(index: number): void {
-    if (index >= 0 && index < this.selectedDishes.length) {
-      this.selectedDishes[index].quantity += 1;
-    }
+  increaseQuantity(item: OrderItem): void {
+    this.orderStateService.updateItemQuantity(item.dishId, item.quantity + 1);
   }
 
-  decreaseQuantity(index: number): void {
-    if (index >= 0 && index < this.selectedDishes.length) {
-      if (this.selectedDishes[index].quantity > 1) {
-        this.selectedDishes[index].quantity -= 1;
-      } else {
-        this.selectedDishes.splice(index, 1);
-      }
-    }
-  }
-
-  getTotalItems(): number {
-    return this.selectedDishes.reduce(
-      (total, item) => total + item.quantity,
-      0
-    );
-  }
-
-  getTotalPrice(): number {
-    return this.selectedDishes.reduce(
-      (total, item) => total + item.dish.basePrice * item.quantity,
-      0
-    );
+  decreaseQuantity(item: OrderItem): void {
+    this.orderStateService.updateItemQuantity(item.dishId, item.quantity - 1);
   }
 
   proceedToOrder(): void {
-    console.log('Procediendo con la orden:', this.selectedDishes);
+    this.navigationService.goTo('order');
+  }
+
+  goBack(): void {
+    this.orderStateService.resetState();
+    this.navigationService.goTo('tables');
   }
 }

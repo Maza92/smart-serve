@@ -85,10 +85,22 @@
             (touchstart)="onTouchStart($event, i)"
             (touchmove)="onTouchMove($event, i)"
             (touchend)="onTouchEnd($event, i)"
-            [routerLink]="['/home/items/details', item.id]"
+            appGoTo="items.details"
+            [appGoToSegments]="[item.id]"
           >
             <div class="flex items-center">
               <div
+                *ngIf="item.imagePath"
+                class="w-20 h-20 object-center object-cover rounded-xl overflow-hidden mr-4"
+              >
+                <img
+                  [src]="item.imagePath"
+                  alt="Item Image"
+                  class="w-full h-full object-cover"
+                />
+              </div>
+              <div
+                *ngIf="!item.imagePath"
                 class="w-20 h-20 rounded-xl overflow-hidden mr-4 bg-gray-200 flex items-center justify-center"
               >
                 <i-lucide
@@ -103,7 +115,9 @@
                   {{ item.name }}
                 </h3>
                 <p class="text-sm text-surface-bright mb-0.5">
-                  {{ item.stockQuantity }} en Stock ({{ item.unit }})
+                  {{ item.stockQuantity }} en Stock ({{
+                    item.unitAbbreviation
+                  }})
                 </p>
                 <p class="text-xs text-gray-500">{{ item.supplierName }}</p>
               </div>

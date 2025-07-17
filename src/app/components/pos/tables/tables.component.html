@@ -1,9 +1,221 @@
 <app-base-page title="Mi Página" [showFooter]="true">
   <ng-template #header>
     <app-back-bar title="Mesas"></app-back-bar>
+    <div class="p-4">
+      <div
+        class="bg-white p-1 rounded-xl flex gap-1 justify-center items-center h-12 relative"
+      >
+        <div
+          class="absolute h-[calc(100%-8px)] rounded-xl bg-primary-key transition-all duration-300 ease-in-out"
+          [ngStyle]="{
+            width: 'calc(50% - 4px)',
+            left: activeTab === 1 ? '4px' : 'calc(50% + 2px)'
+          }"
+        ></div>
+
+        <button
+          class="rounded-xl w-full h-full z-10 transition-colors duration-200"
+          [ngClass]="{
+            'font-semibold text-on-background': activeTab === 1,
+            'font-regular text-background': activeTab !== 1
+          }"
+          (click)="activeTab = 1"
+        >
+          Disponibles
+        </button>
+        <button
+          class="rounded-xl w-full h-full z-10 transition-colors duration-200"
+          [ngClass]="{
+            'font-semibold text-on-background': activeTab === 2,
+            'font-regular text-background': activeTab !== 2
+          }"
+          (click)="activeTab = 2"
+        >
+          Ocupadas
+        </button>
+      </div>
+    </div>
   </ng-template>
 
-  <div slot="content" class="m-4 space-y-4"></div>
+  <div slot="content" class="m-4 space-y-4">
+    <div class="w-full flex-1">
+      <div class="relative w-full h-full">
+        <div
+          class="transition-all duration-300 ease-in-out absolute w-full h-full"
+          [ngClass]="{
+            'opacity-100 z-10': activeTab === 1,
+            'opacity-0 z-0': activeTab !== 1
+          }"
+        >
+          <div
+            *ngIf="availableTables.length === 0"
+            class="w-full flex flex-col items-center justify-center"
+          >
+            <i-lucide
+              name="inbox"
+              class="text-gray-400 w-16 h-16 mb-4"
+            ></i-lucide>
+            <p class="text-gray-600 text-sm">
+              No se encontraron mesas disponibles
+            </p>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div
+              *ngFor="let table of availableTables"
+              class="rounded-2xl overflow-hidden bg-white shadow"
+            >
+              <div
+                class="w-full h-3"
+                [ngClass]="[getTableCardStyle(table.status).background]"
+              ></div>
+              <div class="p-6 relative flex flex-col gap-4">
+                <div class="absolute right-6 top-2 text-on-surface">
+                  <i-lucide
+                    [name]="getTableStatusInfo(table.status).icon"
+                    class="w-12 h-12 mt-[0.5px]"
+                    [strokeWidth]="3"
+                  ></i-lucide>
+                </div>
+                <div class="card-head">
+                  <h3 class="text-4xl font-bold">T{{ table.number }}</h3>
+                </div>
+                <div class="card-body flex flex-col gap-4 text-gray-700">
+                  <div class="bg-outline rounded-lg p-3">
+                    <div class="flex items-center gap-2">
+                      <i-lucide name="users" class="w-5 h-5"></i-lucide>
+                      <p class="card-text">
+                        Capacidad: {{ table.capacity }} personas
+                      </p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                      <i-lucide name="map-pin" class="w-5 h-5"></i-lucide>
+                      <p class="card-text">Sección: {{ table.section }}</p>
+                    </div>
+                  </div>
+                  <div
+                    class="flex justify-start items-center"
+                    [ngClass]="[getTableStatusInfo(table.status).color]"
+                  >
+                    <div class="flex justify-center items-center">
+                      <i-lucide
+                        name="dot"
+                        class="2-5 h-5 [&>svg]:scale-[4]"
+                      ></i-lucide>
+                    </div>
+                    <span> {{ getTableStatusInfo(table.status).text }} </span>
+                  </div>
+                  <div>
+                    <button
+                      (click)="oSelectTable(table.id)"
+                      class="button button-action w-full h-16 justify-center active:opacity-80 hover:opacity-80"
+                      [ngClass]="[
+                        getTableCardStyle(table.status).background,
+                        getTableCardStyle(table.status).button
+                      ]"
+                    >
+                      <i-lucide
+                        name="mouse-pointer-click"
+                        class="w-6 h-6 button-icon"
+                      ></i-lucide>
+                      <label class="button-label"> Seleccionar </label>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="transition-all duration-300 ease-in-out absolute w-full h-full"
+          [ngClass]="{
+            'opacity-100 z-10': activeTab === 2,
+            'opacity-0 z-0': activeTab !== 2
+          }"
+        >
+          <div
+            *ngIf="occupiedTables.length === 0"
+            class="w-full flex flex-col items-center justify-center"
+          >
+            <i-lucide
+              name="inbox"
+              class="text-gray-400 w-16 h-16 mb-4"
+            ></i-lucide>
+            <p class="text-gray-600 text-sm">
+              No se encontraron mesas ocupadas
+            </p>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div
+              *ngFor="let table of occupiedTables"
+              class="rounded-2xl overflow-hidden bg-white shadow"
+            >
+              <div
+                class="w-full h-3"
+                [ngClass]="[getTableCardStyle(table.status).background]"
+              ></div>
+              <div class="p-6 relative flex flex-col gap-4">
+                <div class="absolute right-6 top-2 text-on-surface">
+                  <i-lucide
+                    [name]="getTableStatusInfo(table.status).icon"
+                    class="w-12 h-12 mt-[0.5px]"
+                    [strokeWidth]="3"
+                  ></i-lucide>
+                </div>
+                <div class="card-head">
+                  <h3 class="text-4xl font-bold">T{{ table.number }}</h3>
+                </div>
+
+                <div class="card-body flex flex-col gap-4 text-gray-700">
+                  <div class="bg-outline rounded-lg p-3">
+                    <div class="flex items-center gap-2">
+                      <i-lucide name="users" class="w-5 h-5"></i-lucide>
+                      <p class="card-text">
+                        Capacidad: {{ table.capacity }} personas
+                      </p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                      <i-lucide name="map-pin" class="w-5 h-5"></i-lucide>
+                      <p class="card-text">Sección: {{ table.section }}</p>
+                    </div>
+                  </div>
+                  <div
+                    class="flex justify-start items-center"
+                    [ngClass]="getTableStatusInfo(table.status).color"
+                  >
+                    <div class="flex justify-center items-center">
+                      <i-lucide
+                        name="dot"
+                        class="2-5 h-5 [&>svg]:scale-[4]"
+                      ></i-lucide>
+                    </div>
+                    <span>
+                      {{ getTableStatusInfo(table.status).text }}
+                    </span>
+                  </div>
+                  <div>
+                    <button
+                      (click)="openOrderDetail(table.id)"
+                      class="button button-action w-full h-16 justify-center active:opacity-80 hover:opacity-80"
+                      [ngClass]="[
+                        getTableCardStyle(table.status).background,
+                        getTableCardStyle(table.status).button
+                      ]"
+                    >
+                      <i-lucide
+                        name="mouse-pointer-click"
+                        class="w-6 h-6 button-icon"
+                      ></i-lucide>
+                      <label class="button-label"> Ver detalle </label>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <div slot="footer" class="p-4"></div>
 </app-base-page>

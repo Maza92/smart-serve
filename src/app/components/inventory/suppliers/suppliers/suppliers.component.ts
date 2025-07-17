@@ -3,7 +3,11 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { Supplier } from '@app/core/model/data/supplier';
-import { BaseFilterOptions, ChipFilter } from '@app/core/model/filter-options';
+import {
+  BaseRequiredSortFilterOptions,
+  BaseSearchFilterOptions,
+  ChipFilter,
+} from '@app/core/model/filter-options';
 import { SupplierService } from '@app/core/service/supplier.service';
 import { ToastService } from '@app/lib/toast/toast.service';
 import { LucideAngularModule } from 'lucide-angular';
@@ -22,6 +26,7 @@ import { RouterLink } from '@angular/router';
 import { BackBarComponent } from '@app/shared/back-bar/back-bar.component';
 import { BasePageComponent } from '@app/shared/base-page/base-page.component';
 import { NavigationService } from '@app/core/service/navigation.service';
+import { GoToDirective } from '@app/shared/directives/go-to.directive';
 
 @Component({
   selector: 'app-suppliers',
@@ -34,6 +39,7 @@ import { NavigationService } from '@app/core/service/navigation.service';
     FilterChipComponent,
     RouterLink,
     BasePageComponent,
+    GoToDirective,
   ],
   templateUrl: './suppliers.component.html',
   styleUrl: './suppliers.component.css',
@@ -47,7 +53,7 @@ export class SuppliersComponent implements OnInit, OnDestroy {
 
   path: string | null = null;
 
-  filters: BaseFilterOptions = {
+  filters: BaseRequiredSortFilterOptions = {
     search: '',
     status: null,
     sortBy: 'name',
@@ -61,26 +67,10 @@ export class SuppliersComponent implements OnInit, OnDestroy {
   constructor(
     private supplierService: SupplierService,
     private modalService: ModalService,
-    private toastService: ToastService,
-    private navigationService: NavigationService
+    private toastService: ToastService
   ) {}
 
   ngOnInit(): void {
-    this.path = this.navigationService.getCurrentComponentPath();
-
-    this.navigationService.addExclusions(
-      [
-        'Inventario',
-        'Ajustes',
-        'Caja',
-        'Reportes',
-        'Clientes',
-        'Notificaciones',
-        'Proveedores',
-      ],
-      this.path
-    );
-
     this.searchSubject
       .pipe(debounceTime(300), distinctUntilChanged(), takeUntil(this.destroy$))
       .subscribe((value) => {
@@ -137,7 +127,8 @@ export class SuppliersComponent implements OnInit, OnDestroy {
         },
       })
       .then((result) => {
-        const filterResult = result.data as BaseFilterOptions | null;
+        const filterResult =
+          result.data as BaseRequiredSortFilterOptions | null;
         if (filterResult) {
           this.filters = filterResult;
           this.updateActiveFilters();

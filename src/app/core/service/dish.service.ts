@@ -14,6 +14,7 @@ import { API_CONSTANTS, buildUrl } from '../constant';
 import { ServiceType } from '../enums/api-enums';
 import { CreateDishRequest } from '../model/dish/create-dish-request';
 import { UpdateDishRequest } from '../model/dish/update-dish-request';
+import { Ingredient, IngredientSummary } from '../model/data/recipe';
 
 @Injectable({
   providedIn: 'root',
@@ -72,6 +73,19 @@ export class DishService extends BaseService {
 
     return this.http
       .get<ApiResponse<Paged<DishWithIngredients>>>(url, { params })
+      .pipe(catchError(this.handleError));
+  }
+
+  getDishIngredients(id: number): Observable<ApiResponse<Ingredient[]>> {
+    const url = buildUrl(
+      ServiceType.API,
+      API_CONSTANTS.DISH.CONTROLLER,
+      API_CONSTANTS.DISH.GET_DISH_INGREDIENTS,
+      { id: id.toString() }
+    );
+
+    return this.http
+      .get<ApiResponse<Ingredient[]>>(url)
       .pipe(catchError(this.handleError));
   }
 

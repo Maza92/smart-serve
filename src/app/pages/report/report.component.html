@@ -1,0 +1,230 @@
+<app-base-page title="Reportes" [headerTextColor]="'text-black'">
+  <ng-template #header>
+    <div class="p-6 bg-gradient-to-br from-amber-50 to-orange-50">
+      <div class="flex items-center gap-3">
+        <div>
+          <h1 class="text-3xl font-bold text-gray-900">
+            Análisis del Restaurante
+          </h1>
+          <p class="text-gray-600 mt-1">Insights y métricas de rendimiento</p>
+        </div>
+        <div
+          class="w-12 h-12 bg-primary-key text-white rounded-2xl flex items-center justify-center shadow-lg"
+        >
+          <i-lucide
+            name="chart-no-axes-column-increasing"
+            class="w-6 h-6"
+          ></i-lucide>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
+  <div slot="content" class="p-6 space-y-6 bg-gray-50 min-h-screen">
+    <div class="bg-white rounded-2xl p-6 border shadow-lg border-white/20">
+      <div class="flex items-center gap-2 mb-4">
+        <i-lucide name="calendar" class="w-5 h-5 text-primary-key"></i-lucide>
+        <h3 class="text-lg font-semibold text-gray-900">Rango de Fechas</h3>
+      </div>
+      <form [formGroup]="dateRangeForm" (ngSubmit)="loadDashboardData()">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="relative">
+            <label class="block text-sm font-medium text-gray-700 mb-2"
+              >Fecha Inicial</label
+            >
+            <input
+              type="date"
+              formControlName="startDate"
+              (change)="onDateRangeChange()"
+              class="form-input w-full px-2 py-3"
+            />
+          </div>
+          <div class="relative">
+            <label class="block text-sm font-medium text-gray-700 mb-2"
+              >Fecha Final</label
+            >
+            <input
+              type="date"
+              formControlName="endDate"
+              (change)="onDateRangeChange()"
+              class="form-input w-full px-2 py-3"
+            />
+          </div>
+        </div>
+      </form>
+    </div>
+    <div
+      *ngIf="isLoading"
+      class="flex flex-col items-center justify-center py-16"
+    >
+      <div class="relative">
+        <div
+          class="w-16 h-16 border-4 border-amber-200 rounded-full animate-spin"
+        ></div>
+        <div
+          class="w-16 h-16 border-4 border-t-primary-key rounded-full animate-spin absolute top-0 left-0"
+        ></div>
+      </div>
+      <p class="mt-4 text-gray-600 font-medium">
+        Cargando datos del análisis...
+      </p>
+    </div>
+
+    <div
+      *ngIf="!isLoading"
+      class="bg-white rounded-3xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300"
+    >
+      <div class="flex items-center gap-3 mb-6">
+        <div
+          class="w-10 h-10 bg-tertiary text-on-tertiary rounded-2xl flex items-center justify-center"
+        >
+          <i-lucide name="trending-up" class="w-5 h-5"></i-lucide>
+        </div>
+        <h2 class="text-xl font-bold text-gray-900">Resumen de Ventas</h2>
+      </div>
+
+      <div class="mb-6">
+        <app-ui-chart [specificOptions]="salesChartOptions"></app-ui-chart>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div
+          class="bg-gradient-to-br from-blue-50 to-indigo-50 p-4 rounded-2xl border border-blue-100"
+        >
+          <div class="flex items-center gap-2 mb-2">
+            <div
+              class="w-8 h-8 bg-blue-500 text-white rounded-xl flex items-center justify-center"
+            >
+              <i-lucide name="dollar-sign" class="w-4 h-4"></i-lucide>
+            </div>
+            <p class="text-sm font-medium text-blue-700">Ticket Promedio</p>
+          </div>
+          <h3 class="text-2xl font-bold text-blue-900">
+            {{ dashboardData?.salesSummary?.averageTicket }}
+          </h3>
+        </div>
+
+        <div
+          class="bg-gradient-to-br from-purple-50 to-pink-50 p-4 rounded-2xl border border-purple-100"
+        >
+          <div class="flex items-center gap-2 mb-2">
+            <div
+              class="w-8 h-8 bg-purple-500 rounded-xl flex items-center justify-center"
+            >
+              <svg
+                class="w-4 h-4 text-white"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                ></path>
+              </svg>
+            </div>
+            <p class="text-sm font-medium text-purple-700">Transacciones</p>
+          </div>
+          <h3 class="text-2xl font-bold text-purple-900">
+            {{ dashboardData?.salesSummary?.totalTransactions }}
+          </h3>
+        </div>
+      </div>
+    </div>
+
+    <div
+      *ngIf="!isLoading"
+      class="bg-white rounded-3xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300"
+    >
+      <div class="flex items-center gap-3 mb-6">
+        <div
+          class="w-10 h-10 bg-error text-on-error rounded-2xl flex items-center justify-center"
+        >
+          <i-lucide name="circle-check" class="w-5 h-5"></i-lucide>
+        </div>
+        <div>
+          <h2 class="text-xl font-bold text-gray-900">
+            Rendimiento de Platillos
+          </h2>
+          <div class="flex flex-col gap-1 justify-start">
+            <p class="text-sm text-gray-600 mt-1">
+              Top
+              {{ dashboardData?.dishPerformance?.dishNames?.length || 5 }} más
+              vendidos
+            </p>
+            <span
+              *ngIf="dashboardData?.dishPerformance?.isLimited"
+              class="px-2 py-1 w-max bg-on-primary-container text-primary-container rounded-full text-xs font-medium"
+            >
+              Resultados limitados
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-gray-50 rounded-2xl px-4 pb-4">
+        <app-ui-chart [specificOptions]="dishChartOptions"></app-ui-chart>
+      </div>
+      <div class="flex items-center justify-center gap-3">
+        <h2
+          class="text-lg font-bold text-primary-key"
+          appGoTo="dish-performance"
+        >
+          Ver más
+        </h2>
+      </div>
+    </div>
+
+    <div
+      *ngIf="!isLoading"
+      class="bg-white rounded-3xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300"
+    >
+      <div class="flex items-center gap-3 mb-6">
+        <div
+          class="w-10 h-10 bg-tertiary text-on-tertiary rounded-2xl flex items-center justify-center"
+        >
+          <i-lucide name="badge-cent" class="w-5 h-5"></i-lucide>
+        </div>
+        <div>
+          <h2 class="text-xl font-bold text-gray-900">Resumen Financiero</h2>
+          <p class="text-sm text-gray-600 mt-1">
+            Distribución de métodos de pago
+          </p>
+        </div>
+      </div>
+
+      <div class="bg-gray-50 rounded-2xl p-6">
+        <div class="flex justify-center mb-4">
+          <app-ui-chart [specificOptions]="paymentChartOptions"></app-ui-chart>
+        </div>
+
+        <div
+          *ngIf="dashboardData?.paymentMethodDistribution"
+          class="text-center"
+        >
+          <div
+            class="inline-flex items-center gap-2 bg-tertiary text-on-tertiary px-6 py-3 rounded-2xl shadow-lg"
+          >
+            <i-lucide name="dollar-sign" class="w-5 h-5"></i-lucide>
+            <span class="font-semibold">
+              Ingresos Totales: {{ dashboardData?.salesSummary?.totalRevenue }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div slot="footer">
+    <div class="flex flex-col gap-4 p-4">
+      <button
+        class="button button-primary button-outline"
+        appGoTo="waiter-performance"
+      >
+        Reporte de rendimiento de meseros
+      </button>
+    </div>
+  </div>
+</app-base-page>

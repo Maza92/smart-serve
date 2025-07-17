@@ -5,9 +5,17 @@ import {
   HttpEvent,
   HttpInterceptorFn,
   HttpErrorResponse,
+  HttpResponse,
 } from '@angular/common/http';
 import { Observable, throwError, BehaviorSubject } from 'rxjs';
-import { catchError, filter, switchMap, take, finalize } from 'rxjs/operators';
+import {
+  catchError,
+  filter,
+  switchMap,
+  take,
+  finalize,
+  tap,
+} from 'rxjs/operators';
 import { AuthService } from '../service/auth.service';
 
 let isRefreshing = false;

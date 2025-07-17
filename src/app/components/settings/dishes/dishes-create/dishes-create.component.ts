@@ -10,7 +10,7 @@ import {
 import { BasePageComponent } from '@app/shared/base-page/base-page.component';
 import { LucideAngularModule } from 'lucide-angular';
 import { ModalService } from 'ngx-modal-ease';
-import { ItemSelectComponent } from '../item-select/item-select.component';
+import { ItemSelectComponent } from '../../../../shared/item-select/item-select.component';
 import { InventoryItem } from '@app/core/model/data/inventory-item';
 import { CreateRecipeForDishRequest } from '@app/core/model/recipe/create-recipe-for-dish';
 import { CreateDishRequest } from '@app/core/model/dish/create-dish-request';
@@ -20,6 +20,8 @@ import { Router } from '@angular/router';
 import { CategoryItem } from '@app/core/model/data/category-item';
 import { CategoryItemService } from '@app/core/service/category-item.service';
 import { CategoryType } from '@app/core/enums/category-enums';
+import { Unit } from '@app/core/model/data/unit';
+import { UnitService } from '@app/core/service/unit.service';
 
 @Component({
   selector: 'app-dishes-create',
@@ -36,6 +38,7 @@ import { CategoryType } from '@app/core/enums/category-enums';
 export class DishesCreateComponent implements OnInit {
   ingredients: InventoryItem[] = [];
   categories: CategoryItem[] = [];
+  units: Unit[] = [];
   dishForm!: FormGroup;
 
   constructor(
@@ -44,12 +47,18 @@ export class DishesCreateComponent implements OnInit {
     private dishService: DishService,
     private categoryService: CategoryItemService,
     private toastService: ToastService,
+    private unitService: UnitService,
     private router: Router
   ) {
     this.initForm();
   }
 
   ngOnInit(): void {
+    this.loadCategories();
+    this.loadUnits();
+  }
+
+  loadCategories() {
     this.categoryService
       .getCategoryItemsByTipe(1, 100, 'name', 'asc', CategoryType.DISH)
       .subscribe(
@@ -60,6 +69,17 @@ export class DishesCreateComponent implements OnInit {
           this.toastService.error(error.message);
         }
       );
+  }
+
+  loadUnits() {
+    this.unitService.getUnits().subscribe({
+      next: (response) => {
+        this.units = response.data;
+      },
+      error: (error) => {
+        this.toastService.error('Error al cargar las unidades');
+      },
+    });
   }
 
   private initForm() {
@@ -109,6 +129,7 @@ export class DishesCreateComponent implements OnInit {
             this.fb.group({
               inventoryItemId: [item.id],
               quantityRequired: [0, [Validators.required, Validators.min(0)]],
+              unitId: [0, Validators.required],
               notes: [''],
               preparationOrder: [
                 this.ingredients.length,
@@ -128,7 +149,6 @@ export class DishesCreateComponent implements OnInit {
   onSubmit() {
     if (this.dishForm.valid) {
       const request: CreateDishRequest = this.dishForm.value;
-      console.log('Request:', request);
       this.dishService.createDish(request).subscribe(
         (response) => {
           this.toastService.success(response.message);

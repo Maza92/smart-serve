@@ -21,8 +21,8 @@ import {
 import { FilterBottomSheetComponent } from './filter-bottom-sheet/filter-bottom-sheet/filter-bottom-sheet.component';
 import { FormsModule } from '@angular/forms';
 import { FilterChipComponent } from './filter-bottom-sheet/filter-chip/filter-chip.component';
-import { RouterLink } from '@angular/router';
 import { ToastService } from '@app/lib/toast/toast.service';
+import { GoToDirective } from '@app/shared/directives/go-to.directive';
 
 @Component({
   selector: 'app-users',
@@ -33,7 +33,7 @@ import { ToastService } from '@app/lib/toast/toast.service';
     BackBarComponent,
     FormsModule,
     FilterChipComponent,
-    RouterLink,
+    GoToDirective,
   ],
   templateUrl: './users.component.html',
   styleUrl: './users.component.css',

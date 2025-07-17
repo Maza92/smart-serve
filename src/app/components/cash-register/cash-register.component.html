@@ -6,45 +6,99 @@
     ></app-back-bar>
   </div>
 
-  <nav
-    class="w-full min-w-0 p-4 gap-4 grid grid-cols-2 grid-rows-2 [&>button]:h-36 overflow-hidden"
-  >
-    <button
-      (click)="CreateCashRegisterModal()"
-      [ngClass]="{
-        'bg-surface-container active:bg-surface-bright':
-          status === 'NONE' || status === 'CLOSED',
-        'bg-surface-container-lowest': status !== 'NONE' && status !== 'CLOSED'
-      }"
-      class="flex flex-col items-center justify-center gap-2 p-4 rounded-2xl transition-colors duration-150 relative overflow-hidden"
-    >
-      <i-lucide name="plus" class="text-primary-key"></i-lucide>
-      <span class="text-on-surface font-medium">Crear nueva caja</span>
-    </button>
+  <nav class="w-full min-w-0 p-4 flex flex-col gap-4 overflow-hidden">
+    <div class="flex gap-4 [&>button]:h-36 [&>button]:w-full">
+      <button
+        (click)="CreateCashRegisterModal()"
+        [ngClass]="{
+          'bg-surface-container active:bg-surface-bright':
+            status === 'NONE' || status === 'CLOSED',
+          'bg-surface-container-lowest':
+            status !== 'NONE' && status !== 'CLOSED'
+        }"
+        class="flex flex-col items-center justify-center gap-2 p-4 rounded-2xl transition-colors duration-150 relative overflow-hidden"
+      >
+        <i-lucide name="plus" class="text-primary-key"></i-lucide>
+        <span class="text-on-surface font-medium text-sm"
+          >Crear nueva caja</span
+        >
+      </button>
 
-    <button
-      (click)="openCashRegister()"
-      [ngClass]="{
-        'bg-surface-container active:bg-surface-bright': status === 'CREATED',
-        'bg-surface-container-lowest': status !== 'CREATED'
-      }"
-      class="flex flex-col items-center justify-center gap-2 p-4 rounded-2xl transition-colors duration-150 relative overflow-hidden"
-    >
-      <i-lucide name="lock-keyhole-open" class="text-primary-key"></i-lucide>
-      <span class="text-on-surface font-medium">Abrir caja</span>
-    </button>
+      <button
+        (click)="openCashRegister()"
+        [ngClass]="{
+          'bg-surface-container active:bg-surface-bright': status === 'CREATED',
+          'bg-surface-container-lowest': status !== 'CREATED'
+        }"
+        class="flex flex-col items-center justify-center gap-2 p-4 rounded-2xl transition-colors duration-150 relative overflow-hidden"
+      >
+        <i-lucide name="lock-keyhole-open" class="text-primary-key"></i-lucide>
+        <span class="text-on-surface font-medium text-sm">Abrir caja</span>
+      </button>
 
-    <button
-      (click)="closeCashRegister()"
-      [ngClass]="{
-        'bg-surface-container active:bg-surface-bright': status === 'OPENED',
-        'bg-surface-container-lowest': status !== 'OPENED'
-      }"
-      class="col-span-2 flex flex-col items-center justify-center gap-2 p-4 rounded-2xl bg-surface-container active:bg-surface-bright transition-colors duration-150 relative overflow-hidden"
+      <button
+        (click)="closeCashRegister()"
+        [ngClass]="{
+          'bg-surface-container active:bg-surface-bright': status === 'OPENED',
+          'bg-surface-container-lowest': status !== 'OPENED'
+        }"
+        class="flex flex-col items-center justify-center gap-2 p-4 rounded-2xl transition-colors duration-150 relative overflow-hidden"
+      >
+        <i-lucide name="lock-keyhole" class="text-primary-key"></i-lucide>
+        <span class="text-on-surface font-medium text-sm">Cerrar caja</span>
+      </button>
+    </div>
+
+    <div
+      *ngIf="status === 'OPENED' && actualCashRegister"
+      (click)="OpenCreateMovementModal()"
+      class="col-span-3 bg-surface-container rounded-2xl p-0 space-y-4 overflow-hidden transition-all duration-150"
     >
-      <i-lucide name="lock-keyhole" class="text-primary-key"></i-lucide>
-      <span class="text-on-surface font-medium">Cerrar caja</span>
-    </button>
+      <div class="p-6">
+        <div class="flex items-center justify-between pb-4">
+          <h2 class="text-lg font-semibold text-on-surface">Caja Actual</h2>
+          <div
+            class="rounded-full text-xs px-3 py-1 bg-yellow-100 text-yellow-800"
+          >
+            Abierta
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <div class="space-y-1">
+            <p class="text-sm text-on-surface-variant">Usuario</p>
+            <p class="font-medium text-on-surface">
+              {{ actualCashRegister.user }}
+            </p>
+          </div>
+          <div class="space-y-1">
+            <p class="text-sm text-on-surface-variant">Fecha de creación</p>
+            <p class="font-medium text-on-surface">
+              {{ actualCashRegister.createdAt | date : "short" }}
+            </p>
+          </div>
+          <div class="space-y-1">
+            <p class="text-sm text-on-surface-variant">Monto inicial</p>
+            <p class="font-medium text-on-surface">
+              {{ actualCashRegister.initialAmount | currency }}
+            </p>
+          </div>
+          <div class="space-y-1">
+            <p class="text-sm text-on-surface-variant">Monto final</p>
+            <p class="font-medium text-on-surface">
+              {{ actualCashRegister.finalAmount | currency }}
+            </p>
+          </div>
+        </div>
+
+        <div class="space-y-1">
+          <p class="text-sm text-on-surface-variant">Notas</p>
+          <p class="font-medium text-on-surface">
+            {{ actualCashRegister.notes }}
+          </p>
+        </div>
+      </div>
+    </div>
   </nav>
 
   <div class="min-h-0 flex-1 bg-white rounded-t-3xl flex flex-col">
@@ -64,15 +118,24 @@
         ></div>
         <div>
           <div class="flex gap-2 items-center mb-1">
-            <span class="font-medium text-lg text-gray-800">{{
+            <span class="font-medium text-lg text-gray-800 w-max">{{
               item.createdAt
             }}</span>
             <div
-              class="bg-primary-key text-white rounded-full text-xs px-3 py-1 flex justify-center items-center"
+              class="rounded-full text-xs px-3 py-1 flex justify-center items-center"
+              [ngClass]="[
+                getPinStyle(item.status).bg,
+                getPinStyle(item.status).text
+              ]"
             >
               {{
-                item.status.charAt(0).toUpperCase() +
-                  item.status.slice(1).toLowerCase()
+                item.status === "CREATED"
+                  ? "Creada"
+                  : item.status === "CLOSED"
+                  ? "Cerrada"
+                  : item.status === "OPENED"
+                  ? "Abierta"
+                  : ""
               }}
             </div>
           </div>

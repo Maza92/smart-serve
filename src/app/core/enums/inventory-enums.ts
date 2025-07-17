@@ -1,9 +1,10 @@
 export enum MovementTypeEnum {
   IN = 'IN',
   OUT = 'OUT',
-  ADJUSTMENT = 'ADJUSTMENT',
-  WASTE = 'WASTE',
-  TRANSFER = 'TRANSFER',
+  ADJUSTMENT_IN = 'ADJUSTMENT_IN',
+  ADJUSTMENT_OUT = 'ADJUSTMENT_OUT',
+  TRANSFER_IN = 'TRANSFER_IN',
+  TRANSFER_OUT = 'TRANSFER_OUT',
 }
 
 export enum MovementReasonEnum {

@@ -1,7 +1,10 @@
 export interface InventoryItem {
   id: number;
   name: string;
-  unit: string;
+  imagePath: string;
+  unitId: number;
+  unitName: string;
+  unitAbbreviation: string;
   stockQuantity: number;
   unitCost: number;
   minStockLevel: number;

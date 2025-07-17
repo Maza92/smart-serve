@@ -12,5 +12,5 @@ export interface UpdateInventoryItemStockDto {
   reason: MovementReasonEnum;
   referenceId: number;
   referenceType: ReferenceTypeEnum;
-  note: string;
+  notes: string;
 }
