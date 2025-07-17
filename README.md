@@ -342,8 +342,6 @@ export const environment = {
   apiUrl: "http://localhost:8080/api/v1",
   authServiceUrl: "http://localhost:8081/api/v1",
   wsUrl: "ws://localhost:8080/ws",
-  appName: "Smart Serve",
-  version: "1.0.0",
 };
 ```
 
