@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { BaseFilterOptions } from '@app/core/model/filter-options';
+import { BaseSearchFilterOptions } from '@app/core/model/filter-options';
 import { LucideAngularModule } from 'lucide-angular';
 import { ModalService } from 'ngx-modal-ease';
 
@@ -13,9 +13,9 @@ import { ModalService } from 'ngx-modal-ease';
   styleUrl: './filter-bottom-sheet.component.css',
 })
 export class FilterBottomSheetComponent implements OnInit {
-  @Input() currentFilters!: BaseFilterOptions;
+  @Input() currentFilters!: BaseSearchFilterOptions;
 
-  tempFilters!: BaseFilterOptions;
+  tempFilters!: BaseSearchFilterOptions;
 
   constructor(private modalService: ModalService) {}
 

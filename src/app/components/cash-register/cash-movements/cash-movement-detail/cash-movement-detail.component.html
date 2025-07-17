@@ -1,0 +1,153 @@
+<main
+  class="w-full h-full bg-outline rounded-2xl flex flex-col font-primary text-background"
+>
+  <div class="p-6 pt-8 flex items-center justify-center relative flex-shrink-0">
+    <h1 class="text-2xl font-bold">Detalle de Movimiento</h1>
+    <button
+      class="absolute top-4 right-4 text-gray-500 active:text-gray-700 transition-colors"
+      (click)="close()"
+      aria-label="Cerrar"
+    >
+      <i-lucide name="x" class="w-6 h-6"></i-lucide>
+    </button>
+  </div>
+
+  <div class="flex-1 overflow-y-auto px-6 pb-6 flex flex-col gap-8">
+    <div class="flex flex-col items-center gap-4">
+      <div
+        [ngClass]="getMovementStyles(movement.movementType).bg"
+        class="p-6 rounded-2xl flex flex-col gap-3 w-full max-w-sm"
+      >
+        <div class="flex items-center gap-3 justify-center">
+          <div
+            [ngClass]="getMovementStyles(movement.movementType).corner"
+            class="w-11 h-11 rounded-full flex items-center justify-center text-on-primary"
+          >
+            <i-lucide
+              [name]="getMovementTypeIcon(movement.movementType)"
+              class="w-6 h-6"
+            ></i-lucide>
+          </div>
+          <span
+            [ngClass]="getMovementStyles(movement.movementType).text"
+            class="text-xl font-semibold"
+          >
+            {{ getMovementTypeLabel(movement.movementType) }}
+          </span>
+        </div>
+        <div
+          [ngClass]="getMovementStyles(movement.movementType).text"
+          class="text-4xl font-bold text-center"
+        >
+          {{ movement.amount | currency : "USD" : "symbol" : "1.2-2" }}
+        </div>
+      </div>
+    </div>
+
+    <div class="space-y-3">
+      <h2 class="font-semibold text-background">Información básica</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div
+          class="flex flex-col gap-1 p-4 bg-on-surface text-gray-600 rounded-lg"
+        >
+          <span class="text-sm">Fecha y hora</span>
+          <span class="font-medium">{{
+            formatDate(movement.movementDate)
+          }}</span>
+        </div>
+        <div
+          class="flex flex-col gap-1 p-4 bg-on-surface text-gray-600 rounded-lg"
+        >
+          <span class="text-sm">Usuario</span>
+          <span class="font-medium">{{ movement.username }}</span>
+        </div>
+        <div
+          *ngIf="movement.authorizedBy"
+          class="flex flex-col gap-1 p-4 bg-on-surface text-gray-600 rounded-lg"
+        >
+          <span class="text-sm">Autorizado por</span>
+          <span class="font-medium">{{ movement.authorizedBy }}</span>
+        </div>
+        <div
+          class="flex flex-col gap-1 p-4 bg-on-surface text-gray-600 rounded-lg"
+        >
+          <span class="text-sm">ID de Caja</span>
+          <span class="font-medium">{{ movement.cashRegisterId }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="movement.reason" class="space-y-3">
+      <h2 class="font-semibold text-background">Motivo</h2>
+      <div class="p-4 bg-tertiary-container border border-tertiary rounded-lg">
+        <p class="text-on-tertiary-container flex items-start gap-2">
+          <i-lucide
+            name="message-circle"
+            class="w-4 h-4 mt-0.5 flex-shrink-0"
+          ></i-lucide>
+          <span><strong>Comentario:</strong> {{ movement.reason }}</span>
+        </p>
+      </div>
+    </div>
+
+    <div class="space-y-3">
+      <h2 class="font-semibold text-background">Información adicional</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div
+          class="flex flex-col gap-1 p-4 bg-on-surface text-gray-600 rounded-lg"
+        >
+          <span class="text-sm">ID del movimiento</span>
+          <span class="font-medium text-sm break-all">{{ movement.id }}</span>
+        </div>
+        <div
+          class="flex flex-col gap-1 p-4 bg-on-surface text-gray-600 rounded-lg"
+        >
+          <span class="text-sm">Estado</span>
+          <span class="font-medium">
+            <span
+              class="px-3 py-1 rounded-full text-xs font-semibold"
+              [ngClass]="{
+                'bg-primary-container text-on-primary-container':
+                  movement.active,
+                'bg-error-container text-on-error-container': !movement.active
+              }"
+            >
+              {{ movement.active ? "Activo" : "Inactivo" }}
+            </span>
+          </span>
+        </div>
+        <div
+          class="flex flex-col gap-1 p-4 bg-on-surface text-gray-600 rounded-lg"
+        >
+          <span class="text-sm">Creado el</span>
+          <span class="font-medium text-sm">{{
+            formatDate(movement.createdAt)
+          }}</span>
+        </div>
+        <div
+          *ngIf="movement.updatedAt"
+          class="flex flex-col gap-1 p-4 bg-on-surface text-gray-600 rounded-lg"
+        >
+          <span class="text-sm">Actualizado el</span>
+          <span class="font-medium text-sm">{{
+            formatDate(movement.updatedAt)
+          }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="p-6 border-t flex-shrink-0">
+    <button
+      (click)="close()"
+      class="button button-primary button-action justify-center w-full"
+    >
+      <i-lucide
+        class="button-icon"
+        name="check-circle-2"
+        class="w-6 h-6"
+      ></i-lucide>
+      <span class="button-label">Entendido</span>
+    </button>
+  </div>
+</main>

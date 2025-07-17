@@ -1,0 +1,214 @@
+@reference '../../../styles.css'
+
+.notification-item {
+  @apply min-h-[120px] mb-4 rounded-2xl shadow-sm;
+  scroll-snap-align: start;
+  touch-action: pan-y;
+  user-select: none;
+}
+
+.alert-icon-wrapper {
+  @apply flex-shrink-0 mt-1;
+}
+
+.swipe-indicator {
+  @apply absolute right-4 top-1/2 transform -translate-y-1/2 
+         flex items-center gap-2 text-sm font-medium
+         bg-tertiary-container text-on-tertiary-container px-3 py-1 rounded-full
+         opacity-0 transition-opacity duration-200;
+}
+
+.swipe-indicator.visible {
+  @apply opacity-100;
+}
+
+.loading-item {
+  @apply min-h-[80px] flex items-center justify-center;
+}
+
+.loading-content {
+  @apply flex items-center gap-3 text-gray-500;
+}
+
+.empty-state {
+  @apply min-h-[300px] flex items-center justify-center;
+}
+
+.empty-content {
+  @apply text-center flex flex-col justify-center items-center text-gray-500 max-w-sm mx-auto;
+}
+
+.empty-content h3 {
+  @apply text-lg font-medium mt-4 mb-2;
+}
+
+.empty-content p {
+  @apply text-sm;
+}
+
+/* Responsive para pantallas más grandes */
+@media (min-width: 640px) {
+  .notification-item {
+    @apply min-h-[100px];
+  }
+
+  .alert-content {
+    @apply gap-6;
+  }
+
+  .alert-icon {
+    @apply w-6 h-6;
+  }
+
+  .alert-title {
+    @apply text-base;
+  }
+
+  .alert-subtitle {
+    @apply text-lg;
+  }
+
+  .alert-message {
+    @apply text-base;
+  }
+}
+
+@media (min-width: 768px) {
+  .notification-item {
+    @apply min-h-[110px] mb-6;
+  }
+
+  .alert {
+    @apply p-6;
+  }
+
+  .alert-content {
+    @apply gap-8;
+  }
+
+  .alert-icon {
+    @apply w-7 h-7;
+  }
+
+  .alert-title {
+    @apply text-lg;
+  }
+
+  .alert-subtitle {
+    @apply text-xl;
+  }
+
+  .alert-message {
+    @apply text-lg;
+  }
+}
+
+@media (min-width: 1024px) {
+  .notification-item {
+    @apply min-h-[120px];
+  }
+
+  .alert {
+    @apply p-8;
+  }
+
+  .alert-icon {
+    @apply w-8 h-8;
+  }
+
+  .alert-title {
+    @apply text-xl;
+  }
+
+  .alert-subtitle {
+    @apply text-2xl;
+  }
+
+  .alert-message {
+    @apply text-xl;
+  }
+}
+
+/* Animaciones para el swipe */
+.notification-item[style*="translateX"] {
+  position: relative;
+  z-index: 1;
+}
+
+.notification-item[style*="translateX(-300px)"] {
+  animation: slideOutLeft 0.3s ease-out forwards;
+}
+
+@keyframes slideOutLeft {
+  from {
+    transform: translateX(-300px);
+    opacity: 0.3;
+  }
+  to {
+    transform: translateX(-100%);
+    opacity: 0;
+    height: 0;
+    margin-bottom: 0;
+    padding: 0;
+  }
+}
+
+/* Scroll personalizado para webkit */
+ul::-webkit-scrollbar {
+  width: 4px;
+}
+
+ul::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+ul::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+}
+
+ul::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+/* Hover effects para desktop */
+@media (hover: hover) {
+  .notification-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  }
+
+  .alert-info:hover {
+    @apply bg-blue-100;
+  }
+
+  .alert-success:hover {
+    @apply bg-green-100;
+  }
+
+  .alert-warning:hover {
+    @apply bg-yellow-100;
+  }
+
+  .alert-error:hover {
+    @apply bg-red-100;
+  }
+}
+
+/* Mejoras para accesibilidad */
+@media (prefers-reduced-motion: reduce) {
+  .notification-item,
+  .alert,
+  .swipe-indicator {
+    transition: none !important;
+  }
+
+  .loading-content lucide-icon {
+    animation: none !important;
+  }
+}
+
+/* Focus states para accesibilidad */
+.notification-item:focus-within {
+  @apply outline-none ring-2 ring-blue-500 ring-offset-2;
+}

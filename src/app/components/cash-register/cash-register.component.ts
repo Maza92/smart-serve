@@ -15,6 +15,7 @@ import { Type } from '@angular/core';
 import { CloseCashRegisterComponent } from './close-cash-register/close-cash-register.component';
 import { finalize } from 'rxjs';
 import { NavigationService } from '@app/core/service/navigation.service';
+import { CreateMovementComponent } from './create-movement/create-movement.component';
 
 @Component({
   selector: 'app-cash-register',
@@ -30,6 +31,7 @@ export class CashRegisterComponent implements OnInit {
   hasMore = true;
   loading = false;
   status: string = 'NONE';
+  actualCashRegister: CashRegister | null = null;
 
   constructor(
     private cashRegisterService: CashRegisterService,
@@ -41,7 +43,11 @@ export class CashRegisterComponent implements OnInit {
   ngOnInit(): void {
     this.loadCashRegisters();
     this.getStatus();
-    this.navigationService.configureNavbar(['home', 'settings']);
+    this.navigationService.configureNavbar([
+      'home',
+      'cash-movements',
+      'settings',
+    ]);
   }
 
   resetAndReload() {
@@ -96,6 +102,20 @@ export class CashRegisterComponent implements OnInit {
       });
   }
 
+  OpenCreateMovementModal() {
+    this.modalService
+      .open(CreateMovementComponent, {
+        ...this.modalOptions,
+        data: {
+          cashRegisterId: this.actualCashRegister?.id,
+        },
+      })
+      .then(() => {
+        this.getStatus();
+        this.resetAndReload();
+      });
+  }
+
   openCashRegister(): void {
     if (this.status !== 'CREATED') return;
 
@@ -107,8 +127,21 @@ export class CashRegisterComponent implements OnInit {
       });
   }
 
+  getCurrentOpenedCashRegister() {
+    if (this.status !== 'OPENED') return;
+    this.cashRegisterService.getCurrentOpenedCashRegister().subscribe(
+      (response) => {
+        this.actualCashRegister = response.data;
+      },
+      (error) => {
+        this.toastService.error(error.message, 'Error');
+      }
+    );
+  }
+
   closeCashRegister(): void {
     if (this.status !== 'OPENED') return;
+    if (!this.actualCashRegister) return;
 
     this.modalService
       .open(CloseCashRegisterComponent, this.modalOptions)
@@ -121,6 +154,11 @@ export class CashRegisterComponent implements OnInit {
   getStatus() {
     this.cashRegisterService.getStatus().subscribe((response) => {
       this.status = response.data;
+      if (this.status === 'OPENED') {
+        this.getCurrentOpenedCashRegister();
+      } else {
+        this.actualCashRegister = null;
+      }
     });
   }
 

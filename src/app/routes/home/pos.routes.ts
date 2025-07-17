@@ -1,9 +1,12 @@
 import { Routes } from '@angular/router';
+import { CashMovementsComponent } from '@app/components/cash-register/cash-movements/cash-movements.component';
 import { CashRegisterComponent } from '@app/components/cash-register/cash-register.component';
+import { InvoiceComponent } from '@app/components/pos/invoice/invoice.component';
 import { KitchenComponent } from '@app/components/pos/kitchen/kitchen.component';
 import { OrderComponent } from '@app/components/pos/order/order.component';
 import { SalesComponent } from '@app/components/pos/sales/sales.component';
 import { TablesComponent } from '@app/components/pos/tables/tables.component';
+import { TransactionComponent } from '@app/components/pos/transaction/transaction.component';
 import { PosComponent } from '@app/pages/pos/pos.component';
 
 export const posRoutes: Routes = [
@@ -16,11 +19,24 @@ export const posRoutes: Routes = [
       },
       {
         path: 'cash-register',
-        component: CashRegisterComponent,
+        children: [
+          {
+            path: '',
+            component: CashRegisterComponent,
+          },
+          {
+            path: 'cash-movements',
+            component: CashMovementsComponent,
+          },
+        ],
       },
       {
         path: 'sales',
         component: SalesComponent,
+      },
+      {
+        path: 'invoice/:id',
+        component: InvoiceComponent,
       },
       {
         path: 'tables',
@@ -47,6 +63,10 @@ export const posRoutes: Routes = [
       {
         path: 'kitchen',
         component: KitchenComponent,
+      },
+      {
+        path: 'transaction/:id',
+        component: TransactionComponent,
       },
     ],
   },

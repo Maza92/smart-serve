@@ -1,10 +1,11 @@
 import { OrderServiceType, OrderStatusEnum } from '@app/core/enums/order-enum';
-import { OrderDetailsToKitchen } from './order-details';
+import { OrderDetails, OrderDetailsToKitchen } from './order-details';
 
 export interface Order {
   id: number;
   userId: number;
   userName: string;
+  tableNumber: number;
   status: OrderStatusEnum;
   totalPrice: number;
   comments: string;
@@ -15,6 +16,7 @@ export interface Order {
   guestsCount: number;
   tableId: number;
   createdAt: string;
+  orderDetails: OrderDetails[];
 }
 
 export interface OrderToKitchen {

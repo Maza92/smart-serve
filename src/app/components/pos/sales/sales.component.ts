@@ -5,18 +5,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CategoryType } from '@app/core/enums/category-enums';
 import { CategoryItem } from '@app/core/model/data/category-item';
 import { Dish } from '@app/core/model/data/dish';
-import {
-  BaseFilterOptions,
-  DishFilterOptions,
-} from '@app/core/model/filter-options';
+import { DishFilterOptions } from '@app/core/model/filter-options';
 import { OrderItem } from '@app/core/model/order-state/order-state';
-import { CreateDraftOrderRequest } from '@app/core/model/order/create-draft-order';
-import { UpdateOrderWithDetailsRequest } from '@app/core/model/order/update-order-with-details';
 import { CategoryItemService } from '@app/core/service/category-item.service';
 import { DishService } from '@app/core/service/dish.service';
 import { NavigationService } from '@app/core/service/navigation.service';
 import { OrderStateService } from '@app/core/service/order-state.service';
-import { BackBarComponent } from '@app/shared/back-bar/back-bar.component';
 import { BasePageComponent } from '@app/shared/base-page/base-page.component';
 import { LucideAngularModule } from 'lucide-angular';
 import {
@@ -31,13 +25,7 @@ import {
 @Component({
   selector: 'app-sales',
   standalone: true,
-  imports: [
-    BasePageComponent,
-    BackBarComponent,
-    CommonModule,
-    LucideAngularModule,
-    FormsModule,
-  ],
+  imports: [BasePageComponent, CommonModule, LucideAngularModule, FormsModule],
   templateUrl: './sales.component.html',
   styleUrl: './sales.component.css',
 })

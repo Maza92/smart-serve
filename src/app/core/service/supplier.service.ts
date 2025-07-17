@@ -4,12 +4,12 @@ import { API_CONSTANTS, buildUrl } from '../constant';
 import { catchError, Observable } from 'rxjs';
 import { ApiResponse } from '../model/api';
 import { BaseService } from './base.service';
-import { BaseFilterOptions, FilterOptions } from '../model/filter-options';
 import { ServiceType } from '../enums/api-enums';
 import { Paged } from '../model/paged';
 import { CreateSupplierRequest } from '../model/supplier/create-supplier-request';
 import { UpdateSupplierRequest } from '../model/supplier/update-supplier-request';
 import { Supplier } from '../model/data/supplier';
+import { BaseRequiredSortFilterOptions } from '../model/filter-options';
 
 @Injectable({
   providedIn: 'root',
@@ -22,7 +22,7 @@ export class SupplierService extends BaseService {
   getSuppliers(
     page: number,
     size: number,
-    filters?: BaseFilterOptions
+    filters?: BaseRequiredSortFilterOptions
   ): Observable<ApiResponse<Paged<Supplier>>> {
     const url = buildUrl(
       ServiceType.API,

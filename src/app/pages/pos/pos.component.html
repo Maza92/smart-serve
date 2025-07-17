@@ -12,13 +12,15 @@
       <li
         class="bg-primary text-background p-6 box-border rounded-3xl flex flex-col gap-4 justify-center items-start hover:opacity-75 transition-all duration-300 cursor-pointer active:bg-background active:text-primary"
         appGoTo="kitchen"
+        [appHasRole]="['ADMIN', 'COOK', 'BAKER']"
       >
         <lucide-icon name="chef-hat" strokeWidth="3" size="36"></lucide-icon>
         <h3 class="text-xl font-medium">Cocina</h3>
       </li>
       <li
         class="bg-background text-primary p-6 box-border rounded-3xl flex flex-col gap-4 justify-center items-start hover:opacity-75 transition-all duration-300 cursor-pointer active:bg-primary active:text-background"
-        appGoTo="tables"
+        (click)="navigateToTables()"
+        [appHasRole]="['ADMIN', 'CASHIER', 'WAITER']"
       >
         <lucide-icon
           name="shopping-cart"
@@ -30,7 +32,8 @@
 
       <li
         class="bg-primary text-background p-6 box-border rounded-3xl flex flex-col gap-4 justify-center items-start hover:opacity-75 transition-all duration-300 cursor-pointer active:bg-background active:text-primary"
-        routerLink="/home/pos/cash-register"
+        appGoTo="cash-register"
+        [appHasRole]="['ADMIN', 'CASHIER']"
       >
         <lucide-icon
           name="banknote-arrow-up"
@@ -41,27 +44,50 @@
       </li>
     </ul>
   </nav>
-  <div class="sales-pulse mx-4 bg-outline rounded-3xl p-5">
-    <div class="flex justify-between items-center mb-2">
-      <h2 class="text-gray-600 font-medium">Total Sales</h2>
-      <lucide-icon
-        name="pie-chart"
-        class="text-primary"
-        size="32"
-      ></lucide-icon>
+  <div
+    class="sales-pulse mx-4 bg-outline rounded-3xl p-5 flex flex-col justify-center items-center"
+  >
+    <div *ngIf="todaySalesError" class="text-center text-on-error text-sm">
+      {{ todaySalesError }}
     </div>
-    <div class="flex items-end">
-      <span class="text-3xl font-bold text-primary-key">$1,842.75</span>
-      <span class="ml-2 text-sm font-medium text-green-500 flex items-center">
+    <div class="w-full" *ngIf="!todaySalesError">
+      <div class="flex justify-between items-center mb-2">
+        <h2 class="text-gray-600 font-medium">Ventas totales</h2>
         <lucide-icon
-          name="chevron-up"
-          class="text-green-500"
-          size="16"
+          name="pie-chart"
+          class="text-primary"
+          size="32"
         ></lucide-icon>
-        12.4%
-      </span>
+      </div>
+      <div class="flex items-end">
+        <span class="text-3xl font-bold text-primary-key">{{
+          todaySales?.totalSales | currency
+        }}</span>
+        <span
+          class="ml-2 text-sm font-medium 0 flex items-center"
+          [ngClass]="{
+            'text-red-500': todaySales?.trendType === 'DOWN',
+            'text-green-500': todaySales?.trendType === 'UP',
+            'text-primary-key': todaySales?.trendType === 'STABLE'
+          }"
+        >
+          <lucide-icon
+            name="chevron-up"
+            size="16"
+            *ngIf="todaySales?.trendType === 'UP'"
+          ></lucide-icon>
+          <lucide-icon
+            name="chevron-down"
+            size="16"
+            *ngIf="todaySales?.trendType === 'DOWN'"
+          ></lucide-icon>
+          {{ todaySales?.trendType === "DOWN" ? "baja" : "alta" }}
+        </span>
+      </div>
+      <div class="mt-2 text-xs text-gray-500">
+        {{ todaySales?.todaySales | number }} ventas hoy
+      </div>
     </div>
-    <div class="mt-2 text-xs text-gray-500">Today, 24 transactions</div>
   </div>
 
   <main
@@ -101,12 +127,6 @@
         </div>
       </div>
     </div>
-    <footer class="w-full mb-4 px-4">
-      <div
-        class="rounded-xl bg-primary h-16 flex justify-center items-center gap-1 text-primary-container"
-      >
-        Role:<strong>Admin</strong>
-      </div>
-    </footer>
+    <footer class="w-full mb-4 px-4"></footer>
   </main>
 </section>

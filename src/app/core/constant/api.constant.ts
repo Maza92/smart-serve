@@ -13,10 +13,14 @@ export const API_CONSTANTS = {
     LOGOUT: '/logout',
     LOGIN: '/login',
     FORGOT_PASSWORD: '/forgot-password',
+    GET_ACTIVE_SESSIONS: '/active-sessions',
+    REVOKE_ALL_SESSIONS: '/revoke-all-tokens',
+    REVOKE_SESSION: '/revoke-session/:id',
   },
 
   USER: {
     CONTROLLER: '/users',
+    GET_ME: '/me',
     GET_USER: '/:id',
     GET_USERS: '',
     CREATE_USER: '',
@@ -53,6 +57,7 @@ export const API_CONSTANTS = {
     UPDATE_STOCK: '/update-stock',
     UPDATE_STOCK_BATCH: '/update-stocks-batch',
     UPDATE_STOCK_BATCH_ASYNC: '/update-stocks-batch-async',
+    DASHBOARD: '/dashboard',
   },
 
   INVENTORY_ITEM: {
@@ -124,12 +129,53 @@ export const API_CONSTANTS = {
     SEND_TO_KITCHEN: '/:id/send-to-kitchen',
     CLAIM_TO_COOK: '/:id/claim-to-cook',
     MARK_AS_READY: '/:id/mark-as-ready',
+    GET_ORDER_BY_TABLE_ID: '/:id/complete',
+    MARK_SERVED: '/:id/serve',
+    MARK_ORDER_AS_FINALIZED: '/:id/mark-as-finalized',
+    GET_ORDER_ACCOUNT: '/:id/account',
+    PAY_ORDER: '/:id/pay',
     CREATE_ORDER: '',
+    GET_TODAY_SALES: '/today-sales',
   },
 
   UNIT: {
     CONTROLLER: '/units',
     GET_UNITS: '',
+  },
+
+  CASH_MOVEMENT: {
+    CONTROLLER: '/cash-movements',
+    GET_MOVEMENTS: '',
+    CREATE_MOVEMENT: '',
+    GET_MOVEMENT: '/:id',
+    DELETE_MOVEMENT: '/:id',
+  },
+
+  TRANSACTIONS: {
+    CONTROLLER: '/transactions',
+    GET_TRANSACTIONS: '',
+    CREATE_TRANSACTION: '',
+    CREATE_ORDER_TRANSACTION: '/order',
+    GET_TRANSACTION: '/:id',
+    DELETE_TRANSACTION: '/:id',
+  },
+
+  REPORT: {
+    CONTROLLER: '/report',
+    GET_DASHBOARD: '/dashboard',
+    GET_SALES_OVERVIEW: '/sales-overview',
+    GET_SALES_SUMMARY: '/sales-summary',
+    GET_DISH_PERFORMANCE: '/dish-performance',
+    GET_PAYMENT_METHOD_DISTRIBUTION: '/payment-method-distribution',
+    GET_PRODUCT_SALES_REPORT: '/product-sales-report',
+    GET_WAITER_PERFORMANCE_REPORT: '/waiter-performance-report',
+    GET_TOP_WAITERS_REPORT: '/top-waiters',
+  },
+
+  NOTIFICATIONS: {
+    CONTROLLER: '/notifications',
+    GET_NOTIFICATIONS: '',
+    MARK_NOTIFICATIONS_AS_READ: '',
   },
 };
 

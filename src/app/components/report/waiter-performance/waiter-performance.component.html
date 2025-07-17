@@ -1,0 +1,325 @@
+<app-base-page title="Rendimiento de Meseros" [headerTextColor]="'text-black'">
+  <ng-template #header>
+    <div class="p-6 bg-gradient-to-br from-orange-50 to-amber-50">
+      <div class="flex items-center gap-3">
+        <div>
+          <h1 class="text-3xl font-bold text-gray-900">
+            Rendimiento de Meseros
+          </h1>
+          <p class="text-gray-600 mt-1">
+            Análisis detallado del desempeño del equipo
+          </p>
+        </div>
+        <div
+          class="w-12 h-12 bg-primary-key text-white rounded-2xl flex items-center justify-center shadow-lg"
+        >
+          <i-lucide name="users" class="w-6 h-6"></i-lucide>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
+  <div slot="content" class="p-6 space-y-6 bg-gray-50 min-h-screen">
+    <div class="bg-white rounded-2xl p-6 border shadow-lg border-white/20">
+      <div class="flex items-center gap-2 mb-4">
+        <i-lucide name="filter" class="w-5 h-5 text-primary-key"></i-lucide>
+        <h3 class="text-lg font-semibold text-gray-900">Filtros</h3>
+      </div>
+      <form
+        [formGroup]="dateRangeForm"
+        (ngSubmit)="loadWaiterPerformanceData()"
+      >
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="relative">
+            <label class="block text-sm font-medium text-gray-700 mb-2"
+              >Fecha Inicial</label
+            >
+            <input
+              type="date"
+              formControlName="startDate"
+              (change)="onFiltersChange()"
+              class="form-input w-full px-2 py-3"
+            />
+          </div>
+          <div class="relative">
+            <label class="block text-sm font-medium text-gray-700 mb-2"
+              >Fecha Final</label
+            >
+            <input
+              type="date"
+              formControlName="endDate"
+              (change)="onFiltersChange()"
+              class="form-input w-full px-2 py-3"
+            />
+          </div>
+          <div class="relative">
+            <label class="block text-sm font-medium text-gray-700 mb-2"
+              >Estado de Orden</label
+            >
+            <select
+              formControlName="orderStatus"
+              (change)="onFiltersChange()"
+              class="form-input w-full px-2 py-3"
+            >
+              <option
+                *ngFor="let option of orderStatusOptions"
+                [value]="option.value"
+              >
+                {{ option.label }}
+              </option>
+            </select>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div
+      *ngIf="isLoading"
+      class="flex flex-col items-center justify-center py-16"
+    >
+      <div class="relative">
+        <div
+          class="w-16 h-16 border-4 border-orange-200 rounded-full animate-spin"
+        ></div>
+        <div
+          class="w-16 h-16 border-4 border-t-primary-key rounded-full animate-spin absolute top-0 left-0"
+        ></div>
+      </div>
+      <p class="mt-4 text-gray-600 font-medium">
+        Cargando datos de rendimiento...
+      </p>
+    </div>
+
+    <div
+      *ngIf="!isLoading && waiterPerformanceData"
+      class="grid grid-cols-1 md:grid-cols-3 gap-4"
+    >
+      <div
+        class="bg-gradient-to-br from-secondary-fixed to-secondary-fixed-dim p-6 rounded-2xl border border-secondary shadow-lg"
+      >
+        <div class="flex items-center gap-3 mb-3">
+          <div
+            class="w-10 h-10 bg-secondary-key text-white rounded-xl flex items-center justify-center"
+          >
+            <i-lucide name="users" class="w-5 h-5"></i-lucide>
+          </div>
+          <p class="text-sm font-medium text-secondary-key">Total de Meseros</p>
+        </div>
+        <h3 class="text-3xl font-bold text-on-secondary-fixed">
+          {{ waiterPerformanceData.length || 0 }}
+        </h3>
+      </div>
+
+      <div
+        class="bg-gradient-to-br from-tertiary-fixed to-tertiary-fixed-dim p-6 rounded-2xl border border-tertiary shadow-lg"
+      >
+        <div class="flex items-center gap-3 mb-3">
+          <div
+            class="w-10 h-10 bg-tertiary-key text-white rounded-xl flex items-center justify-center"
+          >
+            <i-lucide name="shopping-cart" class="w-5 h-5"></i-lucide>
+          </div>
+          <p class="text-sm font-medium text-tertiary-key">Total de Órdenes</p>
+        </div>
+        <h3 class="text-3xl font-bold text-on-tertiary-fixed">
+          {{ getTotalOrders() }}
+        </h3>
+      </div>
+
+      <div
+        class="bg-gradient-to-br from-primary-fixed to-primary-fixed-dim p-6 rounded-2xl border border-primary shadow-lg"
+      >
+        <div class="flex items-center gap-3 mb-3">
+          <div
+            class="w-10 h-10 bg-primary-key text-white rounded-xl flex items-center justify-center"
+          >
+            <i-lucide name="dollar-sign" class="w-5 h-5"></i-lucide>
+          </div>
+          <p class="text-sm font-medium text-primary-key">Ingresos Totales</p>
+        </div>
+        <h3 class="text-3xl font-bold text-on-primary-fixed">
+          {{ formatCurrency(getTotalRevenue()) }}
+        </h3>
+      </div>
+    </div>
+
+    <div
+      *ngIf="
+        !isLoading && waiterPerformanceData && waiterPerformanceData.length > 0
+      "
+      class="bg-gradient-to-br from-primary-fixed to-primary-fixed-dim p-6 rounded-2xl border border-primary shadow-lg"
+    >
+      <div class="flex items-center gap-3 mb-3">
+        <div
+          class="w-10 h-10 bg-primary-key text-white rounded-xl flex items-center justify-center"
+        >
+          <i-lucide name="crown" class="w-5 h-5"></i-lucide>
+        </div>
+        <div>
+          <p class="text-sm font-medium text-primary-key">
+            Mesero con Mejor Rendimiento
+          </p>
+          <h3 class="text-xl font-bold text-on-primary-fixed">
+            {{ getTopWaiter() }}
+          </h3>
+        </div>
+      </div>
+    </div>
+
+    <div
+      *ngIf="!isLoading && waiterPerformanceData"
+      class="bg-white rounded-3xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300"
+    >
+      <div class="flex items-center gap-3 mb-6">
+        <div
+          class="w-10 h-10 bg-primary-key text-white rounded-2xl flex items-center justify-center"
+        >
+          <i-lucide name="table" class="w-5 h-5"></i-lucide>
+        </div>
+        <div>
+          <h2 class="text-xl font-bold text-gray-900">
+            Detalles de Rendimiento
+          </h2>
+          <p class="text-sm text-gray-600 mt-1">
+            {{ totalElements }} meseros encontrados
+          </p>
+        </div>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full min-w-[800px]">
+          <thead>
+            <tr class="bg-gray-50 border-b border-gray-200">
+              <th class="text-left p-4 font-semibold text-gray-700">Mesero</th>
+              <th class="text-center p-4 font-semibold text-gray-700">
+                Órdenes
+              </th>
+              <th class="text-center p-4 font-semibold text-gray-700">
+                Ingresos
+              </th>
+              <th class="text-center p-4 font-semibold text-gray-700">
+                Ticket Promedio
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="
+                let waiter of waiterPerformanceData;
+                trackBy: trackByWaiterId
+              "
+              class="border-b border-gray-100 hover:bg-gray-50 transition-colors duration-200"
+            >
+              <td class="p-4">
+                <div class="flex items-center gap-3">
+                  <div
+                    *ngIf="waiter.profileImagePath"
+                    class="w-10 h-10 rounded-full bg-gray-200 flex-shrink-0 overflow-hidden"
+                  >
+                    <img
+                      [src]="waiter.profileImagePath"
+                      class="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div
+                    *ngIf="!waiter.profileImagePath"
+                    class="w-10 h-10 rounded-full bg-tertiary-key text-white flex items-center justify-center flex-shrink-0"
+                  >
+                    <span class="text-sm font-semibold">
+                      {{ waiter.firstName.charAt(0)
+                      }}{{ waiter.lastName.charAt(0) }}
+                    </span>
+                  </div>
+                  <div>
+                    <p class="font-semibold text-gray-900">
+                      {{ waiter.lastName }}, {{ waiter.firstName }}
+                    </p>
+                    <p class="text-sm text-gray-500">
+                      ID: {{ waiter.waiterId }}
+                    </p>
+                  </div>
+                </div>
+              </td>
+              <td class="p-4 text-center">
+                <span
+                  class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-secondary-key text-white"
+                >
+                  {{ waiter.totalOrders }}
+                </span>
+              </td>
+              <td class="p-4 text-center font-semibold text-tertiary-key">
+                {{ formatCurrency(waiter.totalRevenue) }}
+              </td>
+              <td class="p-4 text-center font-medium text-gray-900">
+                {{ formatCurrency(waiter.averageTicket) }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div
+        *ngIf="totalPages > 1"
+        class="flex flex-col items-center justify-between mt-6 pt-4 border-t border-gray-200"
+      >
+        <div class="text-sm text-gray-600">
+          Mostrando {{ startElement }} - {{ endElement }} de
+          {{ totalElements }} meseros
+        </div>
+
+        <div class="flex items-center gap-2">
+          <button
+            (click)="onPreviousPage()"
+            [disabled]="isFirstPage"
+            class="px-3 py-2 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          >
+            <i-lucide name="chevron-left" class="w-4 h-4"></i-lucide>
+          </button>
+
+          <button
+            *ngFor="let page of getPageNumbers()"
+            (click)="onPageChange(page)"
+            [class]="
+              page === currentPageNumber
+                ? 'px-3 py-2 rounded-lg bg-primary-key text-white font-medium'
+                : 'px-3 py-2 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-50 transition-colors'
+            "
+          >
+            {{ page }}
+          </button>
+
+          <button
+            (click)="onNextPage()"
+            [disabled]="isLastPage"
+            class="px-3 py-2 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          >
+            <i-lucide name="chevron-right" class="w-4 h-4"></i-lucide>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div
+      *ngIf="
+        !isLoading &&
+        (!waiterPerformanceData || waiterPerformanceData?.length === 0)
+      "
+      class="bg-white rounded-3xl p-12 shadow-lg text-center"
+    >
+      <div
+        class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4"
+      >
+        <i-lucide name="users" class="w-8 h-8 text-gray-400"></i-lucide>
+      </div>
+      <h3 class="text-xl font-semibold text-gray-900 mb-2">
+        No hay datos disponibles
+      </h3>
+      <p class="text-gray-600">
+        No se encontraron meseros para el rango de fechas y filtros
+        seleccionados.
+      </p>
+    </div>
+  </div>
+
+  <div slot="footer"></div>
+</app-base-page>

@@ -1,0 +1,19 @@
+<div class="chart-container">
+  <apx-chart
+    #chartInstance
+    [series]="finalOptions.series || []"
+    [chart]="finalOptions.chart || { type: 'line' }"
+    [colors]="finalOptions.colors || []"
+    [xaxis]="finalOptions.xaxis || {}"
+    [yaxis]="finalOptions.yaxis || {}"
+    [labels]="finalOptions.labels || []"
+    [stroke]="finalOptions.stroke || {}"
+    [markers]="finalOptions.markers || {}"
+    [dataLabels]="finalOptions.dataLabels || {}"
+    [grid]="finalOptions.grid || {}"
+    [tooltip]="finalOptions.tooltip || {}"
+    [plotOptions]="finalOptions.plotOptions || {}"
+    [fill]="finalOptions.fill || {}"
+    [title]="finalOptions.title || {}"
+  ></apx-chart>
+</div>

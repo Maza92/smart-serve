@@ -1,0 +1,166 @@
+<div class="flex bg-outline flex-col h-full">
+  <app-back-bar
+    title="Movimientos de Caja"
+    textColor="text-background"
+  ></app-back-bar>
+
+  <div class="w-full bg-outline top-0 z-10 p-4">
+    <div class="form-group-icon mb-3">
+      <i-lucide name="search" class="icon text-gray-400" size="25"></i-lucide>
+      <input
+        type="text"
+        [(ngModel)]="searchInput"
+        (ngModelChange)="onSearchChange($event)"
+        placeholder="Buscar movimientos..."
+        class="form-input pr-12 py-2 w-full"
+      />
+      <button
+        (click)="openFilterModal()"
+        class="absolute right-5 top-1/2 transform -translate-y-1/2"
+      >
+        <i-lucide
+          name="filter"
+          size="20"
+          class="w-4 h-4"
+          [ngClass]="{
+            'text-primary': activeFilters.length > 0,
+            'text-gray-400': activeFilters.length === 0
+          }"
+        ></i-lucide>
+      </button>
+    </div>
+
+    <div class="flex gap-2 overflow-x-auto pb-2">
+      <button
+        (click)="filterByType(undefined)"
+        [ngClass]="{
+          'button-primary': !filters.movementType,
+          'button-outline': filters.movementType
+        }"
+        class="button button-sm"
+      >
+        Todos
+      </button>
+      <button
+        (click)="filterByType(CashMovementTypeEnum.INCOME)"
+        [ngClass]="{
+          'button-primary': filters.movementType === 'INCOME',
+          'button-outline': filters.movementType !== 'INCOME'
+        }"
+        class="button button-sm"
+      >
+        Ingresos
+      </button>
+      <button
+        (click)="filterByType(CashMovementTypeEnum.EXPENSE)"
+        [ngClass]="{
+          'button-primary': filters.movementType === 'EXPENSE',
+          'button-outline': filters.movementType !== 'EXPENSE'
+        }"
+        class="button button-sm"
+      >
+        Egresos
+      </button>
+      <button
+        (click)="filterByType(CashMovementTypeEnum.SALE)"
+        [ngClass]="{
+          'button-primary': filters.movementType === 'SALE',
+          'button-outline': filters.movementType !== 'SALE'
+        }"
+        class="button button-sm"
+      >
+        Ventas
+      </button>
+      <button
+        (click)="filterByType(CashMovementTypeEnum.REFUND)"
+        [ngClass]="{
+          'button-primary': filters.movementType === 'REFUND',
+          'button-outline': filters.movementType !== 'REFUND'
+        }"
+        class="button button-sm"
+      >
+        Reembolsos
+      </button>
+    </div>
+
+    <div *ngIf="activeFilters.length > 0" class="flex flex-wrap gap-2">
+      <app-filter-chip
+        *ngFor="let filter of activeFilters"
+        [filter]="filter"
+        (remove)="removeFilter(filter)"
+      ></app-filter-chip>
+    </div>
+  </div>
+
+  <div class="flex flex-col gap-3 mt-2 p-4 overflow-auto">
+    <div *ngIf="movements.length === 0 && !loading" class="text-center py-8">
+      <p class="text-gray-500">No se encontraron movimientos</p>
+    </div>
+
+    <div
+      *ngFor="let movement of movements"
+      (click)="openMovementDetailModal(movement)"
+      class="bg-white rounded-2xl shadow-sm p-6 flex flex-col gap-2 cursor-pointer active:shadow-md transition-shadow"
+    >
+      <div class="flex justify-between items-center">
+        <div class="flex items-center gap-2">
+          <div
+            [ngClass]="[
+              getMovementStyles(movement.movementType).corner,
+              getMovementStyles(movement.movementType).text
+            ]"
+            class="w-6 h-6 rounded-full flex items-center justify-center"
+          >
+            <lucide-icon
+              [name]="getMovementTypeIcon(movement.movementType)"
+              size="14"
+            ></lucide-icon>
+          </div>
+          <span
+            [ngClass]="getMovementStyles(movement.movementType).text"
+            class="font-medium"
+          >
+            {{ getMovementTypeLabel(movement.movementType) }}
+          </span>
+        </div>
+        <span class="text-sm text-gray-500">
+          {{ movement.movementDate | date : "dd/MM/yyyy HH:mm" }}
+        </span>
+      </div>
+
+      <div class="flex justify-between items-center">
+        <div class="flex flex-col">
+          <span class="text-sm text-gray-600"
+            >Usuario: {{ movement.username }}</span
+          >
+          <span
+            *ngIf="movement.reason"
+            class="text-sm text-gray-500 truncate max-w-[200px]"
+          >
+            {{ movement.reason }}
+          </span>
+        </div>
+        <div
+          [ngClass]="getMovementStyles(movement.movementType).text"
+          class="text-lg font-bold"
+        >
+          {{ movement.amount | currency : "USD" : "symbol" : "1.2-2" }}
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="loading" class="flex justify-center py-4">
+      <div
+        class="animate-spin rounded-full h-6 w-6 border-b-2 border-primary-500"
+      ></div>
+    </div>
+
+    <button
+      *ngIf="hasMore && !loading"
+      (click)="loadMore()"
+      class="button button-outline button-lg w-full"
+    >
+      Cargar más
+    </button>
+  </div>
+</div>

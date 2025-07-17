@@ -212,9 +212,6 @@ export class KitchenComponent implements OnInit, OnDestroy {
 
   onStartOrder(orderId: number) {
     this.orderService.claimToCook(orderId).subscribe({
-      next: () => {
-        this.toastService.success('Orden reclamada');
-      },
       error: (error) => {
         this.toastService.error(error.message);
       },
@@ -223,9 +220,6 @@ export class KitchenComponent implements OnInit, OnDestroy {
 
   onMarkReady(orderId: number) {
     this.orderService.markAsReady(orderId).subscribe({
-      next: () => {
-        this.toastService.success('Orden marcada como lista');
-      },
       error: (error) => {
         this.toastService.error(error.message);
       },

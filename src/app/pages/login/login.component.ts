@@ -74,7 +74,6 @@ export class LoginComponent {
       next: (response) => {
         this.isLoading = false;
         console.log('Successful login:', response);
-        this.webSocketService.connect(response.token);
         this.router.navigate(['/home']);
       },
       error: (error) => {
