@@ -255,7 +255,7 @@ export class AuthService extends BaseService {
       API_CONSTANTS.AUTH.REVOKE_ALL_SESSIONS
     );
 
-    return this.http.post<void>(url, {}).pipe(catchError(this.handleError));
+    return this.http.delete<void>(url, {}).pipe(catchError(this.handleError));
   }
 
   revokeSession(id: number): Observable<void> {
@@ -266,7 +266,7 @@ export class AuthService extends BaseService {
       { id: id.toString() }
     );
 
-    return this.http.post<void>(url, {}).pipe(catchError(this.handleError));
+    return this.http.delete<void>(url, {}).pipe(catchError(this.handleError));
   }
 
   clearAuthData(): void {
